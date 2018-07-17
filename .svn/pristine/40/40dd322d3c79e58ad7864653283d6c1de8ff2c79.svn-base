@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octad</title>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon">
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/jquery.dataTables.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/plugins/select2/select2.min.css') }}" rel="stylesheet"><!-- Auto Select -->
+	<link href="{{ url_for('static', filename='css/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet"><!-- Multi Select -->
+	<!-- <link href="css/plugins/dualListbox/bootstrap-duallistbox.min.css" rel="stylesheet"> --><!-- dual list box -->
+	<link href="{{ url_for('static', filename='css/plugins/nouslider/jquery.nouislider.css') }}" rel="stylesheet"><!-- no ui slider -->
+	<link href="{{ url_for('static', filename='css/plugins/switchery/switchery.css') }}" rel="stylesheet"><!-- switchery (On Off Button) -->
+
+
+	<link href="{{ url_for('static', filename='css/cstm-style.css') }}" rel="stylesheet">
+</head>
+
+<body class="mini-navbar">
+    <div id="wrapper">
+	    <nav class="navbar-default navbar-static-side bottomNav" role="navigation">
+	        <div class="sidebar-collapse">
+	            <ul class="nav metismenu tooltip-demo" id="side-menu">
+					<li class="active" data-toggle="tooltip" title="Steps - New Job" data-container="body">
+	                    <a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i> <span class="nav-label">Steps - New Jobs</span></a>
+	                </li>
+					<li data-toggle="tooltip" title="Job History" data-container="body">
+	                    <a href="#"><i class="fa fa-tasks" aria-hidden="true"></i> <span class="nav-label">Job History</span></a>
+	                </li>
+	                <li data-toggle="tooltip" title="Dataset" data-container="body">
+	                    <a href="#"><i class="fa fa-database" aria-hidden="true"></i> <span class="nav-label">Dataset</span></a>
+	                </li>
+	                <li data-toggle="tooltip" title="Code">
+	                    <a href="#"><i class="fa fa-code" aria-hidden="true"></i> <span class="nav-label">Code</span></a>
+	                </li>
+	                <li data-toggle="tooltip" title="Tutorials">
+	                    <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span class="nav-label">Tutorials</span></a>
+	                </li>
+	                <li data-toggle="tooltip" title="FAQ">
+	                    <a href="#"><i class="fa fa-comments" aria-hidden="true"></i> <span class="nav-label">FAQ</span></a>
+	                </li>
+	                <li data-toggle="tooltip" title="News">
+	                    <a href="#"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span class="nav-label">News</span><span class="label label-warning pull-right">New 16</span></a>
+	                </li>
+	            </ul>
+	        </div>
+	    </nav>
+	    
+        <div class="navbar-header navToggleBtn">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary m-n" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+		
+		<div class="topNav">
+			<div class="row border-bottom m-n">
+		        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+			        <h2 class="pull-left m-n m-t-sm m-l-sm"><b>Octad</b></h2>
+			        
+		            <ul class="nav navbar-top-links navbar-right">
+		                <li>
+		                    <a href="{{ url_for('profile.login') }}">
+		                        <i class="fa fa-sign-in"></i> Login
+		                    </a>
+		                </li>
+		            </ul>
+		        </nav>
+	        </div>
+		</div>
+		
+		<div id="page-wrapper" class="gray-bg btmNavBody">
+			<div class="wrapper wrapper-content">
+				
+				<form id="form" action="#" class="wizard-big">
+					<h1>Case</h1>
+					<fieldset>
+						<!-- <h2 class="m-n">Account Information</h2> -->
+						
+						<div class="row m-b-xs">
+							<div class="form-group">
+								<div class="col-sm-3 diseaseNameSelect">
+									<select class="form-control formFild filterSelect select2_demo_3" name="feature">
+										{% for k, v in features.iteritems() %}
+											<option value="{{ k }}">{{v}}</option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="col-sm-9">
+									<div class="col-sm-10">
+									<input type="text" value="glioma" class="form-control formFild"> 
+									<!-- <input type="text" value="glioma" class="form-control pull-left formFild" style="width:calc(100% - 200px);"> -->
+									</div>
+									<div class="col-sm-2">
+										<a class="btn btn-blue m-l-xs" href="#" style="float: right;">Save</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div id="caseAddFilter">
+							
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect select2_demo_3" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+									
+									<div class="col-sm-9">
+										<div class="i-checks pull-left">
+											<label> 
+												<input type="checkbox" value="" checked=""> 
+												<i></i> Primary 
+											</label>
+										</div>
+										<div class="i-checks pull-left m-l-sm">
+											<label> 
+												<input type="checkbox" value=""> 
+												<i></i> Adjacent
+											</label>
+										</div>
+										<div class="i-checks pull-left m-l-sm">
+											<label> 
+												<input type="checkbox" value="" checked=""> 
+												<i></i> Normal
+											</label>
+										</div>
+										<div class="i-checks pull-left m-l-sm">
+											<label> 
+												<input type="checkbox" value="" checked=""> 
+												<i></i> Metastatic
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect select2_demo_3" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+									
+									<div class="col-sm-9">
+										<div class="i-checks pull-left">
+											<label> 
+												<input type="radio" name="a" value="option1"> 
+												<i></i> Primary 
+											</label>
+										</div>
+										<div class="i-checks pull-left m-l-sm">
+											<label> 
+												<input type="radio" name="a" value="option2" checked=""> 
+												<i></i> Adjacent
+											</label>
+										</div>
+										<div class="i-checks pull-left m-l-sm">
+											<label> 
+												<input type="radio" name="a" value="option3"> 
+												<i></i> Normal
+											</label>
+										</div>
+										<div class="i-checks pull-left m-l-sm">
+											<label> 
+												<input type="radio" name="a" value="option4"> 
+												<i></i> Metastatic
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect select2_demo_3" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+									
+									<div class="col-sm-9">
+										<select class="form-control formFild select2_demo_3" name="account">
+											<option>Primary</option>
+											<option>Adjacent</option>
+											<option>Normal</option>
+											<option>Metastatic</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect select2_demo_3" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+
+									<div class="col-sm-9">
+										<select data-placeholder="Tissue Type..." class="chosen-select m-b-xs formFild filterSelect" multiple tabindex="4">
+											<option selected value="Primary">Primary</option>
+											<option value="Adjacent">Adjacent</option>
+											<option selected value="Normal">Normal</option>
+											<option value="Metastatic">Metastatic</option>
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<!-- <div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+									
+									<div class="col-sm-3">
+										<select class="form-control dual_select" multiple>
+											<option selected value="Primary">Primary</option>
+											<option value="Adjacent">Adjacent</option>
+											<option selected value="Normal">Normal</option>
+											<option value="Metastatic">Metastatic</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+
+									<div class="col-sm-3">
+										<div id="drag-fixed" class="slider_red"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+
+									<div class="col-sm-3">
+										<div id="basic_slider"></div>
+									</div>
+								</div>
+							</div> -->
+
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect select2_demo_3" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+
+									<div class="col-sm-9">
+										<div id="range_slider"></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row m-b-xs">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+										<select class="form-control formFild filterSelect select2_demo_3" name="account">
+											<option>Tissue type</option>
+											<option>option 2</option>
+											<option>option 3</option>
+											<option>option 4</option>
+										</select>
+									</div>
+
+									<div class="col-sm-9">
+										<input type="checkbox" class="js-switch" checked />
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						
+						
+						<div class="row">
+							<div class="col-lg-12">
+								<table id="caseSample" class="table table-striped table-bordered display nowrap" style="width:100%">
+									<thead>
+										 <tr>
+											<th></th>
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Age</th>
+											<th>Site</th>
+											<th>Gender</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>EGFR</th>
+											<th>IDH1</th>
+											<th>IDH2</th>
+											<th>TP53</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr> 
+										<!--<tr>
+											<th></th>
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Site</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr> -->
+
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</fieldset>
+					
+					<h1>Control</h1>
+					<fieldset>
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-3">
+									<select class="form-control m-b" name="account">
+										<option>Disease Name</option>
+										<option>option 2</option>
+										<option>option 3</option>
+										<option>option 4</option>
+									</select>
+								</div>
+								<div class="col-sm-9">
+									<input type="text" value="glioma" class="form-control pull-left" style="width:calc(100% - 200px);">
+									<a class="btn btn-blue pull-left m-l-xs" href="#">Auto Normal</a>
+									<a class="btn btn-blue pull-left m-l-xs" href="#">Save</a>
+								</div>
+							</div>
+						</div>
+						
+						<div id="controlAddFilter" class="row">
+							<div class="form-group">
+								<div class="col-sm-3">
+									<a href="#" class="controlPlusAddFilter"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+									<select class="form-control m-b filterSelect" name="account">
+										<option>Tissue Type</option>
+										<option>option 2</option>
+										<option>option 3</option>
+										<option>option 4</option>
+									</select>
+								</div>
+								
+								<div class="col-sm-9">
+									<div class="i-checks pull-left m-t-xs">
+										<label> 
+											<input type="checkbox" value="" checked=""> 
+											<i></i> Primary 
+										</label>
+									</div>
+									<div class="i-checks pull-left m-t-xs m-l-sm">
+										<label> 
+											<input type="checkbox" value=""> 
+											<i></i> Adjacent
+										</label>
+									</div>
+									<div class="i-checks pull-left m-t-xs m-l-sm">
+										<label> 
+											<input type="checkbox" value=""> 
+											<i></i> Normal
+										</label>
+									</div>
+									<div class="i-checks pull-left m-t-xs m-l-sm">
+										<label> 
+											<input type="checkbox" value=""> 
+											<i></i> Metastatic
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class="row">
+							<div class="col-lg-12">
+								<table id="controlSample" class="table table-striped table-bordered display nowrap" style="width:100%">
+									<thead>
+										 <tr>
+											<th></th>
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Age</th>
+											<th>Site</th>
+											<th>Gender</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>EGFR</th>
+											<th>IDH1</th>
+											<th>IDH2</th>
+											<th>TP53</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr> 
+										<!--<tr>
+											<th></th>
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Site</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr> -->
+
+									</thead>
+									<tbody></tbody>
+								</table>
+								
+							</div>
+						</div>
+						
+					</fieldset>
+				
+					<h1>Signature</h1>
+					<fieldset>
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-3">
+									<select class="form-control m-b" name="account">
+										<option>EdgeR</option>
+										<option>option 2</option>
+										<option>option 3</option>
+										<option>option 4</option>
+									</select>
+								</div>
+								<div class="col-sm-9">
+									<div class="form-group pull-left">
+										<label class="col-lg-6 control-label text-right m-t-sm">Adjusted P</label>
+	                                    <div class="col-lg-6">
+	                                    	<input type="text" Value="0.001" class="form-control">
+                                    	</div>
+									</div>
+									<div class="form-group pull-left">
+										<label class="col-lg-6 control-label text-right m-t-sm">Fold Change</label>
+	                                    <div class="col-lg-6">
+	                                    	<input type="text" Value="1.5" class="form-control">
+                                    	</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<a class="btn btn-blue pull-left m-l-xs" href="#">Advanced</a>
+								<a class="btn btn-blue pull-right m-l-xs" href="#">Compute</a>
+							</div>
+						</div>
+						
+						
+					</fieldset>
+				
+					<h1>Drugs</h1>
+					<fieldset>
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="i-checks pull-left m-t-xs">
+									<label> 
+										<input type="checkbox" value="" checked=""> 
+										<i></i> LINCS database 
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-3">
+									<select class="form-control m-b filterSelect full-width" name="account">
+										<option>L1000</option>
+										<option>option 2</option>
+										<option>option 3</option>
+										<option>option 4</option>
+									</select>
+								</div>
+								
+								<div class="col-sm-9">
+									<div class="i-checks pull-left m-t-xs">
+										<label> 
+											<input type="checkbox" value="" checked=""> 
+											<i></i> Weight Cell Line 
+										</label>
+									</div>
+									<div class="i-checks pull-left m-t-xs m-l-sm">
+										<label> 
+											<input type="checkbox" value=""> 
+											<i></i> Keep Same Lineage
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-3">
+									<input type="text" value="imput" class="form-control">
+								</div>
+								
+								<div class="col-sm-9">
+									<div class="i-checks pull-left m-t-xs">
+										<label> 
+											<input type="checkbox" value="" checked=""> 
+											<i></i> Drug Clincal Available
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group pull-left">
+								<label class="col-lg-6 control-label text-right m-t-sm">Max Genes on One Side</label>
+								<div class="col-lg-6">
+									<input type="text" Value="50" class="form-control">
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="i-checks pull-left m-t-xs">
+									<label> 
+										<input type="checkbox" value="" checked=""> 
+										<i></i> CMap Database
+									</label>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="form-group pull-left">
+								<label class="col-lg-6 control-label text-right m-t-sm">Max Genes on One Side</label>
+								<div class="col-lg-6">
+									<input type="text" Value="150" class="form-control">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+				
+			</div>
+        </div>
+
+        
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ url_for('static', filename='js/inspinia.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/pace/pace.min.js') }}"></script>
+    
+    <script src="{{ url_for('static', filename='js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+	
+	<!-- Multi Select -->
+    <script src="{{ url_for('static', filename='js/plugins/chosen/chosen.jquery.js') }}"></script>
+	
+    <!-- Steps -->
+    <script src="{{ url_for('static', filename='js/plugins/staps/jquery.steps.js') }}"></script>
+
+    <!-- Jquery Validate -->
+    <script src="{{ url_for('static', filename='js/plugins/validate/jquery.validate.min.js') }}"></script>
+    
+    <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
+    
+    <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+    
+    <!-- Auto Select2 -->
+    <script src="{{ url_for('static', filename='js/plugins/select2/select2.full.min.js') }}"></script>
+
+    <!-- Dual List box -->
+    <!-- <script src="{{ url_for('static', filename='js/plugins/dualListbox/jquery.bootstrap-duallistbox.js') }}"></script> -->
+
+    <!-- Nou Slider -->
+	<script src="{{ url_for('static', filename='js/plugins/nouslider/jquery.nouislider.min.js') }}"></script>
+
+    <!-- Switchery (On Off button) -->
+	<script src="{{ url_for('static', filename='js/plugins/switchery/switchery.js') }}"></script>
+
+
+
+	<script src="{{ url_for('static', filename='js/cstmJS.js') }}"></script>
+	<!--<script src="{{ url_for('static', filename='js/cstmAngular.js') }}"></script>-->
+
+    <script type="">
+    	
+		$(document).ready(function(){
+			//debugger;
+
+			/*$('#controlSample').DataTable({
+				"ajax": "{{ url_for('api.sampleApi') }}"
+			});*/
+			var dtTable;
+			/*$.ajax({
+				url: "{{ url_for('api.sampleApi') }}"
+			}).done(function (data) {
+				var content = '';
+				if(data.length > 0){
+					var obj = JSON.parse(data);
+					$.each(obj, function(i, item){
+						content=content + '<tr>'+
+										'<td></td>'+
+										'<td>'+item.sample_id+'</td>'+
+										'<td>'+item.tissue_type+'</td>'+
+										'<td>'+item.age_in_year+'</td>'+
+										'<td>'+item.site+'</td>'+
+										'<td>'+item.gender+'</td>'+
+										'<td>'+item.metastatic_site+'</td>'+
+										'<td>'+item.cancer+'</td>'+
+										'<td>'+item.egfr+'</td>'+
+										'<td>'+item.idh1+'</td>'+
+										'<td>'+item.idh2+'</td>'+
+										'<td>'+item.tp53+'</td>'+
+										'<td>'+item.tumor_grade+'</td>'+
+										'<td>'+item.tumor_stage+'</td>'+
+										'</tr>';			
+					
+					});
+				}
+				$('#controlSample tbody').append(content);
+				$("#controlSample-loader").css("display","none");
+				$("#controlSample-table").css("display","block");
+				
+				dtTable = $('#controlSample').DataTable( {
+						"columnDefs": [
+							{
+								"targets": [ 3 ],
+								"visible": false
+							},
+							{
+								"targets": [ 5 ],
+								"visible": false
+							},
+							{
+								"targets": [ 8 ],
+								"visible": false
+							},
+							{
+								"targets": [ 9 ],
+								"visible": false
+							},{
+								"targets": [ 10],
+								"visible": false
+							},
+							{
+								"targets": [ 11 ],
+								"visible": false
+							}
+						],
+						"columns": [
+							{
+								"className":"details-control",
+								"orderable":false,
+								"data":null,
+								"defaultContent": ''
+							},
+							{ "data": "sample_id" },
+							{ "data": "tissue_type" },
+							{ "data": "age_in_year" },
+							{ "data": "site" },
+							{ "data": "gender" },
+							{ "data": "metastatic_site" },
+							{ "data": "cancer" },
+							{ "data": "egfr" },
+							{ "data": "idh1" },
+							{ "data": "idh2" },
+							{ "data": "tp53" },
+							{ "data": "tumor_grade" },
+							{ "data": "tumor_stage" }
+						],
+				
+						"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+						ordering : false,
+						searching : true,
+						destroy : true,
+						"autoWidth": false
+					} );
+				$("#controlSample").wrap( "<div style='width:100%; overflow-x:auto;'></div>" );
+			});*/
+
+			var table;
+			$.ajax({
+				url: "{{ url_for('api.sampleApi') }}"
+			}).done(function (data) {
+				var content = '';
+				if(data.length > 0){
+					var obj = JSON.parse(data);
+					$.each(obj, function(i, item){
+						content=content + '<tr>'+
+										'<td></td>'+
+										'<td>'+item.sample_id+'</td>'+
+										'<td>'+item.tissue_type+'</td>'+
+										'<td>'+item.age_in_year+'</td>'+
+										'<td>'+item.site+'</td>'+
+										'<td>'+item.gender+'</td>'+
+										'<td>'+item.metastatic_site+'</td>'+
+										'<td>'+item.cancer+'</td>'+
+										'<td>'+item.egfr+'</td>'+
+										'<td>'+item.idh1+'</td>'+
+										'<td>'+item.idh2+'</td>'+
+										'<td>'+item.tp53+'</td>'+
+										'<td>'+item.tumor_grade+'</td>'+
+										'<td>'+item.tumor_stage+'</td>'+
+										'</tr>';			
+					
+					});
+				}
+				$('#caseSample tbody').append(content);
+				$("#caseSample-loader").css("display","none");
+				$("#caseSample-table").css("display","block");
+				table = $('#caseSample').DataTable( {
+						"columnDefs": [
+							{
+								"targets": [ 3 ],
+								"visible": false
+							},
+							{
+								"targets": [ 5 ],
+								"visible": false
+							},
+							{
+								"targets": [ 8 ],
+								"visible": false
+							},
+							{
+								"targets": [ 9 ],
+								"visible": false
+							},{
+								"targets": [ 10],
+								"visible": false
+							},
+							{
+								"targets": [ 11 ],
+								"visible": false
+							}
+						],
+						"columns": [
+							{
+								"className":"details-control",
+								"orderable":false,
+								"data":null,
+								"defaultContent": ''
+							},
+							{ "data": "sample_id" },
+							{ "data": "tissue_type" },
+							{ "data": "age_in_year" },
+							{ "data": "site" },
+							{ "data": "gender" },
+							{ "data": "metastatic_site" },
+							{ "data": "cancer" },
+							{ "data": "egfr" },
+							{ "data": "idh1" },
+							{ "data": "idh2" },
+							{ "data": "tp53" },
+							{ "data": "tumor_grade" },
+							{ "data": "tumor_stage" }
+						],
+				
+						"lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "All"]],
+						ordering : false,
+						searching : true,
+						destroy : true,
+						"autoWidth": false
+					} );
+				$("#caseSample").wrap( "<div style='width:100%; overflow-x:auto;'></div>" );
+			});
+			
+			
+			
+			
+			
+			
+
+			
+			
+			
+			
+			$("#form").steps({
+				bodyTag: "fieldset",
+				onStepChanging: function (event, currentIndex, newIndex){
+					// Always allow going backward even if the current step contains invalid fields!
+					if (currentIndex > newIndex){
+						return true;
+					}
+	
+					// Forbid suppressing "Warning" step if the user is to young
+					if (newIndex === 3 && Number($("#age").val()) < 18){
+						return false;
+					}
+	
+					var form = $(this);
+	
+					// Clean up if user went backward before
+					if (currentIndex < newIndex){
+						// To remove error styles
+						$(".body:eq(" + newIndex + ") label.error", form).remove();
+						$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+					}
+	
+					// Disable validation on fields that are disabled or hidden.
+					form.validate().settings.ignore = ":disabled,:hidden";
+	
+					// Start validation; Prevent going forward if false
+					return form.valid();
+					
+				},
+				
+				onStepChanged: function (event, currentIndex, priorIndex){
+					// Suppress (skip) "Warning" step if the user is old enough.
+					if (currentIndex === 2 && Number($("#age").val()) >= 18){
+						$(this).steps("next");
+					}
+	
+					// Suppress (skip) "Warning" step if the user is old enough and wants to the previous step.
+					if (currentIndex === 2 && priorIndex === 3){
+						$(this).steps("previous");
+					}
+					
+				},
+				
+				onFinishing: function (event, currentIndex){
+					var form = $(this);
+	
+					// Disable validation on fields that are disabled.
+					// At this point it's recommended to do an overall check (mean ignoring only disabled fields)
+					form.validate().settings.ignore = ":disabled";
+	
+					// Start validation; Prevent form submission if false
+					return form.valid();
+					
+				},
+				
+				onFinished: function (event, currentIndex){
+					
+					var form = $(this);
+	
+					// Submit form input
+					form.submit();
+					
+				}
+			}).validate({
+				errorPlacement: function (error, element){
+					element.before(error);
+				},
+				rules: {
+					confirm: {
+						equalTo: "#password"
+					}
+				}
+			});
+
+			$(".caseMinusRemoveFilter").on('click', function(){
+
+			});
+			
+			$(".casePlusAddFilter").on('click', function(){
+				$("#caseAddFilter").append('<div class="form-group">'+
+						'<div class="col-sm-3">'+
+							'<a href="#" class="caseMinusRemoveFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>'+
+							'<a href="#" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>'+
+							'<select class="form-control formFild filterSelect select2_demo_3" name="account">'+
+								'<option>tissue type</option>'+
+								'<option>option 2</option>'+
+								'<option>option 3</option>'+
+								'<option>option 4</option>'+
+							'</select>'+
+						'</div>'+
+						
+						'<div class="col-sm-9">'+
+							'<div class="i-checks pull-left m-t-xs">'+
+								'<label>'+
+									'<input type="checkbox" value="" checked="">'+
+									'<i></i> Primary'+
+								'</label>'+
+							'</div>'+
+							'<div class="i-checks pull-left m-t-xs m-l-sm">'+
+								'<label>'+
+									'<input type="checkbox" value="">'+
+									'<i></i> adjacent'+
+								'</label>'+
+							'</div>'+
+							'<div class="i-checks pull-left m-t-xs m-l-sm">'+
+								'<label>'+
+									'<input type="checkbox" value="">'+
+									'<i></i> normal'+
+								'</label>'+
+							'</div>'+
+							'<div class="i-checks pull-left m-t-xs m-l-sm">'+
+								'<label>'+
+									'<input type="checkbox" value="">'+
+									'<i></i> metastatic'+
+								'</label>'+
+							'</div>'+
+						'</div>'+
+					'</div>'
+				);
+			});
+			
+			$(".controlPlusAddFilter").on('click', function(){
+				$("#controlAddFilter").append('<div class="form-group">'+
+						'<div class="col-sm-3">'+
+							'<a href="#" class="controlMinusRemoveFilter"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>'+
+							'<a href="#" class="controlPlusAddFilter m-l-xs"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>'+
+							'<select class="form-control m-b filterSelect" name="account">'+
+								'<option>tissue type</option>'+
+								'<option>option 2</option>'+
+								'<option>option 3</option>'+
+								'<option>option 4</option>'+
+							'</select>'+
+						'</div>'+
+						
+						'<div class="col-sm-9">'+
+							'<div class="i-checks pull-left m-t-xs">'+
+								'<label>'+
+									'<input type="checkbox" value="" checked="">'+
+									'<i></i> Primary'+
+								'</label>'+
+							'</div>'+
+							'<div class="i-checks pull-left m-t-xs m-l-sm">'+
+								'<label>'+
+									'<input type="checkbox" value="">'+
+									'<i></i> adjacent'+
+								'</label>'+
+							'</div>'+
+							'<div class="i-checks pull-left m-t-xs m-l-sm">'+
+								'<label>'+
+									'<input type="checkbox" value="">'+
+									'<i></i> normal'+
+								'</label>'+
+							'</div>'+
+							'<div class="i-checks pull-left m-t-xs m-l-sm">'+
+								'<label>'+
+									'<input type="checkbox" value="">'+
+									'<i></i> metastatic'+
+								'</label>'+
+							'</div>'+
+						'</div>'+
+					'</div>'
+				);
+			});
+			
+
+         	// ---- Auto Select -------------------------------
+            $(".select2_demo_3").select2({
+                placeholder: "Select a state",
+                allowClear: true
+            });
+         	// ---- Auto Select -------------------------------
+
+
+			$('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+			
+			$('.chosen-select').chosen({width: "100%"}); /* Multi Select */
+			
+
+			//$('.dual_select').bootstrapDualListbox({  /* Dual List box */
+            //    selectorMinimalHeight: 160
+            //});
+
+
+			// ---- no Ui Slider -------------------------------
+			/* var drag_fixed = document.getElementById('drag-fixed');
+	        noUiSlider.create(drag_fixed, {
+	            start: [ 40, 60 ],
+	            behaviour: 'drag-fixed',
+	            connect: true,
+	            range: {
+	                'min':  20,
+	                'max':  80
+	            }
+	        });
+
+	        var basic_slider = document.getElementById('basic_slider');
+	        noUiSlider.create(basic_slider, {
+	            start: 40,
+	            behaviour: 'tap',
+	            connect: 'upper',
+	            range: {
+	                'min':  20,
+	                'max':  80
+	            }
+	        }); */
+
+	     	// ---- no Ui Slider -------------------------------
+	        var range_slider = document.getElementById('range_slider');
+	        noUiSlider.create(range_slider, {
+	            start: [ 40, 60 ],
+	            behaviour: 'drag',
+	            connect: true,
+	            range: {
+	                'min':  20,
+	                'max':  80
+	            }
+	        });
+	     	// ---- no Ui Slider -------------------------------
+
+
+	     	// ---- On Off button -------------------------------
+	        var elem = document.querySelector('.js-switch');
+            var switchery = new Switchery(elem, { color: '#1AB394' });
+         	// ---- On Off button -------------------------------
+
+
+         	// ---- Add Child Row Table -------------------------------
+
+
+            // Add event listener for opening and closing details
+            $('#caseSample tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row( tr );
+
+                if(row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }else {
+                    // Open this row
+                    row.child( format2(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            });
+         	// ---- Add Child Row Table -------------------------------
+
+			
+					            // Add event listener for opening and closing details
+            $('#controlSample tbody').on('click', 'td.details-control', function () {
+				//alert("calsled");
+                var tr = $(this).closest('tr');
+                var row1 = dtTable.row( tr );
+
+                if(row1.child.isShown()) {
+                    // This row is already open - close it
+                    row1.child.hide();
+                    tr.removeClass('shown');
+                }else {
+                    // Open this row
+                    row1.child( format2(row1.data()) ).show();
+                    tr.addClass('shown');
+                }
+            });
+			
+			
+			
+		}); // End Document ready
+
+
+		// ---- Add Child Row Table -------------------------------
+		/* Formatting function for row details - modify as you need */
+		function format ( d ) {
+		    // `d` is the original data object for the row
+		    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+		        '<tr>'+
+		            '<td>Full name:</td>'+
+		            '<td>'+d.name+'</td>'+
+		        '</tr>'+
+		        '<tr>'+
+		            '<td>Extension number:</td>'+
+		            '<td>'+d.extn+'</td>'+
+		        '</tr>'+
+		        '<tr>'+
+		            '<td>Extra info:</td>'+
+		            '<td>And any further details here (images etc)...</td>'+
+		        '</tr>'+
+		    '</table>';
+		}
+		// ---- Add Child Row Table -------------------------------
+
+		function format2 ( d ) {
+				// `d` is the original data object for the row
+				console.log("called");
+				console.log(d);					
+				//'<td>'+item.egfr+'</td>'+
+				//'<td>'+item.idh1+'</td>'+
+				//'<td>'+item.idh2+'</td>'+
+				//'<td>'+item.tp53+'</td>'+
+				//'<td>'+item.gender+'</td>'+
+				//'<td>'+item.age_in_year+'</td>'+
+				//<div style="float:left;padding:10px">Gender:'+d.gender+' </div> <div style="float:left;padding:10px">Age:'+d.age_in_year+' </div> <div style="float:left;padding:10px">EGFR:'+d.egfr+' </div> <div style="float:left;padding:10px">IDH1:'+d.idh1+' </div> <div style="float:left;padding:10px">IDH2:'+d.idh2+' </div> <div style="float:left;padding:10px">TP53:'+d.tp53+' </div> 
+				return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+					'<tr>'+
+						'<td style="font-weight:bold">Gender:</td>'+
+						'<td>'+d.gender+'</td>'+
+						'<td style="font-weight:bold">Age:</td>'+
+						'<td>'+d.age_in_year+'</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td style="font-weight:bold">EGFR:</td>'+
+						'<td>'+d.egfr+'</td>'+
+						'<td style="font-weight:bold">TP53:</td>'+
+						'<td>'+d.tp53+'</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td style="font-weight:bold">IDH1:</td>'+
+						'<td>'+d.idh1+'</td>'+
+						'<td style="font-weight:bold">IDH2:</td>'+
+						'<td >'+d.idh2+'</td>'+
+					'</tr>'+
+				'</table>';
+			}
+		
+	</script>
+    
+    
+</body>
+</html>

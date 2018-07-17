@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OCTAD</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon">
+
+    {% include 'base/css_links.html' %}
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.dataTables.min.css') }}"/>
+</head>
+    <body>
+        {% include 'base/header.html' %}
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row wrapper border-bottom white-bg page-heading" style="margin-top:46px;">
+                <div class="col-lg-12">
+                    <h2 class="text-navy" style="font-weight:400;">Results</h2>
+                    <ol class="breadcrumb">
+                        <li><a href="/dashboard">Jobs</a></li>
+                        <li class="active"><strong>Results</strong></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="wrapper wrapper-content  animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Results for - Glioma Job</h5>
+                            </div>
+                            <div class="ibox-content">
+
+								 <table id="example" class="table table-striped table-bordered display nowrap" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Job Name</th>
+											<th>Sample</th>
+                                            <th>Status</th>
+                                            <th>Total output files</th>
+                                            <!--<th>Extn.</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+										<tr>
+											<td>Glioma Job</td>
+											<td>Glioma</td>
+											<td>Completed</td>
+											<td>12</td>
+										</tr>
+                                     <!-- <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/all_genes_differences.csv') }}" rel="nofollow">all_genes_differences.csv</a></td>
+                                     </tr> -->
+									 </tbody>
+								</table>
+
+
+                                <table id="example" class="table table-striped table-bordered display nowrap" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th colspan=2>Output Files</th>
+                                        <!--    <th>Position</th>
+                                            <th>Office</th>
+                                            <th>Extn.</th>
+                                            <th>Start date</th>
+                                            <th>Salary</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                      <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/all_genes_differences.csv') }}" rel="nofollow">all_genes_differences.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/all_lincs_score.csv') }}" rel="nofollow">all_lincs_score.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/dz_down_sig_genes_enriched.csv') }}" rel="nofollow">dz_down_sig_genes_enriched.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/dz_sample_purity.csv') }}" rel="nofollow">dz_sample_purity.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/dz_sig_genes_edgeR.csv') }}" rel="nofollow">dz_sig_genes_edgeR.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/dz_sig_used.csv') }}" rel="nofollow">dz_sig_used.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/dz_up_sig_genes_enriched.csv') }}" rel="nofollow">dz_up_sig_genes_enriched.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/enriched_sea_targets.csv') }}" rel="nofollow">enriched_sea_targets.csv</a></td><td>CSV</td>
+                                     </tr>
+                                        <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/sRGES.csv') }}" rel="nofollow">sRGES.csv</a></td><td>CSV</td>
+                                     </tr>
+                                     <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/tissue_mds.pdf') }}" rel="nofollow">tissue_mds.pdf</a></td><td>PDF</td>
+
+                                     </tr>
+                                    <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/top_enriched_top.pdf') }}" rel="nofollow">top_enriched_top.pdf</a></td><td>PDF</td>
+
+                                     </tr>
+                                      <tr>
+                                          <td><a target = "_blank" href="{{ url_for('static', filename='data/tumor_purity.pdf') }}" rel="nofollow">tumor_purity.pdf</a></td><td>PDF</td>
+
+                                     </tr>
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% include 'base/footer.html' %}
+
+        {% include 'base/js_links.html' %}
+        <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+
+        <script>
+            $(document).ready(function() {
+
+            });
+
+
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octad</title>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon">
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/plugins/steps/jquery.steps.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/sumoselect.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/animate.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/plugins/iCheck/custom.css') }}" rel="stylesheet">
+
+	<!-- 	<link href="{{ url_for('static', filename='css/buttons.dataTables.min.css') }}" rel="stylesheet"> -->
+	<link href="{{ url_for('static', filename='css/sumoselect.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/plugins/select2/select2.min.css') }}" rel="stylesheet"><!-- Auto Select -->
+	<link href="{{ url_for('static', filename='css/plugins/chosen/bootstrap-chosen.css') }}" rel="stylesheet"><!-- Multi Select -->
+	<!-- <link href="css/plugins/dualListbox/bootstrap-duallistbox.min.css" rel="stylesheet"> --><!-- dual list box -->
+	<link href="{{ url_for('static', filename='css/plugins/nouslider/jquery.nouislider.css') }}" rel="stylesheet"><!-- no ui slider -->
+	<link href="{{ url_for('static', filename='css/plugins/switchery/switchery.css') }}" rel="stylesheet"><!-- switchery (On Off Button) -->
+	<link href="{{ url_for('static', filename='css/cstm-style.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/jquery.dataTables.min.css') }}" rel="stylesheet">
+	<!-- <link href="{{ url_for('static', filename='css/dataTables.tableTools.css') }}" rel="stylesheet"> -->
+	<!-- <link href="{{ url_for('static', filename='css/select.dataTables.min.css') }}" rel="stylesheet"> -->
+	<style type="text/css">.ui-autocomplete { height: 200px; overflow-y: scroll; overflow-x: hidden;}
+
+	table.dataTable tr th.select-checkbox.selected::after {
+    content: "✔";
+    margin-top: -11px;
+    margin-left: -4px;
+    text-align: center;
+    text-shadow: rgb(176, 190, 217) 1px 1px, rgb(176, 190, 217) -1px -1px, rgb(176, 190, 217) 1px -1px, rgb(176, 190, 217) -1px 1px;
+	}
+	.blockMsg {
+		border: none !important;
+		background-color: rgba(249, 249, 249, 0.82) !important;
+		border-radius: 25px 25px;
+	}
+	.blockUI{
+		padding: 10px !important;
+	}
+</style>
+</head>
+
+<body class=""><!-- mini-navbar -->
+    <div id="wrapper">
+	    <nav class="navbar-default navbar-static-side sideNav" role="navigation"><!-- bottomNav -->
+	        <div class="sidebar-collapse">
+	            <ul class="nav metismenu tooltip-demo" id="side-menu">
+					<li class="active" data-container="body">
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.dashboard') }}">
+	                    	<i class="fa fa-step-forward" aria-hidden="true"></i>
+	                    	<span class="nav-label">Steps - New Jobs</span>
+	                    </a>
+	                </li>
+					<li data-container="body">
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.job_history') }}">
+	                    	<i class="fa fa-tasks" aria-hidden="true"></i>
+	                    	<span class="nav-label">Job History</span>
+	                    </a>
+	                </li>
+	                <li data-container="body">
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.dataset') }}"><i class="fa fa-database" aria-hidden="true"></i> <span class="nav-label">Dataset</span></a>
+	                </li>
+	                <li>
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.code') }}"><i class="fa fa-code" aria-hidden="true"></i> <span class="nav-label">Code</span></a>
+	                </li>
+	                <li>
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.tutorials') }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span class="nav-label">Tutorials</span></a>
+	                </li>
+	                <li>
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.faq') }}"><i class="fa fa-comments" aria-hidden="true"></i> <span class="nav-label">FAQ</span></a>
+	                </li>
+	                <li>
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.news') }}"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span class="nav-label">News</span></a>
+	                </li>
+	            </ul>
+	        </div>
+	    </nav>
+	    
+        <div class="navbar-header navToggleBtn">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary m-n" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+		
+		<div class="topNav">
+			<div class="row border-bottom m-n">
+		        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+			        <h2 class="pull-left m-n m-t-sm m-l-sm"><b>Octad</b></h2>
+
+		            <ul class="nav navbar-top-links navbar-right">
+		                <li class="m-r-sm">
+
+							{% if g.user and not g.user.is_anonymous() and g.user.is_authenticated() %}
+				                <a data-toggle="dropdown" class="dropdown-toggle pull-right" href="#" style="padding:12px;" aria-expanded="true">
+									<b><span id="username">{{ g.user.username }}</span></b> <b class="caret"></b>
+								</a>
+								<ul class="dropdown-menu userDropDownMenu m-t-xs" style="right:30px;top:30px;left:inherit;">
+									<!--<li><a href="{{ url_for('profile.change_password') }}"><i class="fa fa-user" aria-hidden="true"></i> Change Password</a></li>-->
+									<li><a class="modalMaterial-trigger" href="{{ url_for('profile.logout') }}">
+										<i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
+									</li>
+								</ul>
+							{% else %}
+								<a href="{{ url_for('profile.login') }}">
+									<i class="fa fa-sign-in"></i> Login
+								</a>
+							{% endif %}
+
+		                </li>
+		            </ul>
+		        </nav>
+	        </div>
+		</div>
+
+		<div id="page-wrapper" class="gray-bg sideNavBody"><!-- btmNavBody -->
+			<div class="wrapper wrapper-content full-height">
+				<center>
+					{% with messages = get_flashed_messages(with_categories=true) %}
+					{% if messages %}
+						{% for category, message in messages %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								{% if category == 'error' %}
+									<div class="alert alert-danger alert-dismissable col-md-4" >
+										<button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										{{ message }}
+									</div>
+								{% else %}
+									<div class="alert alert-success alert-dismissable col-md-4" >
+										<button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										{{ message }}
+									</div>
+								{% endif %}
+								<div class="col-md-4"></div>
+							</div>
+						{% endfor %}
+					{% endif %}
+					{% endwith %}
+				</center>
+
+				<form id="form" action="#" method="post" class="wizard-big full-height filter-form">
+					<!-- <img id="loaderIcon" src="/static/img/loading.gif" style="display: none;"> -->
+					{% if job %}
+						<input type="hidden" name="job_id" id="job_id" value="{{ job.id }}">
+					{% else %}
+						<input type="hidden" name="job_id" id="job_id">
+					{% endif %}
+					<h1>Case</h1>
+					<fieldset>
+						<div class="row m-b-xs">
+							<div id="caseFilterDiv" class="col-lg-12">
+								<div class="form-group">
+									<div class="row m-n">
+										<div class="col-lg-4 diseaseNameSelect" style="padding: 0 5px;">
+											<a class="casePlusAddFilter m-l-xs m-r-xs m-t-xs" style="margin-top: 8px !important;"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+											<label class="formFild" style="margin-top:10px" for="case_disease_name">Disease Name</label>
+										</div>
+										<div class="col-lg-8" style="padding-right:0px;">
+
+											{% if job %}
+												<input type="text" id="case_disease_name" placeholder="Brain Lower Grade Glioma" class="casefilter form-control formFild" style="height:25px" data-column-index="7" value="{{ job.disease }}" required >
+											{% else %}
+												<input type="text" id="case_disease_name" placeholder="Brain Lower Grade Glioma" class="casefilter form-control formFild" style="height:25px" data-column-index="7" required >
+											{% endif %}
+
+										</div>
+									</div>
+									<div id="caseAddFilter"></div>
+
+									<div class="row">
+										<div  class="col-lg-12">
+											<a id="caserefbt" class="btn btn-blue m-t-xs pull-right" style="float: right; margin-left: 1%;"><i class=""></i> Reset</a>
+
+											<a id="casebt" class="btn btn-blue m-t-xs pull-right" style="float: right;"><i class="fa fa-filter"></i> Filter Samples</a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="CaseChart" class="col-sm-5">
+								  <div id="CaseChart-loader" style="height:330px;display:none;background-color:#eee;">
+                                    <img src="/static/img/ajax-loader.gif" style="margin:0 auto;display:block;padding-top:100px;">
+                                </div>
+								<div tabindex="-1"  class="border-box-sizing">
+									<div class="" >
+										<div class="output_subarea output_widget_view">
+											<iframe id="CaseChartImg" style="width:100%;height:450px;" src=""></iframe>
+										</div>
+									</div>
+								</div>
+
+								<input type="button" id="case_refresh" class="btn btn-blue pull-right m-t-xs" value="Refresh Chart">
+
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col-lg-12">
+								<hr>
+								<h3 style="color:#000">Available/Selected Case Samples</h3>
+
+								<table id="caseSample" class="table table-striped table-bordered display nowrap" style="width:100%">
+									<thead>
+										 <tr>
+											<th>More Info</th>
+											<!-- <th></th> -->
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Age</th>
+											<th>Site</th>
+											<th>Gender</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>EGFR</th>
+											<th>IDH1</th>
+											<th>IDH2</th>
+											<th>TP53</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr> 
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</fieldset>
+
+					<h1>Control</h1>
+					<fieldset>
+						<div class="row m-b-xs">
+							<div class="col-lg-7" style="padding: 0 5px;">
+								<div class="form-group">
+									<div class="row m-n">
+										<div class="col-sm-4 diseaseNameSelect" style="padding:0 5px;">
+
+											<!-- <label class="formFild" style="width:calc(100% - 25px);margin-top:10px" for="control_disease_name">Disease Name</label> -->
+										</div>
+										<!-- 	<div class="col-sm-8" style="padding-right:0px;">
+											{% if job %}
+												<input type="text" id="control_disease_name" value="{{ job.disease }}" placeholder="Brain Lower Grade Glioma" class="controlfilter form-control formFild pull-left" data-column-index = "7" style="height:28px;width:calc(100% - 120px);">
+											{% else %}
+												<input type="text" id="control_disease_name" placeholder="Brain Lower Grade Glioma" class="controlfilter form-control formFild pull-left" data-column-index = "7" style="height:28px;width:calc(100% - 120px);">
+											{% endif %}
+										</div> -->
+									</div>
+
+									<div id="controlAddFilter">
+										<a class="controlPlusAddFilter m-l-xs m-r-xs m-t-xs" style="margin-top: 8px !important;">
+											<i class="fa fa-plus-circle" aria-hidden="true"></i>
+										</a>
+									</div>
+
+									<div class="row m-n">
+										<div id="bt" class="col-sm-12" style="padding-right:0px;">
+										<a id="controlrefbt" class="btn btn-blue m-l-xs" href="#" style="float:right;margin-left:1%;"><i class=""></i> Reset</a>
+											<a id="controlbt" class="btn btn-blue m-l-xs" href="#" style="float:right;"><i class="fa fa-filter"></i> Filter Samples</a>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div id="ControlChart" class="col-lg-5">
+							 <div id="ControlChart-loader" style="height:330px;background-color:#eeeeee;display:none;">
+                                    <img src="/static/img/ajax-loader.gif" style="margin: 0 auto;display:block;padding-top:100px;">
+                                </div>
+								<div tabindex="-1" class="border-box-sizing">
+									<div class="" >
+										<div class="output_subarea output_widget_view">
+											<iframe id="ControlChartImg" style="width:100%;height:450px;" src=""></iframe>
+										</div>
+									</div>
+								</div>
+								<input type="button" id="control_refresh" class="btn btn-blue pull-right" value="Refresh Chart">
+							</div>
+						</div>
+						
+						
+						<div class="row">
+							<div class="col-lg-12">
+								<hr>
+								<h3 style="color:#000">Available/Selected Control Samples</h3>
+
+								<table id="controlSample" class="table table-striped table-bordered display nowrap" style="width:100%">
+									<thead>
+										 <tr>
+											<th>More Info</th>
+											<!-- <th></th> -->
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Age</th>
+											<th>Site</th>
+											<th>Gender</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>EGFR</th>
+											<th>IDH1</th>
+											<th>IDH2</th>
+											<th>TP53</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr> 
+									</thead>
+									<tbody></tbody>
+								</table>
+								
+							</div>
+						</div>
+						
+					</fieldset>
+				
+					<h1>Signature</h1>
+					<fieldset>
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-3">
+									<select class="searchBoxSign" id="de_method" name="de_method">
+										<option value="0">Select DE-method</option>
+										<option value="edgeR">edgeR</option>
+										<option value="Limma">Limma</option>
+									</select>
+								</div>
+								<div class="col-sm-9">
+									<div class="form-group pull-left col-sm-4">
+										<label class="col-lg-6 control-label text-right m-t-xs">Adjusted P</label>
+	                                    <div class="col-lg-6">
+	                                    	<input type="text" id="adjP" Placeholder="0.001" class="form-control" style="height:30px;">
+                                    	</div>
+									</div>
+									<div class="form-group pull-left col-sm-4">
+										<label class="col-lg-6 control-label text-right m-t-xs">Fold Change</label>
+	                                    <div class="col-lg-6">
+	                                    	<input type="text" Placeholder="1.5" id="foldchange" class="form-control" style="height:30px;">
+                                    	</div>
+									</div>
+									<div class="form-group pull-left col-sm-4">
+										<a class="btn btn-blue pull-right m-l-xs" href="#" disabled>Advanced</a>
+										<a class="btn btn-blue pull-right m-l-xs" id="job_compute">Compute</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						 <div id="Signature-loader" style="height : 330px;display : none;">
+                                    <img src="/static/img/ajax-loader.gif" style="margin: 15% 10% 10% 48%">
+                          </div>
+						<div id="SignatureDiv">
+							<div class="row">
+								<div class="col-lg-12">
+									<iframe id="signatureImg" style="width:100%;height:740px;" src=""></iframe>
+								</div>
+							</div>
+							<div class="row" id="dz_enricher">  <!--up--> </div>
+						</div>
+
+					</fieldset>
+
+
+					<h1>Drugs</h1>
+					<fieldset class="form-p-3">
+						<div class="drugContainer">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="i-checks pull-left m-t-xs">
+										<label>
+											<input type="radio" name="database" value="lincs_db" checked="checked">
+											<i></i> LINCS database
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<select class="searchBoxDrugs" name="account">
+											<option value="0">Select Database</option>
+											<option value="L1000">L1000</option>
+											<option value="L10002">L1000 2</option>
+											<option value="L10003">L1000 3</option>
+											<option value="L10004">L1000 4</option>
+										</select>
+									</div>
+
+									<div class="col-sm-9">
+										<div class="i-checks pull-left m-t-xs">
+											<label>
+												<input type="checkbox" value="Weight Cell Line" name="weight_cell_line">
+												<i></i> Weight Cell Line
+											</label>
+										</div>
+										<div class="i-checks pull-left m-t-xs m-l-sm">
+											<label>
+												<input type="checkbox" value="Keep Same Lineage" name="keep_lineage">
+												<i></i> Keep Same Lineage
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<input type="text" value="input" class="form-control">
+									</div>
+
+									<div class="col-sm-9">
+										<div class="i-checks pull-left m-t-xs">
+											<label>
+												<input type="checkbox" value=""  name="drugAvailable">
+												<i></i> Drug Clincal Available
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row m-t-xs">
+								<div class="form-group">
+									<label class="col-lg-3 control-label text-right m-t-sm">Max Genes on One Side</label>
+									<div class="col-lg-9">
+										<input type="text" Placeholder="50" id="lin_max_genes" class="form-control" style="width:100px;">
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="drugContainer">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="i-checks pull-left m-t-xs">
+										<label>
+											<input type="radio" name="database" value="cmap_db">
+											<i></i> CMap Database
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group">
+									<label class="col-lg-3 control-label text-right m-t-sm">Max Genes on One Side</label>
+									<div class="col-lg-9">
+										<input type="text" Placeholder="150" id="cmap_max_genes" class="form-control" style="width:100px;">
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+					<!-- <a class="btn btn-primary m-l-xs saveBtn" href="#" style="float:right;">Save</a> -->
+
+					<!--  save Popup  -->
+					<div class="modal inmodal" id="saveInfo" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                        	<div class="modal-content">
+                                <div class="modal-header">
+                                	<h3 class="pull-left">Save Job</h3>
+                                    <button type="button" class="close pull-right" data-dismiss="modal">
+                                    	<span aria-hidden="true">&times;</span>
+                                    	<span class="sr-only">Close</span>
+                                   	</button>
+                                </div>
+								<form id="saveJob" action="{{ url_for('dashboard.save_job', job_id='abc', disease='xyz') }}" method="POST">
+									<div class="modal-body">
+										<div class="form-group">
+											<label>Job Name</label>
+											<input type="text" name="jobName" placeholder="Job Name" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label>Description</label>
+											<textarea name="description" placeholder="Description" class="form-control"></textarea>
+										</div>
+										{% if not g.user %}
+										<div class="form-group">
+											<label>Email id</label>
+											<input type="email" name="email" placeholder="Enter your email" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label>Password</label>
+											<input type="password" name="password" placeholder="password" class="form-control" required>
+										</div>
+										{% endif %}
+										<input type="hidden" id="finishInfo" name="finishInfo" value="false">
+										<input type="hidden" id="next_url" name="next_url" value="false">
+									</div>
+									<div class="modal-footer">
+										<button type="submit" class="btn btn-primary">Save & Proceed</button>
+										<button type="button" class="btn btn-white" id="cancelJob">Don't Save</button>
+										<button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+									</div>
+								</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  save Popup  -->
+
+					<!--  Summary Popup  -->
+					<div class="modal inmodal" id="summaryInfo" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                        	<div class="modal-content">
+                                <div class="modal-header">
+                                	<h3 class="pull-left">Job Summary</h3>
+                                    <button type="button" class="close pull-right" data-dismiss="modal">
+                                    	<span aria-hidden="true">&times;</span>
+                                    	<span class="sr-only">Close</span>
+                                   	</button>
+                                </div>
+                                <div class="modal-body p-xs">
+                                	<div class="row m-n">
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Case</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-up"></i>
+														</a>
+													</div>
+												</div>
+			                            		<div id="caseFilterContainer" class="ibox-content">
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox border-bottom m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Control</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-down"></i>
+														</a>
+													</div>
+												</div>
+			                         			<div id="controlFilterContainer" class="ibox-content">
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox border-bottom m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Signature</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-down"></i>
+														</a>
+													</div>
+												</div>
+			                            	<div id="signatureFilterContainer" class="ibox-content">
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox border-bottom m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Drugs</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-down"></i>
+														</a>
+													</div>
+												</div>
+			                            	<div id="drugsFilterContainer" class="ibox-content">
+
+												</div>
+											</div>
+										</div>
+
+									</div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  save Popup  -->
+
+
+			</div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="{{ url_for('static', filename='js/jquery-3.1.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.sumoselect.js') }}"></script>
+
+
+    <!-- Custom and plugin javascript -->
+    <script src="{{ url_for('static', filename='js/inspinia.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/pace/pace.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/metisMenu/jquery.metisMenu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
+	<!-- Multi Select -->
+    <script src="{{ url_for('static', filename='js/plugins/chosen/chosen.jquery.js') }}"></script>
+    <!-- Steps -->
+    <script src="{{ url_for('static', filename='js/plugins/staps/jquery.steps.js') }}"></script>
+
+    <!-- Jquery Validate -->
+    <script src="{{ url_for('static', filename='js/plugins/validate/jquery.validate.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/plugins/iCheck/icheck.min.js') }}"></script>
+
+     <!--<script src="{{ url_for('static', filename='js/dataTables.buttons.min.js') }}"></script> -->
+
+	<script src="{{ url_for('static', filename='js/cstmJS.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.blockUI.js') }}"></script>
+    <!--<script src="{{ url_for('static', filename='js/clusterChart/embed.js') }}"></script>-->
+    <!--<script src="{{ url_for('static', filename='js/clusterChart/require.js') }}"></script>-->
+	<script data-schema="NewsArticle" type="application/ld+json" src="{{ url_for('static', filename='js/clusterChart/data.json') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/dataTables.tableTools.js') }}"></script> -->
+     <script src="{{ url_for('static', filename='js/dataTables.select.min.js') }}"></script>
+
+
+
+    <script type="">
+    var flag = 0;
+    var site = '';
+		$(document).ready(function(){
+
+			$("#CaseChart").css('display','none');
+			$("#caseSample").hide();
+			$('#saveJob').submit(function() {
+				job_id = $("#job_id")[0].value;
+				if (job_id > 0){
+					disease = $("#case_disease_name").val()
+					this.action = this.action.replace('abc', job_id);
+					this.action = this.action.replace('xyz', disease);
+					return true; // return false to cancel form action
+				} else{
+					alert("Please provide disease name then filter sample and select samples.");
+					return false;
+				}
+
+			});
+
+
+			$('#cancelJob').on('click', function() {
+				location.href = $("#next_url").val();
+			});
+
+			$(".sidebar-click").on("click", function(){
+				job_id = $("#job_id")[0].value;
+				disease = $("#case_disease_name").val()
+				if (job_id > 0 && disease.length > 0){
+					$("#next_url").val($(this).attr('data-info'));
+					$("#saveInfo").modal('show');
+				}
+				else{
+					location.href = $(this).attr('data-info');
+				}
+			});
+
+
+			var caseTable;
+			var controlTable;
+			$.ajax({
+				url: "{{ url_for('api.sampleApi') }}"
+			}).done(function (data) {
+				var content = '';
+				if(data.length > 0){
+					var obj = JSON.parse(data);
+					$.each(obj, function(i, item){
+						content=content + '<tr>'+
+										'<td></td>'+
+										/*'<td align=center><input name="select_all" class="select_all" value=' + item.id + ' type="checkbox"></td>'+*/
+										'<td>'+item.sample_id+'</td>'+
+										'<td>'+item.tissue_type+'</td>'+
+										'<td>'+item.age_in_year+'</td>'+
+										'<td>'+item.site+'</td>'+
+										'<td>'+item.gender+'</td>'+
+										'<td>'+item.metastatic_site+'</td>'+
+										'<td>'+item.cancer+'</td>'+
+										'<td>'+item.egfr+'</td>'+
+										'<td>'+item.idh1+'</td>'+
+										'<td>'+item.idh2+'</td>'+
+										'<td>'+item.tp53+'</td>'+
+										'<td>'+item.tumor_grade+'</td>'+
+										'<td>'+item.tumor_stage+'</td>'+
+										'</tr>';
+					});
+				}
+				$('#caseSample tbody').append(content);
+			/*	$("#caseSample-loader").css("display","none");
+				$("#caseSample-table").css("display","block");*/
+				$("#caseSample").show();
+
+				caseTable = $('#caseSample').DataTable( {
+						"columnDefs": [
+							{
+								"className":"details-control",
+								"orderable":false,
+								"data":null,
+								"defaultContent": '',
+								"width": "10px",
+								targets : 0
+							},
+
+							{
+								"targets": [ 3 ],
+								"visible": false
+							},
+							{
+								"targets": [ 5],
+								"visible": false
+							},
+							{
+								"targets": [ 8 ],
+								"visible": false
+							},
+							{
+								"targets": [ 9 ],
+								"visible": false
+							},{
+								"targets": [ 10 ],
+								"visible": false
+							},
+							{
+								"targets": [ 11 ],
+								"visible": false
+							},
+							{
+								"targets": [ 12 ],
+								"visible": false
+							},
+							{
+								"targets": [ 13 ],
+								"visible": false
+							}
+						],
+						"select": {
+							"style": 'multi',
+							"selector":'td:not(:first-child)',
+						},
+						"columns": [
+							{
+								"className":"details-control",
+								"orderable":false,
+								"data":null,
+								"defaultContent": ''
+							},
+							/*{ "data": "id" },*/
+							{ "data": "sample_id" },
+							{ "data": "tissue_type" },
+							{ "data": "age_in_year" },
+							{ "data": "site" },
+							{ "data": "gender" },
+							{ "data": "metastatic_site" },
+							{ "data": "cancer" },
+							{ "data": "egfr" },
+							{ "data": "idh1" },
+							{ "data": "idh2" },
+							{ "data": "tp53" },
+							{ "data": "tumor_grade" },
+							{ "data": "tumor_stage" }
+						],
+				
+						"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+						ordering : false,
+						searching : true,
+						destroy : true,
+						"autoWidth": false,
+
+					} );
+				$("#caseSample").find('.select-info').css('display','none');
+				$("#caseSample").wrap( "<div style='width:100%; overflow-x:auto;'></div>" );
+				//$("#casebt").trigger('click'); // Comment this because on load disease is not selected.
+
+
+			$.ajax({
+					url: "{{ url_for('api.diseases') }}",
+					type: "GET",
+				}).done(function (result) {
+
+					var array = result.split('"').join('').replace(/[\[\]']+/g,'').split(",");
+					// / var titles = $.map(result, function(_,thingy) { return thingy.title })
+  					$("#case_disease_name").autocomplete({source:array})
+				});
+			});
+
+
+			function loadControlTable(job_id, data){
+				var file_name = data;
+				console.log(job_id)
+				console.log(file_name)
+				$.ajax({
+					url: "{{ url_for('api.controlSampleApi') }}",
+					type: "POST",
+					contentType: 'application/json',
+  					data : JSON.stringify({"file_name": file_name, "job_id": job_id}, null, '\t')
+				}).done(function (result) {
+					if(result.length > 0){
+						var obj = JSON.parse(result);
+						//$("#control_disease_name").val($("#case_disease_name").val())
+						if ($("#control_select_1").length<1){
+							$(".controlPlusAddFilter").trigger('click');
+							$("#control_select_1")[0].sumo.selectItem('Site')
+							site = obj['site'].toUpperCase();
+							site = site.split("-")[0].replace(' ', '')
+							$("#controlcolsm_1 select[name=controlsite]")[0].sumo.selectItem(site);
+							$("#control_row_1").hide();
+						}
+						var content = '';
+						var samples = obj['samples']
+						$.each(samples, function(i, item){
+							content=content + '<tr>'+
+											'<td></td>'+
+											/*'<td align=center><input name="control_select_all" value=' + item.id + ' type="checkbox"></td>'+*/
+											'<td>'+item.sample_id+'</td>'+
+											'<td>'+item.tissue_type+'</td>'+
+											'<td>'+item.age_in_year+'</td>'+
+											'<td>'+item.site+'</td>'+
+											'<td>'+item.gender+'</td>'+
+											'<td>'+item.metastatic_site+'</td>'+
+											'<td>'+item.cancer+'</td>'+
+											'<td>'+item.egfr+'</td>'+
+											'<td>'+item.idh1+'</td>'+
+											'<td>'+item.idh2+'</td>'+
+											'<td>'+item.tp53+'</td>'+
+											'<td>'+item.tumor_grade+'</td>'+
+											'<td>'+item.tumor_stage+'</td>'+
+											'</tr>';
+						});
+					}
+					$('#controlSample tbody').append(content);
+					$("#controlSample-loader").css("display","none");
+					$("#controlSample-table").css("display","block");
+
+
+					controlTable = $('#controlSample').DataTable( {
+							"columnDefs": [
+								{
+									"className":"details-control",
+									"orderable":false,
+									"data":null,
+									"defaultContent": '',
+									"width": "10px",
+									targets : 0
+								},
+								{
+									"targets": [ 3 ],
+									"visible": false
+								},
+								{
+									"targets": [ 5 ],
+									"visible": false
+								},
+								{
+									"targets": [ 8 ],
+									"visible": false
+								},
+								{
+									"targets": [ 9 ],
+									"visible": false
+								},{
+									"targets": [ 10 ],
+									"visible": false
+								},
+								{
+									"targets": [ 11 ],
+									"visible": false
+								},
+								{
+									"targets": [ 12 ],
+									"visible": false
+								},
+								{
+									"targets": [ 13 ],
+									"visible": false
+								}
+							],
+							"select": {
+								"style": 'multi',
+								"selector":'td:not(:first-child)',
+							},
+							"columns": [
+								{
+									"className":"details-control",
+									"orderable":false,
+									"data":null,
+									"defaultContent": ''
+								},
+								/*{ "data": "id" },*/
+								{ "data": "sample_id" },
+								{ "data": "tissue_type" },
+								{ "data": "age_in_year" },
+								{ "data": "site" },
+								{ "data": "gender" },
+								{ "data": "metastatic_site" },
+								{ "data": "cancer" },
+								{ "data": "egfr" },
+								{ "data": "idh1" },
+								{ "data": "idh2" },
+								{ "data": "tp53" },
+								{ "data": "tumor_grade" },
+								{ "data": "tumor_stage" }
+							],
+
+							"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+							ordering : false,
+							searching : true,
+							destroy : true,
+							"autoWidth": false
+						} );
+					$("#controlSample").wrap( "<div style='width:100%; overflow-x:auto;'></div>" );
+
+					var rows = $("#controlSample").dataTable().$('tr', {"filter":"applied"});
+					controlTable.rows(rows).select();
+					$("#control_refresh").trigger('click');
+				   /* controlTable.rows({select: 'applied'}).select();*/
+					/*$( "#control_disease_name" ).autocomplete({
+						source: "{{ url_for('api.diseases') }}",
+						minLength: 2
+					});*/
+
+				});
+
+			}
+			var $stopChanging = false;
+			$("#form").steps({
+				bodyTag: "fieldset",
+				labels: {finish: "Submit"},
+				{% if job and (job.status == 0 or job.status == 1) %}
+					startIndex: 0,
+				{% elif job and (job.status == 2 or job.status == 3) %}
+					startIndex: 1,
+				{% elif job and job.status == 4%}
+					startIndex: 2,
+				{% elif job and job.status == 5%}
+					startIndex: 3,
+				{% else %}
+					startIndex: 0,
+				{% endif %}
+
+				onInit: function (event, currentIndex, newIndex){
+					var saveA = $("<a>").attr("href","#").text("Save");
+					saveA.on('click', function(){
+						job_id = $("#job_id")[0].value;
+						disease = $("#case_disease_name").val()
+						if (job_id > 0 && disease.length > 0){
+							$("#saveInfo").modal('show');
+							alert($(this).attr('data-info'));
+						}
+						else{
+							alert("Please provide disease name then filter sample and select samples.");
+						}
+					});
+					var saveBtn = $("<li>").attr("aria-disabled",false).append(saveA);
+					$(document).find(".actions ul").prepend(saveBtn);
+
+					// summary Button
+					var summaryA = $("<a>").attr("href","#").attr("data-toggle","modal").attr("data-target","#summaryInfo").attr("id","summaryBtn").text("Summary");
+					var summaryBtn = $("<li>").attr("aria-disabled",false).append(summaryA);
+					$(document).find(".actions ul").prepend(summaryBtn)
+
+				},
+
+				onStepChanging: function (event, currentIndex, newIndex){
+					$stopChanging = false;
+					console.log(event, currentIndex, newIndex)
+					if ($stopChanging) {
+						return true;
+					} else {
+						if (newIndex == 0){
+
+						} else if (newIndex == 1){
+							disease_name = $("#case_disease_name")[0].value.trim();
+							job_id = $("#job_id")[0].value;
+							if (disease_name.length>0 && (job_id != undefined || job_id != '' )){
+							 $.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> <span style="color:black;">Filtering control samples....</span>' });
+								var url = "/job/case/" + job_id + "/" + disease_name
+								$.ajax({
+									url: url,
+									//async: false
+								}).done(function (data) {
+									/* $.unblockUI(); */
+									$.unblockUI();
+									if (data == "fail"){
+										$("#form").steps("previous");
+									}else{
+										$stopChanging = true;
+										loadControlTable(job_id, data)
+            						}
+								}).fail(function (jqXHR, textStatus) {
+									 $.unblockUI();
+									$("#form").steps("previous");
+								});
+							} else{
+								if(disease_name.length==0)
+									alert("Please select disease name")
+								else if(job_id != undefined || job_id != '')
+									alert("Please select samples")
+								$("#form").steps("previous");
+								return false;
+							}
+						} else if (newIndex == 2){
+							$stopChanging = true;
+            			} else if (newIndex == 3){
+							$stopChanging = true;
+            			}
+					}
+
+
+					var form = $(this);
+
+					// Clean up if user went backward before
+					if (currentIndex < newIndex){
+						// To remove error styles
+						$(".body:eq(" + newIndex + ") label.error", form).remove();
+						$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+					}
+
+					// Disable validation on fields that are disabled or hidden.
+					form.validate().settings.ignore = ":disabled,:hidden";
+					// Start validation; Prevent going forward if false
+					return form.valid();
+				},
+				onContentLoaded: function (event, currentIndex) {
+					$stopChanging = false;
+			   	},
+				onFinishing: function (event, currentIndex){
+					//Not checking any form validation directly calling onFinished event
+					$('#saveInfo').modal('show');
+					$('#finishInfo').val('true');
+					//return true;
+				},
+				
+				onFinished: function (event, currentIndex){
+					//var form = $(this);
+					// Submit form input
+					//form.submit();
+				}
+			}).validate({
+				errorPlacement: function (error, element){
+					element.before(error);
+				},
+				rules: {
+					confirm: {
+						equalTo: "#password"
+					}
+				}
+			});
+
+			//CASE JS===================================================================================================
+			caseForm();
+			controlForm();
+
+			function caseForm(){
+
+				$(".casePlusAddFilter").on('click', function(){
+					var child_count = $("#caseAddFilter").children("div .row").length
+					var row_id = child_count+1
+					$("#caseAddFilter").append('<div id="crow_'+row_id+'" class="row m-n"><div class="form-group">'+
+							'<div class="col-lg-4 ui-widget" style="padding-left:5px;">'+
+								'<a href="#" id="case_row_'+row_id+'" class="caseMinusRemoveFilter m-l-xs m-r-xs m-t-xs" style="margin-top:3px !important;">'+
+									'<i class="fa fa-minus-circle" aria-hidden="true"></i>'+
+								'</a>'+
+								'<select id="case_select_'+row_id+'" class="search-box" name="feature" style="height:28px;float:left;">'+  // select2_demo_3
+									'<option>Select feature</option>'+
+									'{% for k, v in features.iteritems() %}<option value="{{ v }}">{{v}}</option>{% endfor %}'+
+								'</select>'+
+							'</div>'+
+							'<div id="casecolsm_'+row_id+'" class="col-lg-8" style="padding-right:0;"></div>'+
+						'</div>'
+					);
+
+
+					$('.search-box').SumoSelect({search: true, searchText:'Enter here.' });
+
+				});
+
+				$(document).on('click','.caseMinusRemoveFilter',function(){
+					row_id = this.id.split('_')[2];
+					div_obj = $(this).parents('div#crow_'+row_id+'.row')
+					if (div_obj.length>0){
+						div_obj.remove();
+					}
+					//$("#casebt").trigger('click')
+				});
+
+
+
+				$(document).on('change', '.search-box', function(){
+					//console.log(this.value + "change input" + this.id);
+					feature_val = this.value;
+					render(this.id,feature_val);
+				});
+
+				function render(idd,feature_val){
+
+					//console.log(this.value + "change input" + this.id);
+					row_id=idd.split('_')[2];
+
+					$("#casecolsm_" + row_id).html("");
+					//console.log("called wth id " + idd + " value as " + feature_val);
+					data = '';
+					if (feature_val == "Tissue Type" || feature_val == 1){
+						data = '<div class="i-checks pull-left">'+
+									'<label>'+
+										'<input type="checkbox"  name="caseType" value="Primary" checked="" class="casefilter" data-column-index="2">'+
+										'<i></i> Primary'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="checkbox" name="caseType" value="Adjacent" class="casefilter" data-column-index="2">'+
+										'<i></i> Adjacent'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="checkbox" name="caseType" value="Normal" class="casefilter" data-column-index="2">'+
+										'<i></i> Normal'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="checkbox" name="caseType" class="casefilter" value="Metastatic" data-column-index="2">'+
+										'<i></i> Metastatic'+
+									'</label>'+
+								'</div>'
+					}else if (feature_val == "Site" || feature_val == 2){
+						data = '<select class="casefilter search-box" name="site" data-column-index="4">'+ // select2_demo_3
+							   '<option>Select Site</option>'+
+							   '{% for s in sites %}<option value="{{ s }}">{{s}}</option>{% endfor %}'+
+							   '</select>'
+					}else if (feature_val == "Gender" || feature_val == 3){
+						data = '<div class="i-checks pull-left">'+
+									'<label>'+
+										'<input type="radio" name="casegender" value="male" style="display:inline;margin-right:7px;" class="casefilter" data-column-index="5">'+
+										'Male'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="radio" name="casegender" value="female" checked="" style="display:inline;margin-right: 7px;" class="casefilter" data-column-index="5">'+
+										'Female'+
+									'</label>'+
+								'</div>'
+					}else if (feature_val == "Metastatic Site" || feature_val == 4){
+						data = '<select class="casefilter search-box" name="metastatic" data-column-index="6">'+ // select2_demo_3
+							   '<option>Select Metastatics</option>'+
+							   '{% for m in metastatics %}<option value="{{ m }}">{{m}}</option>{% endfor %}'+
+							   '</select>'
+					}else if (feature_val == "EGFR" || feature_val == 5){
+					data = '<label><input type="checkbox" class="casefilter js-switch" value="1" checked data-column-index="8" /><i></i></label>'
+				}else if (feature_val == "IDH1" || feature_val == 6){
+					data = '<label><input type="checkbox" class="casefilter js-switch" value="1" data-column-index="9" /><i></i></label>'
+				}else if (feature_val == "IDH2" || feature_val == 7){
+					data = '<label><input type="checkbox" class="casefilter js-switch" value="1" data-column-index="10" /><i></i></label>'
+				}else if (feature_val == "TP53" || feature_val == 8){
+						data = '<label><input type="checkbox" class="casefilter js-switch" value="1" data-column-index="11" /><i></i></label>'
+					}else if (feature_val == "Age" || feature_val == 9){
+
+						data = 	'<input type="text" id="caseAgeDisplay" class="casefilter ageDisplayInput m-t-xs" readonly>'+
+								'<div id="caseAgeSlider" class="ageSliderDiv m-t-sm"></div>'
+
+					}else if (feature_val == "Tumor Grade" || feature_val == 10){
+						data = '<select class="casefilter search-box" name="tumor_grade" data-column-index="12">'+  // select2_demo_3
+							   '<option>Select Grade</option>'+
+							   '{% for g in grades %}<option value="{{ g }}">{{g}}</option>{% endfor %}'+
+							   '</select>'
+					}else if (feature_val == "Tumor Stage" || feature_val == 11){
+						data = '<select placeholder="Hello i m from placeholder" class="search-box" multiple="multiple"  name= "tumorstage" tabindex="4" data-column-index="13">' +
+									'{% for st in stages %}'+
+									'<option value={{st}}>{{st}}</option>'+
+									'{% endfor %}' +
+								'</select>'
+					}
+
+					$("#casecolsm_" + row_id).append(data);
+				   	$(".search-box").SumoSelect({search: true, searchText: 'Enter here.'});
+
+
+
+				   	$("input[type='radio']").checkboxradio();
+					$("fieldset[type='radio']").controlgroup();
+
+					// age slider code --------------
+					$( function() {
+						$( "#caseAgeSlider" ).slider({
+							range: true,
+							min: 1,
+							max: 100,
+							values: [ 20, 60 ],
+							slide: function( event, ui ) {
+								$("#caseAgeDisplay").val(
+									ui.values[ 0 ] + " - " +
+									ui.values[ 1 ]
+								);
+							}
+						});
+
+						$("#caseAgeDisplay").val(
+							$("#caseAgeSlider").slider("values",0) + " - " +
+							$("#caseAgeSlider").slider("values",1)
+						);
+					});
+				// age slider code --------------
+				}
+
+
+
+				$("#summaryBtn").click(function(){
+
+					var selectTags = $("select[name='feature']")
+					var controlselectTags = $("select[name='cfeature']")
+					$("#caseFilterContainer").html('');
+					$("#controlFilterContainer").html('');
+					$("#signatureFilterContainer").html('');
+					$("#drugsFilterContainer").html('');
+					 var str = '';
+					 var cstr = '';
+
+					 str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Disease Name</label><label class="col-lg-8"><b>'+$("#case_disease_name").val()+'</b></label></div>';
+
+					$.each(selectTags, function(index){
+						filterSelectVal = selectTags[index].value
+						id = selectTags[index].id
+						row_id = id.split('_')[2];
+
+
+					 if(filterSelectVal == 'Tissue Type')
+					{
+					 var ctype = [];
+					 $.each($("input[name='caseType']:checked"), function(){
+					                ctype.push($(this).val());
+					          });
+				  		str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+ctype.toString()+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'Site')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="site"]').val()+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'Gender')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('input[name=casegender]:checked').val()+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'Metastatic Site')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="metastatic"]').val()+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'EGFR')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#casecolsm_5").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'IDH1')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#casecolsm_6").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'IDH2')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#casecolsm_7").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'TP53')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#casecolsm_8").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+						else if(filterSelectVal == 'Age')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#caseAgeDisplay").val()+'</b></label></div>';
+					}
+
+					else if(filterSelectVal == 'Tumor Grade')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="tumor_grade"]').val()+'</b></label></div>';
+					}
+					else if(filterSelectVal == 'Tumor Stage')
+					{
+
+			  			  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="tumorstage"]').val()+'</b></label></div>';
+					}
+					})
+					$("#caseFilterContainer").append(str);
+
+					$.each(controlselectTags, function(index){
+						cfilterSelectVal = controlselectTags[index].value
+						id = controlselectTags[index].id
+						row_id = id.split('_')[2];
+
+					if(cfilterSelectVal == 'Tissue Type')
+					{
+					 var ctype = [];
+					 $.each($("input[name='controlType']:checked"), function(){
+					                ctype.push($(this).val());
+					         });
+				  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+ctype.toString()+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'Site')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="controlsite"]').val()+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'Gender')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('input[name=controlgender]:checked').val()+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'Metastatic Site')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="control_metastatic"]').val()+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'EGFR')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#controlcolsm_6").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'IDH1')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#controlcolsm_7").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'IDH2')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#controlcolsm_8").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'TP53')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#controlcolsm_9").find(("input[type='checkbox']")).is(':checked')+'</b></label></div>';
+					}
+						else if(cfilterSelectVal == 'Age')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#controlAgeDisplay").val()+'</b></label></div>';
+					}
+
+					else if(cfilterSelectVal == 'Tumor Grade')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="control_tumor_grade"]').val()+'</b></label></div>';
+					}
+					else if(cfilterSelectVal == 'Tumor Stage')
+					{
+
+			  			  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="controltumorstage"]').val()+'</b></label></div>';
+					}
+					})
+				$("#controlFilterContainer").append(cstr);
+
+
+				var sigstr = '';
+				if($("#de_method").val() != "0")
+					sigstr = sigstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">DE method</label><label class="col-lg-8"><b>'+$("#de_method").val()+'</b></label></div>';
+
+				if($("#adjP").val() != "")
+					sigstr = sigstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Adjusted P</label><label class="col-lg-8"><b>'+$("#adjP").val()+'</b></label></div>';
+				if($("#foldchange").val() != "")
+					sigstr = sigstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Fold Change</label><label class="col-lg-8"><b>'+$("#foldchange").val()+'</b></label></div>';
+
+				$("#signatureFilterContainer").append(sigstr);
+
+				var sstr= '';
+				var dbselectde = $('input[name=database]:checked').val();
+				if(dbselectde == 'lincs_db')
+				{
+					if($('select[name="account"]').val() != "0")
+						sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Account</label><label class="col-lg-8"><b>'+$('select[name="account"]').val()+'</b></label></div>';
+
+					if($("input[name='weight_cell_line']").is(':checked'))
+						sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Weight Cell Line</label><label class="col-lg-8"><b>'+$("input[name='weight_cell_line']").is(':checked')+'</b></label></div>';
+
+					if($("input[name='keep_lineage']").is(':checked'))
+						sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Keep Same Lineage</label><label class="col-lg-8"><b>'+$("input[name='keep_lineage']").is(':checked')+'</b></label></div>';
+
+					if($("input[name='drugAvailable']").is(':checked'))
+ 						sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Drug Clincal Available</label><label class="col-lg-8"><b>'+$("input[name='drugAvailable']").is(':checked')+'</b></label></div>';
+
+					if($("#lin_max_genes").val() != "")
+ 						sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Max Genes on One Side</label><label class="col-lg-8"><b>'+$("#lin_max_genes").val()+'</b></label></div>';
+
+				}
+
+				else
+				{
+					if($("#cmap_max_genes").val() != "")
+						sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Max Genes on One Side</label><label class="col-lg-8"><b>'+$("#cmap_max_genes").val()+'</b></label></div>';
+				}
+				$("#drugsFilterContainer").append(sstr);
+
+
+			})
+
+
+			};//FINISH CASE JS===================================================================================================
+
+
+			//CONTROL JS===================================================================================================
+			function controlForm(){
+
+				$(".controlPlusAddFilter").on('click', function(){
+					var child_count = $("#controlAddFilter").children("div .row").length
+					var row_id = child_count+1
+					$("#controlAddFilter").append('<div id="cnrow_'+row_id+'" class="row m-n"><div class="form-group">'+
+							'<div class="col-lg-4 ui-widget" style="padding-left:5px;">'+
+								'<a href="#" id="control_row_'+row_id+'" class="controlMinusRemoveFilter m-l-xs m-r-xs m-t-xs" style="margin-top: 3px !important;">'+
+									'<i class="fa fa-minus-circle" aria-hidden="true"></i>'+
+								'</a>'+
+								'<select id="control_select_'+row_id+'" class="controlfeature search-boxControl" name="cfeature" style="height:28px;float:left;">'+  // select2_demo_3
+									'<option>Select feature</option>'+
+									'{% for k, v in features.iteritems() %}<option value="{{ v }}">{{v}}</option>{% endfor %}'+
+								'</select>'+
+							'</div>'+
+							'<div id="controlcolsm_'+row_id+'" class="col-lg-8" style="padding-right:0;"></div>'+
+						'</div></div>'
+					);
+
+					$('.search-boxControl').SumoSelect({search: true, searchText:'Enter here.' });
+
+				});
+
+				$(document).on('click','.controlMinusRemoveFilter',function(){
+					row_id = this.id.split('_')[2];
+					div_obj = $(this).parents('div#cnrow_'+row_id+'.row')
+					if (div_obj.length>0){
+						div_obj.remove();
+					}
+				});
+
+				$(document).on('change', '.search-boxControl', function(){
+					//console.log(this.value + "change input New" + this.id);
+					feature_val = this.value;
+					rendernew(this.id,feature_val);
+				});
+
+
+				function rendernew(iddnew,feature_val){
+
+					//console.log(this.value + "change input" + this.id);
+					row_id = iddnew.split('_')[2];
+					//row_id=iddnew;
+					//feature_val = this.value;
+
+					$("#controlcolsm_" + row_id).html("");
+					data = '';
+					if (feature_val == "Tissue Type" || feature_val == 1){
+						data = '<div class="i-checks pull-left">'+
+									'<label>'+
+										'<input type="checkbox" name = "controlType" group="controlType" value="Primary" checked="" class="controlfilter" data-column-index="2">'+
+										'<i></i> Primary'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="checkbox" name = "controlType"  group="controlType" value="Adjacent" checked="" class="controlfilter" data-column-index="2">'+
+										'<i></i> Adjacent'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="checkbox" name = "controlType" group="controlType" value="Normal" checked="" class="controlfilter" data-column-index="2">'+
+										'<i></i> Normal'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="checkbox" name = "controlType" group="controlType" value="Metastatic" checked="" class="controlfilter" data-column-index="2">'+
+										'<i></i> Metastatic'+
+									'</label>'+
+								'</div>'
+					}else if (feature_val == "Site" || feature_val == 2){
+						data = '<select class="controlfilter search-boxControl" name="controlsite" data-column-index="4">'+ // select2_demo_3
+							   '<option>Select Site</option>'+
+							   '{% for s in sites %}<option value="{{ s }}">{{s}}</option>{% endfor %}'+
+							   '</select>'
+					}else if (feature_val == "Gender" || feature_val == 3){
+						data = '<div class="i-checks pull-left">'+
+									'<label>'+
+										'<input type="radio" name="controlgender" value="male" style="display:inline;margin-right:7px;" class="controlfilter">'+
+										'Male'+
+									'</label>'+
+								'</div>'+
+								'<div class="i-checks pull-left m-l-sm">'+
+									'<label>'+
+										'<input type="radio" name="controlgender" value="female" style="display:inline;margin-right:7px;" class="controlfilter" checked="">'+
+										'Female'+
+									'</label>'+
+								'</div>'
+					}else if (feature_val == "Metastatic Site" || feature_val == 4){
+						data = '<select class="controlfilter search-boxControl" name="control_metastatic" data-column-index="6">'+ // select2_demo_3
+							   '<option>Select Metastatics</option>'+
+							   '{% for m in metastatics %}<option value="{{ m }}">{{m}}</option>{% endfor %}'+
+							   '</select>'
+					}else if (feature_val == "EGFR" || feature_val == 5){
+					data = '<label><input type="checkbox" class="controlfilter js-switch" value="1" checked data-column-index="8" /><i></i></label>'
+				}else if (feature_val == "IDH1" || feature_val == 6){
+					data = '<label><input type="checkbox" class="controlfilter js-switch" value="1" data-column-index="9" /><i></i></label>'
+				}else if (feature_val == "IDH2" || feature_val == 7){
+					data = '<label><input type="checkbox" class="controlfilter js-switch" value="1" data-column-index="10" /><i></i></label>'
+				}else if (feature_val == "TP53" || feature_val == 8){
+						data = '<label><input type="checkbox" class="controlfilter js-switch" value="1" data-column-index="11" /><i></i></label>'
+					}else if (feature_val == "Age" || feature_val == 9){
+
+						data = 	'<input type="text" id="controlAgeDisplay" class="controlfilter ageDisplayInput m-t-xs" readonly>'+
+								'<div id="controlAgeSlider" class="ageSliderDiv m-t-sm"></div>'
+
+					}else if (feature_val == "Tumor Grade" || feature_val == 10){
+						data = '<select class="controlfilter search-boxControl" name="control_tumor_grade" data-column-index="12">'+  // select2_demo_3
+							   '<option>Select Grade</option>'+
+							   '{% for g in grades %}<option value="{{ g }}">{{g}}</option>{% endfor %}'+
+							   '</select>'
+					}else if (feature_val == "Tumor Stage" || feature_val == 11){
+						data = '<select placeholder="Hello i m from placeholder" class="search-boxControl" name="controltumorstage" multiple="multiple"  tabindex="4" data-column-index="13">' +
+									'{% for st in stages %}'+
+									'<option value={{st}}>{{st}}</option>'+
+									'{% endfor %}' +
+								'</select>'
+					}
+
+
+					$("#controlcolsm_" + row_id).append(data);
+					$(".search-boxControl").SumoSelect({search: true, searchText: 'Enter here.'});
+
+					$("input[type='radio']").checkboxradio();
+					$("fieldset[type='radio']").controlgroup();
+
+
+					// age slider code --------------
+					$( function() {
+						$( "#controlAgeSlider" ).slider({
+							range: true,
+							min: 1,
+							max: 100,
+							values: [ 20, 60 ],
+							slide: function( event, ui ) {
+								$("#controlAgeDisplay").val(
+									ui.values[ 0 ] + " - " +
+									ui.values[ 1 ]
+								);
+							}
+						});
+
+						$("#controlAgeDisplay").val(
+							$("#controlAgeSlider").slider("values",0) + " - " +
+							$("#controlAgeSlider").slider("values",1)
+						);
+					});
+					// age slider code --------------
+
+				};
+
+			}//FINISH CONTROL JS===================================================================================================
+
+            // Add event listener for opening and closing details
+            $('#caseSample tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = caseTable.row( tr );
+
+                if(row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }else {
+                    // Open this row
+                    row.child( format2(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            });
+
+
+            	var casecount = 0;
+
+            /*  $('#caseSample tbody').on( 'click', 'tr', function () {
+
+
+              	var table = $('#caseSample').DataTable();
+			       if ( $(this).hasClass('selected') ) {
+			        	if(casecount != 0)
+			        		casecount = casecount - 1;
+			            $(this).removeClass('selected');
+			           $(this).find('[type=checkbox]').prop('checked', false);
+			        }
+			        else {
+			           // table.$('tr.selected').removeClass('selected');
+			            casecount = casecount + 1;
+			            $(this).addClass('selected');
+			         $(this).find('[type=checkbox]').prop('checked', true);
+			        }
+
+			    } );*/
+
+         	// ---- Add Child Row Table -------------------------------
+			
+            // Add event listener for opening and closing details
+            $('#controlSample tbody').on('click', 'td.details-control', function () {
+				//alert("calsled");
+                var tr = $(this).closest('tr');
+                var row1 = controlTable.row( tr );
+
+                if(row1.child.isShown()) {
+                    // This row is already open - close it
+                    row1.child.hide();
+                    tr.removeClass('shown');
+                }else {
+                    // Open this row
+                    row1.child( format2(row1.data()) ).show();
+                    tr.addClass('shown');
+                }
+            });
+
+              $('#controlSample tbody').on( 'click', 'tr', function () {
+              	var table = $('#controlSample').DataTable();
+			        if ( $(this).hasClass('selected') ) {
+			            $(this).removeClass('selected');
+			            $(this).find('[type=checkbox]').prop('checked', false);
+			        }
+			        else {
+			           // table.$('tr.selected').removeClass('selected');
+			            $(this).addClass('selected');
+			            $(this).find('[type=checkbox]').prop('checked', true);
+			        }
+			    } );
+
+            $(".searchBoxSign").SumoSelect({search: true, searchText: 'Enter here.'});
+			$(".searchBoxDrugs").SumoSelect({search: true, searchText: 'Enter here.'});
+
+            $("#saveJob").validate();
+
+			// FILTER Samples for case and control===================================================
+
+
+			$("#casebt").on('click', function(){
+
+				$("#caseFilterDiv").removeClass("col-lg-12").addClass("col-lg-7");
+
+				  caseTable = $('#caseSample').DataTable();
+				  $('#caseSample tbody tr').removeClass('selected');
+				$("#caseSample").hide();
+				//caseTable.clear();
+				caseTable.columns().search('')
+				$('.casefilter').each(function(){
+					if ($(this).data('columnIndex') == 2 && this.checked){
+						caseTable.columns(2).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 3){
+						caseTable.columns(3).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 4){
+						caseTable.columns(4).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 5){
+						caseTable.columns(5).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 6){
+						caseTable.columns(6).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 7){
+						caseTable.columns(7).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 8){
+						if (this.checked){
+							caseTable.columns(8).search(1);
+						} else{
+							caseTable.columns(8).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 9){
+						if (this.checked){
+							caseTable.columns(9).search(1);
+						} else{
+							caseTable.columns(9).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 10){
+						if (this.checked){
+							caseTable.columns(10).search(1);
+						} else{
+
+							caseTable.columns(10).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 11){
+						if (this.checked){
+							caseTable.columns(11).search(1);
+						} else{
+							caseTable.columns(11).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 12){
+						caseTable.columns(12).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 13){
+						caseTable.columns(13).search(this.value);
+					}
+
+				});
+
+				//var rows = $("#caseSample").DataTable().rows().data();
+				caseTable.rows({ selected: true } ).deselect();
+				caseTable.draw();
+				$("#caseSample").show();
+				var filtered_rows = $("#caseSample").dataTable().$('tr', {"filter":"applied"});
+				$("#caseSample").find('.select-info').css('display','none');
+				caseTable.rows(filtered_rows).select();
+				flag = 1;
+
+				if(filtered_rows.length > 0)
+					{$("#case_refresh").trigger('click');
+					$("#CaseChart").css('display','block');
+					}
+
+				else
+					{$("#CaseChartImg").attr('src', 'about:blank');
+					$("#caseSample_info").find('.select-info').hide();}
+			});
+		$("#caserefbt").on('click', function(){
+				//e.preventDefault();
+				var divids = $("div[id^='crow_']");
+				if(divids.length > 0)
+				{
+					for(var i =1;i<=divids.length;i++)
+					{
+							$("#crow_"+i).remove();
+					}
+				}
+				$("#case_disease_name").val('');
+				caseTable = $('#caseSample').DataTable();
+				$('#caseSample tbody tr').removeClass('selected');
+				caseTable.columns().search('');
+				caseTable.rows({ selected: true } ).deselect();
+				caseTable.draw();
+				$("#CaseChart").hide();
+			})
+
+		$("#controlrefbt").on('click', function(){
+				//e.preventDefault();
+				var divids = $("div[id^='cnrow_']");
+				if(divids.length > 0)
+				{
+					for(var i =2;i<=divids.length;i++)
+					{
+							$("#cnrow_"+i).remove();
+					}
+				}
+				/*controlTable = $('#controlSample').DataTable();
+				$('#controlSample tbody tr').removeClass('selected');
+				controlTable.columns().search('');
+				controlTable.rows({ selected: true } ).deselect();
+				controlTable.draw();*/
+				site = site.split("-")[0].replace(' ', '')
+				$("#controlcolsm_1 select[name=controlsite]")[0].sumo.selectItem(site);
+			})
+
+			$("#controlbt").on('click', function(){
+				controlTable = $('#controlSample').DataTable();
+				 $('#controlSample tbody tr').removeClass('selected');
+				controlTable.search('');
+				$('.controlfilter').each(function(){
+				if(this.value.trim() == ""){}
+				else{
+					if(this.value.length){
+					  controlTable.columns($(this).data('columnIndex')).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 2 && this.checked){
+						controlTable.columns(2).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 3){
+						controlTable.columns(3).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 4){
+						controlTable.columns(4).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 5){
+						controlTable.columns(5).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 6){
+						controlTable.columns(6).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 7){
+						controlTable.columns(7).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 8){
+						if (this.checked){
+							controlTable.columns(8).search(1);
+						} else{
+							controlTable.columns(8).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 9){
+						if (this.checked){
+							controlTable.columns(9).search(1);
+						} else{
+							controlTable.columns(9).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 10){
+						if (this.checked){
+							controlTable.columns(10).search(1);
+						} else{
+
+							controlTable.columns(10).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 11){
+						if (this.checked){
+							controlTable.columns(11).search(1);
+						} else{
+							controlTable.columns(11).search(0);
+						}
+					}
+					if ($(this).data('columnIndex') == 12){
+						controlTable.columns(12).search(this.value);
+					}
+					if ($(this).data('columnIndex') == 13){
+						controlTable.columns(13).search(this.value);
+					}
+				 }
+				});
+
+				controlTable.rows({ selected: true } ).deselect();
+				controlTable.draw();
+
+				var rows = $("#controlSample").dataTable().$('tr', {"filter":"applied"});
+				$("#controlSample").find('.select-info').css('display','none');
+				controlTable.rows(rows).select();
+
+				if(rows.length > 0)
+					//Calling refresh button
+					$("#control_refresh").trigger('click');
+				else
+					//$("#ControlChartImg").attr('src', 'about:blank')
+					{$("#ControlChartImg").hide();$("#control_refresh").hide();}
+
+			});
+
+
+			$( "#caseSample_filter.dataTables_filter input" ).on( 'keyup change',function() {
+			   //clear column search values
+				caseTable.columns().search('');
+			   //clear input values
+			   $('.casefilter').val('');
+			   $('.select-info').css('display','none');
+			});
+
+			$("#case_refresh").on('click', function(){
+				// call visualization of chart
+				$("#case_refresh").hide();
+				$("#CaseChartImg").hide();
+				$("#CaseChart-loader").show();
+				var case_ids =0;
+				var rows = $("#caseSample").dataTable().$('tr', {"filter":"applied"});
+				if(rows.length > 0)
+					 case_ids = caseTable.rows(rows).data();
+				/*var case_ids = $('#caseSample').DataTable().rows( { selected: true }).data();*/
+
+				if (case_ids.length>0){
+						/* $.blockUI({ message: '<div class="full-width"><img src="/static/img/block-loading.gif" /></div> <span style="color:black;">Filtering case samples & preparing visualization..</span>' });*/
+					case_str = ''
+					for (var i=0; i < case_ids.length ;i++){
+						case_str = case_str + case_ids[i]['sample_id'] + ','
+					}
+					var caseurl = "/job/case/visualization";
+					var job_id = $("#job_id")[0].value;
+					$.ajax({
+						url: caseurl,
+						type: "POST",
+						contentType: 'application/json',
+						data : JSON.stringify({"case_id": case_str, "job_id": job_id}, null, '\t'),
+						dataType:'json'
+					}).done(function (data) {
+						$("#case_refresh").show();
+						$("#CaseChartImg").show();
+						$("#CaseChart-loader").hide();
+						//$.unblockUI();
+						if (data[1] == "fail"){
+							$("#form").steps("previous");
+						}else{
+							$stopChanging = true;
+							$("#CaseChartImg").attr('src',  data[1])
+							$("#job_id").val(data[0])
+						}
+					}).fail(function (jqXHR, textStatus) {
+						$("#CaseChart-loader").hide();
+						//$.unblockUI();
+						$("#form").steps("previous");
+					});
+				}
+				else{
+					$("#CaseChartImg").attr('src', 'about:blank')
+					alert("Please select samples");
+				}
+					$('.select-info').css('display','none');
+			});
+
+			$("#control_refresh").on('click', function(){
+				$("#ControlChart-loader").show();
+				$("#control_refresh").hide();
+				$("#ControlChartImg").hide();
+				var control_ids = 0;
+				var rows = $("#controlSample").dataTable().$('tr', {"filter":"applied"});
+				control_ids = controlTable.rows(rows).data();
+
+				// call visualization of chart
+			/*	var control_ids = $('#controlSample').DataTable().rows( { selected: true }).data();*/
+				if (control_ids.length>0){
+					/* $.blockUI({ message: '<div class="full-width"><img src="/static/img/block-loading.gif" /> </div><span style="color:black;">Preparing control samples visualization..</span>' });*/
+					control_str = ''
+					for (var i=0; i < control_ids.length ;i++){
+						control_str = control_str + control_ids[i]['sample_id'] + ','
+					}
+					var controlurl = "/job/control/visualization";
+					var job_id = $("#job_id")[0].value;
+					$.ajax({
+						url: controlurl,
+						type: "POST",
+						contentType: 'application/json',
+						data : JSON.stringify({"control_id": control_str, "job_id": job_id}, null, '\t'),
+						dataType:'json'
+					}).done(function (data) {
+						$("#ControlChart-loader").hide();
+						$("#control_refresh").show();
+						$("#ControlChartImg").show();
+						// $.unblockUI();
+						if (data == "fail"){
+							$("#form").steps("previous");
+						}else{
+							$stopChanging = true;
+							$("#ControlChartImg").attr("src", data)
+						}
+					}).fail(function (jqXHR, textStatus) {
+						$("#ControlChart-loader").hide();
+						// $.unblockUI();
+						$("#form").steps("previous");
+					});
+				}
+				else{
+					$("#ControlChartImg").hide();
+					//$("#ControlChartImg").attr('src', 'about:blank')
+					alert("Please select samples");
+				}
+			});
+
+
+			$("#job_compute").on('click', function(){
+
+
+				// call visualization of chart
+				var de_method = $('#de_method option:selected')[0].value;
+				if(de_method == "0"){alert("Please select DE-method")}
+				else
+				{
+				$("#SignatureDiv").hide();
+				$("#Signature-loader").show();
+				if (de_method.length>0){
+					/* $.blockUI({ message: '<div class="full-width"><img src="/static/img/block-loading.gif" /></div> <span style="color:black;">Computing disease signature, it might take couple of minutes..</span> ' });*/
+					var computeurl = "/job/compute";
+					var job_id = $("#job_id")[0].value;
+					$.ajax({
+						url: computeurl,
+						type: "POST",
+						contentType: 'application/json',
+						data : JSON.stringify({"de_method": de_method, "job_id": job_id}, null, '\t'),
+						dataType:'json'
+					}).done(function (data) {
+						// $.unblockUI();
+						if (data == "fail"){
+							$("#Signature-loader").hide();
+							alert("Please try again")
+						}else{
+							$stopChanging = true;
+							$("#SignatureDiv").show();
+							$("#Signature-loader").hide();
+							$("#signatureImg").attr('src', data['signature'])
+							enricher_data = data['enricher'];
+							if (enricher_data.length){
+								innerdata = ''
+								for (var i = 0;i<enricher_data.length; i++){
+									innerdata = innerdata + '<div class="col-lg-4"><iframe height="360px" src="'+ enricher_data[i] +'"></iframe></div>'
+								}
+								$("#dz_enricher").html(innerdata)
+							}
+						}
+					}).fail(function (jqXHR, textStatus) {
+					//	 $.unblockUI();
+						$("#Signature-loader").hide();
+						alert("Please try again")
+					});
+				}
+				else{
+					$("#Signature-loader").hide();
+					alert("Please try again")
+				}
+			}
+			});
+
+		}); // End Document ready
+
+
+		// ---- Add Child Row Table -------------------------------
+		/* Formatting function for row details - modify as you need */
+		function format ( d ) {
+		    // `d` is the original data object for the row
+		    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+		        '<tr>'+
+		            '<td>Full name:</td>'+
+		            '<td>'+d.name+'</td>'+
+		        '</tr>'+
+		        '<tr>'+
+		            '<td>Extension number:</td>'+
+		            '<td>'+d.extn+'</td>'+
+		        '</tr>'+
+		        '<tr>'+
+		            '<td>Extra info:</td>'+
+		            '<td>And any further details here (images etc)...</td>'+
+		        '</tr>'+
+		    '</table>';
+		}
+		// ---- Add Child Row Table -------------------------------
+
+		function format2 ( d ) {
+				return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+					'<tr>'+
+						'<td style="font-weight:bold">Gender:</td>'+
+						'<td>'+d.gender+'</td>'+
+						'<td style="font-weight:bold">Age:</td>'+
+						'<td>'+d.age_in_year+'</td>'+
+						'<td style="font-weight:bold">EGFR:</td>'+
+						'<td>'+d.egfr+'</td>'+
+						'<td style="font-weight:bold">TP53:</td>'+
+						'<td>'+d.tp53+'</td>'+
+					'</tr>'+
+					'<tr>'+
+						'<td style="font-weight:bold">IDH1:</td>'+
+						'<td>'+d.idh1+'</td>'+
+						'<td style="font-weight:bold">IDH2:</td>'+
+						'<td >'+d.idh2+'</td>'+
+						'<td style="font-weight:bold">Tumor Grade:</td>'+
+						'<td>'+d.tumor_grade+'</td>'+
+						'<td style="font-weight:bold">Tumor Stage:</td>'+
+						'<td >'+d.tumor_stage+'</td>'+
+					'</tr>'+
+				'</table>';
+			}
+
+
+
+
+	</script>
+    
+
+
+</body>
+</html>
