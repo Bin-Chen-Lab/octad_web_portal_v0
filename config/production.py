@@ -4,7 +4,7 @@ from datetime import timedelta
 
 APPLICATION_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))  # app package name
 
-BASE_URL = 'http://54.149.37.75:5001'
+BASE_URL = 'http://54.149.37.75:5002'
 
 DEBUG = False
 TESTING = False
@@ -26,7 +26,7 @@ BLUEPRINTS = ['views.base.baseRoute', 'views.dashboard.dashboardRoute', 'views.p
 			  'views.custom_api.apiRoute']
 
 RSCRIPT_PATH = '/home/ec2-user/R-3.4.3/bin/Rscript'
-RREPO_PATH = '/var/www/html/OCTAD_PORTAL-master/'
+RREPO_PATH = '/var/www/html/octad/octad_portal'
 RREPO_OUTPUT = APPLICATION_ROOT + '/static/data/'
 
 WTF_CSRF_ENABLED = False
