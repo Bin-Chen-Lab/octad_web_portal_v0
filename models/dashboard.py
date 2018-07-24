@@ -7,9 +7,11 @@ from models.base import CRUDMixin, db
 STATUS = {0: 'Created', 1: 'Case Visualization', 2: 'Ref Tissue Algo Run', 3: 'Control Visualization',
 		4: 'Signature Compute', 5: 'Drug Predection In-progress', 6: 'Completed'}
 
-FEATURES = {1: 'Tissue Type', 2: 'Site', 3: 'Gender', 4: 'Metastatic Site', 5: 'EGFR',
-			6: 'IDH1', 7: 'IDH2', 8: 'TP53', 9: 'Age', 10: 'Tumor Grade', 11: 'Tumor Stage'}
+#FEATURES = {1: 'Tissue Type', 2: 'Site', 3: 'Gender', 4: 'Metastatic Site', 5: 'EGFR',
+#			6: 'IDH1', 7: 'IDH2', 8: 'TP53', 9: 'Age', 10: 'Tumor Grade', 11: 'Tumor Stage'}
 
+FEATURES = {1: 'Tissue Type', 2: 'Site', 3: 'Gender'} # 4: 'Metastatic Site', 5: 'EGFR',
+			#6: 'IDH1', 7: 'IDH2', 8: 'TP53', 9: 'Age', 10: 'Tumor Grade', 11: 'Tumor Stage'}
 
 class Samples(CRUDMixin, db.Model):
 	"""

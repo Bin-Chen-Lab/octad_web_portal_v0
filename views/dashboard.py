@@ -61,6 +61,13 @@ def news():
     """
     return render_template('dashboard/news.html')
 
+@dashboardRoute.route('/about', methods=["get"])
+# @login_required
+def about():
+    """
+    Static page displayed
+    """
+    return render_template('dashboard/about.html')
 
 @dashboardRoute.route('/', methods=["GET"])
 # @login_required
@@ -188,12 +195,16 @@ def save_job():
                           max_gene_size=max_gene_size, landmark=landmark, weight_cell_line=weight_cell_line,
                           debug=debug, case_sample_id=case_sample_id, ctrl_sample_id=ctrl_sample_id)
         if finishInfo == 'true':
+
+            #@BinC: adding these looks odd
             # Added following because it is not working fine with ui field
-            choose_fda_drugs = 'T'
-            max_gene_size = 50
-            landmark = 1
-            weight_cell_line = 'F'
-            debug = 'T'
+            #choose_fda_drugs = 'T'
+            #max_gene_size = 50
+            #landmark = 1
+            #weight_cell_line = 'F'
+            #debug = 'T'
+
+            print "job status" + str(job.status)
             if job.status < 4 and not de_method:
                 result = {"message": "Invalid DE method. Please select on signature page", "category": "error"}
                 return json.dumps(result)
@@ -201,6 +212,11 @@ def save_job():
                 cmd = [rscript_path, rdir_path + 'drug_predict.R', str(job_id), choose_fda_drugs, str(max_gene_size),
                        str(landmark), weight_cell_line, debug]
             elif job.status == 3:
+
+                #new function added by BinC. Need to save case and control ids
+                control_str = data.get('control_str', '')
+
+
                 cmd = [rscript_path, rdir_path + 'compute_drug_predict.R', str(job_id), choose_fda_drugs,
                        str(max_gene_size), str(landmark), weight_cell_line, debug, de_method, dz_fc_threshold,
                        dz_p_threshold]
@@ -251,13 +267,19 @@ def job_case(disease):
     job_id = data.get('job_id', None)
     if not job_id:
         job_id = str(Job.get_new_id())
-    cmd = [rscript_path, rdir_path + 'case.R', job_id, disease]
+
+    #add new case id, in order to select control ids using case samples
+    #case_str = data.get('case_str', '')
+    #print data
+    #print case_str
+
+    cmd = [rscript_path, rdir_path + 'case.R', job_id, disease.encode('ascii','ignore')]
     print cmd
     # check_output will run the command and store to result
     try:
         x = subprocess.check_output(cmd, universal_newlines=True)
         job = Job.query.filter(Job.id == job_id).first()
-        job.update(commit=True, status=2)
+        job.update(commit=True, status= 3) # replace status 2 with 3, otherwise, while submiting a job without computing signature renders errors.
         file_name = x.replace('[1] "', '')
         file_name = file_name.replace('"', '')
         file_name = file_name.replace('\n', '')
@@ -309,6 +331,8 @@ def job_compute():
             for control in control_ids:
                 f.write(control.replace('.', '-') + '\n')
             f.close()
+
+
         cmd = [rscript_path, rdir_path + 'compute.R', job_id, case_path, control_path, de_method, dz_fc_threshold,
                dz_p_threshold]
         print cmd

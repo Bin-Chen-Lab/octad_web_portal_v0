@@ -140,15 +140,18 @@ def controlSampleApi():
 				f.close()
 			samples = Samples.query.filter(Samples.sample_id.in_(control_ids)).all()
 			site = job.jobs[0].ctrl_site
+
 		else:
 			file_path = join(app.config['RREPO_OUTPUT'], str(job_id), file_name)
 			f = open(file_path, 'r')
 			lines = f.readlines()
 			site = lines[0].replace('\n', '')
-			control_id = [line.replace('\n', '').replace('-', '.') for line in lines[1:]]
+			control_id = [line.replace('\n', '') for line in lines[1:]] #remove .replace('-', '.')...new format of id
 			samples = Samples.query.filter(Samples.sample_id.in_(control_id)).all()
-			site = site.split("-")[0].replace(' ', '').upper()
+			#site = site.split("-")[0].replace(' ', '').upper()
 			job.jobs[0].update(commit=True, ctrl_site=site)
+
+
 		for sample in samples:
 			d = collections.OrderedDict()
 			d['id'] = sample.id
@@ -167,6 +170,7 @@ def controlSampleApi():
 			d['tumor_stage'] = sample.tumor_stage
 			sample_list.append(d)
 	data = {"site": site, "samples": sample_list}
+
 	return json.dumps(data)
 
 
@@ -313,4 +317,5 @@ def get_casefeature_by_disease():
 	tp53_list = get_TP53(disease, tissue_type, site, gender, metastatic, egfr, idh1, idh2, age, tumor_grade, tumor_stage)
 	outdata = dict(sites=sites_list, metastatics=metastatics_list, grades=grades_list, stages=stages_list, tissue_types=tissue_types_list, gender=gender_list, 
 		egfr=egfr_list, idh1=idh1_list, idh2=idh2_list, tp53=tp53_list)
+	print outdata
 	return json.dumps(outdata)

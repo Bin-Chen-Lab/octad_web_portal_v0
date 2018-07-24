@@ -77,7 +77,7 @@
 		<div class="topNav">
 			<div class="row border-bottom m-n">
 		        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-			        <h2 class="pull-left m-n m-t-sm m-l-sm"><b>Octad</b></h2>
+			        <h2 class="pull-left m-n m-t-sm m-l-sm"><b>OCTAD</b>--open cancer therapeutic discovery portal</h2>
 
 		            <ul class="nav navbar-top-links navbar-right">
                         <li class="m-r-sm">
@@ -120,75 +120,57 @@
            </div>
       </div>
 
-
-<!-- Drugs Panel Start-->
+<!-- Case Panel Start-->
 
         <div class="row">
-                    <div class="col-lg-12">
-                        <div class="ibox ">
-                            <div class="ibox-title" style="background: #009ece; color: white;">
-                                <h5 class="pull-left">Drugs Prediction</h5>
-
-                            </div>
-                            <div class="ibox-content">
-
-
-<!--   targets pathway meshterms graph -->
-
-			  <div class="row">
-                    <div class="col-lg-4">
-                        <div class="ibox ">
-                            <div class="ibox-title">
-                                <h5 class="pull-left">Targets</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <iframe src="/static/data/{{ job.id }}/drug_enrichedsea_targets.pdf" width="300" height="250"></iframe>
-                            </div>
-                        </div>
+            <div class="col-lg-12">
+                <div class="ibox ">
+                    <div class="ibox-title" style="background: #009ece; color: white;">
+                        <h5 class="pull-left">Case Samples</h5>
                     </div>
-                       <div class="col-lg-4">
-                        <div class="ibox ">
-                            <div class="ibox-title">
-                                <h5 class="pull-left">Pathway</h5>
-                            </div>
-                            <div class="ibox-content">
-                               <iframe src="/static/data/{{ job.id }}/drug_enrichedchembl_targets.pdf" width="300" height="250"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                      <div class="col-lg-4">
-                        <div class="ibox ">
-                            <div class="ibox-title">
-                                <h5 class="pull-left">Mesh Term</h5>
-                            </div>
-                            <div class="ibox-content">
-                               <iframe src="/static/data/{{ job.id }}/drug_enrichedmeshes.pdf" width="300" height="250"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-<!--   Drug hits graph -->
-
-		  <div class="row">
-                    <div class="col-lg-12">
-                        <div class="ibox ">
-                            <div class="ibox-title">
-                                <h5 class="pull-left">Drug Hits</h5>
-                            </div>
-                            <div class="ibox-content">
-                                <iframe src="/static/data/{{ job.id }}/lincs_reverse_expression.pdf" width="1050" height="400"></iframe>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox ">
+                                    <div class="ibox-content">
+                                        <div id="case_plot_output"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
 
-<!-- Drugs Panel End-->
+<!-- Case Panel End-->
+
+<!-- Case-COntrol Panel Start-->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox ">
+                    <div class="ibox-title" style="background: #009ece; color: white;">
+                        <h5 class="pull-left">Control Samples</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox ">
+                                    <div class="ibox-content">
+                                        <div id="control_plot_output"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!-- Case-COntrol Panel End-->
 
 
 <!-- Signature Panel Start-->
@@ -212,7 +194,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% if job.jobs.0.de_method == 'edgeR' %}
+                        {% if job.jobs.0.de_method == 'edgeR' or job.jobs.0.de_method == 'limma' %}
                             <div class="row">
                             <div class="col-lg-4">
                                 <div class="ibox ">
@@ -220,7 +202,7 @@
                                         <h5 class="pull-left">Targets</h5>
                                     </div> -->
                                     <div class="ibox-content">
-                                        <iframe src="/static/data/{{ job.id }}/dz_enriched_GO_Biological_Process_2017.pdf" width="300" height="250"></iframe>
+                                        <iframe src="/static/data/{{ job.id }}/dz_enriched_GO_Biological_Process_2017.pdf#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0" width="300" height="250"></iframe>
                                     </div>
                                 </div>
                             </div>
@@ -230,7 +212,7 @@
                                         <h5 class="pull-left">Pathway</h5>
                                     </div> -->
                                     <div class="ibox-content">
-                                       <iframe src="/static/data/{{ job.id }}/dz_enriched_GO_Cellular_Component_2017.pdf" width="300" height="250"></iframe>
+                                       <iframe src="/static/data/{{ job.id }}/dz_enriched_GO_Cellular_Component_2017.pdf#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0" width="300" height="250"></iframe>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +222,7 @@
                                         <h5 class="pull-left">Mesh Term</h5>
                                     </div> -->
                                     <div class="ibox-content">
-                                       <iframe src="/static/data/{{ job.id }}/dz_enriched_KEGG_2016.pdf" width="300" height="250"></iframe>
+                                       <iframe src="/static/data/{{ job.id }}/dz_enriched_KEGG_2016.pdf#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0" width="300" height="250"></iframe>
                                     </div>
                                 </div>
                             </div>
@@ -278,57 +260,80 @@
 <!-- Signature Panel End-->
 
 
-<!-- Case-COntrol Panel Start-->
-
+<!-- Drugs Panel Start-->
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title" style="background: #009ece; color: white;">
-                        <h5 class="pull-left">Control Samples</h5>
+                        <h5 class="pull-left">Drug Prediction</h5>
+
                     </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox ">
-                                    <div class="ibox-content">
-                                        <div id="control_plot_output"></div>
-                                    </div>
-                                </div>
+                <div class="ibox-content">
+
+<!--   Drug hits graph -->
+
+		  <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5 class="pull-left">Drug Hits</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <iframe src="/static/data/{{ job.id }}/lincs_reverse_expression.pdf" width="1050" height="400"></iframe>
+                        </div>
+                    </div>
+                </div>
+          </div>
+
+<!--   targets pathway meshterms graph -->
+
+			  <div class="row">
+                    <div class="col-lg-4">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5 class="pull-left">Targets</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <iframe src="/static/data/{{ job.id }}/drug_enrichedsea_targets.pdf#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0" width="300" height="250"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                       <div class="col-lg-4">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5 class="pull-left">Pathways</h5>
+                            </div>
+                            <div class="ibox-content">
+                               <iframe src="/static/data/{{ job.id }}/drug_enrichedchembl_targets.pdf#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0" width="300" height="250"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="col-lg-4">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5 class="pull-left">Mesh Terms</h5>
+                            </div>
+                            <div class="ibox-content">
+                               <iframe src="/static/data/{{ job.id }}/drug_enrichedmeshes.pdf#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0" width="300" height="250"></iframe>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
             </div>
         </div>
+    </div>
+</div>
 
 
-<!-- Case-COntrol Panel End-->
-
-<!-- Case Panel Start-->
-
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="ibox ">
-                    <div class="ibox-title" style="background: #009ece; color: white;">
-                        <h5 class="pull-left">Case Samples</h5>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox ">
-                                    <div class="ibox-content">
-                                        <div id="case_plot_output"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<!-- Drugs Panel End-->
 
 
-<!-- Case Panel End-->
+
+
+
 
 
 <!--   Drug hits -->

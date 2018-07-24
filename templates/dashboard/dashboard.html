@@ -79,6 +79,9 @@
 	                <li>
 	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.news') }}"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span class="nav-label">News</span></a>
 	                </li>
+	                <li>
+	                    <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.about') }}"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span class="nav-label">About</span></a>
+	                </li>
 	            </ul>
 	        </div>
 	    </nav>
@@ -90,7 +93,7 @@
 		<div class="topNav">
 			<div class="row border-bottom m-n">
 		        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
-			        <h2 class="pull-left m-n m-t-sm m-l-sm"><b>Octad</b></h2>
+			        <h2 class="pull-left m-n m-t-sm m-l-sm"><b>OCTAD</b>--open cancer therapeutic discovery portal</h2>
 
 		            <ul class="nav navbar-top-links navbar-right">
 		                <li class="m-r-sm">
@@ -192,7 +195,7 @@
 								{% else %}
 									<textarea class="form-control" style="display:none;" id="case_samples" name="case_samples"></textarea>
                                 {% endif %}
-								<input type="button" id="case_refresh" class="btn btn-blue pull-right m-t-xs" value="Refresh Chart">
+								<input type="button" id="case_refresh" class="btn btn-blue pull-right m-t-xs" value="Refresh Chart" style="visibility:hidden;">
 							</div>
 
 						</div>
@@ -267,7 +270,7 @@
                                 {% endif %}
 
 
-								<input type="button" id="control_refresh" class="btn btn-blue pull-right" value="Refresh Chart">
+								<!-- <input type="button" id="control_refresh" class="btn btn-blue pull-right" value="Refresh Chart">  -->
 							</div>
 						</div>
 						
@@ -319,7 +322,7 @@
 											<option value="limma" selected>Limma</option>
 										{% else %}
 											<option value="0">Select DE-method</option>
-											<option value="edgeR">edgeR</option>
+											<option value="edgeR" selected>edgeR</option>
 											<option value="limma">Limma</option>
 										{% endif %}
 
@@ -347,7 +350,7 @@
                                     	</div>
 									</div>
 									<div class="form-group pull-left col-sm-4">
-										<a class="btn btn-blue pull-right m-l-xs" href="#" disabled>Advanced</a>
+										<!-- <a class="btn btn-blue pull-right m-l-xs" href="#" disabled>Advanced</a> -->
 										<a class="btn btn-blue pull-right m-l-xs" id="job_compute">Compute</a>
 									</div>
 								</div>
@@ -357,12 +360,13 @@
                                     <img src="/static/img/ajax-loader.gif" style="margin: 15% 10% 10% 48%">
                           </div>
 						<div id="SignatureDiv" style="display: none;">
-							<div class="row">
+
+							<div class="row" >
 								<div class="col-lg-12">
-									<iframe id="signatureImg" style="width:100%;height:740px;" src=""></iframe>
+									 <iframe id="signatureImg" style="width:100%;height:350px" src="" ></iframe>
 								</div>
 							</div>
-							<div class="row" id="dz_enricher">  <!--up--> </div>
+							<div class="row" id="dz_enricher" style="height:180px;" >  <!--up--> </div>
 						</div>
 
 					</fieldset>
@@ -387,10 +391,8 @@
 									<div class="col-sm-3">
 										<select class="searchBoxDrugs" name="account">
 											<option value="0">Select Database</option>
-											<option value="L1000">L1000</option>
-											<option value="L10002">L1000 2</option>
-											<option value="L10003">L1000 3</option>
-											<option value="L10004">L1000 4</option>
+											<option value="L1000" selected>L1000</option>
+											<option value="L10002">L1000 All</option>
 										</select>
 									</div>
 
@@ -414,7 +416,7 @@
 							<div class="row">
 								<div class="form-group">
 									<div class="col-sm-3">
-										<input type="text" value="input" class="form-control">
+										<input type="text" value="input" class="form-control" style="visibility:hidden;">
 									</div>
 
 									<div class="col-sm-9">
@@ -437,7 +439,7 @@
 								</div>
 							</div>
 						</div>
-
+						<!--up
 						<div class="drugContainer">
 							<div class="row">
 								<div class="col-lg-12">
@@ -459,6 +461,8 @@
 								</div>
 							</div>
 						</div>
+
+						-->
 					</fieldset>
 				</form>
 					<!-- <a class="btn btn-primary m-l-xs saveBtn" href="#" style="float:right;">Save</a> -->
@@ -693,11 +697,11 @@
 			for (var i=0; i<allRows.length; i++) {
 				row = allRows[i];
 				var rname = row[""];
-				xy_names.push( rname );
+				xy_names.push( row['name']  );
 				x.push( row['X'] );
 				y.push( row['Y'] );
 				if (case_arr.indexOf(rname) > 0){
-					cxy_names.push( rname );
+					cxy_names.push( row['name'] );
 					cx.push( row['X'] );
 					cy.push( row['Y'] );
 				}
@@ -754,16 +758,16 @@
 			for (var i=0; i<allRows.length; i++) {
 				row = allRows[i];
 				var rname = row[""];
-				xy_names.push( rname );
+				xy_names.push( row['name'] );
 				x.push( row['X'] );
 				y.push( row['Y'] );
 				if (case_arr.indexOf(rname) > 0){
-					cxy_names.push( rname );
+					cxy_names.push( row['name'] );
 					cx.push( row['X'] );
 					cy.push( row['Y'] );
 				}
 				if (ctrl_arr.indexOf(rname) > 0){
-					ctxy_names.push( rname );
+					ctxy_names.push( row['name']);
 					ctx.push( row['X'] );
 					cty.push( row['Y'] );
 				}
@@ -1679,13 +1683,13 @@
 							}).done(function (data) {
 								$("#SignatureDiv").show()
 								if (data['signature']){
-									$("#signatureImg").attr('src', data['signature'])
+									$("#signatureImg").attr('src', data['signature'] + '#zoom=100')
 								}
 								enricher_data = data['enricher'];
 								if (enricher_data.length){
 									innerdata = ''
 									for (var i = 0;i<enricher_data.length; i++){
-										innerdata = innerdata + '<div class="col-lg-4"><iframe height="360px" src="'+ enricher_data[i] +'"></iframe></div>'
+										innerdata = innerdata + '<div class="col-lg-4"><iframe height="100%" width="100%" src="'+ enricher_data[i] +'#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0" ></iframe></div>'
 									}
 									$("#dz_enricher").html(innerdata)
 								}
@@ -2677,7 +2681,7 @@
 					}
 				    swal({
 				    	title: "Are you sure?",
-						text: "This might take couple of minutes and screen will be freezed down until the processing completes. Do you wish to continue ?",
+						text: "This might take a few minutes to compute the signature. You can either proceed to submit the job. The signature will be computed after job submission.  Do you wish to continue ?",
 						type: "warning",
 						showCancelButton: true,
 						confirmButtonColor: '#DD6B55',
@@ -2730,12 +2734,12 @@
 										$stopChanging = true;
 										$("#SignatureDiv").show();
 										//$("#Signature-loader").hide();
-										$("#signatureImg").attr('src', data['signature'])
+										$("#signatureImg").attr('src', data['signature'] + '#zoom=100')
 										enricher_data = data['enricher'];
 										if (enricher_data.length){
 											innerdata = ''
 											for (var i = 0;i<enricher_data.length; i++){
-												innerdata = innerdata + '<div class="col-lg-4"><iframe height="360px" src="'+ enricher_data[i] +'"></iframe></div>'
+												innerdata = innerdata + '<div class="col-lg-4"><iframe height="360px" src="'+ enricher_data[i] +'#zoom=100&view=FitH&toolbar=0&statusbar=0&navpanes=0"></iframe></div>'
 											}
 											$("#dz_enricher").html(innerdata)
 										}

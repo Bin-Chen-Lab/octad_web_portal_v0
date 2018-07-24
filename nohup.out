@@ -64604,3 +64604,659 @@ Execution halted
 35.21.120.202 - - [17/Jul/2018 20:24:39] "GET /job/api/2 HTTP/1.1" 200 -
 35.21.120.202 - - [17/Jul/2018 20:25:08] "GET /job/api/2 HTTP/1.1" 200 -
 35.21.120.202 - - [17/Jul/2018 20:25:38] "GET /job/api/2 HTTP/1.1" 200 -
+ * Running on http://0.0.0.0:5002/ (Press CTRL+C to quit)
+[2018-07-17 21:21:56,894] ERROR in app: Exception on / [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1610, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1831, in preprocess_request
+    rv = func()
+  File "/usr/lib/python2.7/dist-packages/flask_login.py", line 299, in _load_user
+    return self._load_from_cookie(request.cookies[cookie_name])
+  File "/usr/lib/python2.7/dist-packages/flask_login.py", line 339, in _load_from_cookie
+    self.reload_user()
+  File "/usr/lib/python2.7/dist-packages/flask_login.py", line 281, in reload_user
+    user = self.user_callback(user_id)
+  File "/var/www/html/octad/octad_web_portal/app.py", line 21, in load_user
+    return User.query.filter_by(id=int(user_id)).first()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2778, in first
+    ret = list(self[0:1])
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2570, in __getitem__
+    return list(res)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2878, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2899, in _execute_and_instances
+    close_with_result=True)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2908, in _get_bind_args
+    **kw
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2890, in _connection_from_session
+    conn = self.session.connection(**kw)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 1035, in connection
+    execution_options=execution_options)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 1040, in _connection_for_bind
+    engine, execution_options)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 409, in _connection_for_bind
+    conn = bind.contextual_connect()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 2123, in contextual_connect
+    self._wrap_pool_connect(self.pool.connect, None),
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 2162, in _wrap_pool_connect
+    e, dialect, self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1476, in _handle_dbapi_exception_noconnection
+    exc_info
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py", line 203, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 2158, in _wrap_pool_connect
+    return fn()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 403, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 784, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 532, in checkout
+    rec = pool._do_get()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 1189, in _do_get
+    self._dec_overflow()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py", line 66, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 1186, in _do_get
+    return self._create_connection()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 350, in _create_connection
+    return _ConnectionRecord(self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 477, in __init__
+    self.__connect(first_connect_check=True)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 667, in __connect
+    connection = pool._invoke_creator(self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/strategies.py", line 106, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py", line 410, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "/usr/lib64/python2.7/dist-packages/MySQLdb/__init__.py", line 81, in Connect
+    return Connection(*args, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/MySQLdb/connections.py", line 193, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+OperationalError: (_mysql_exceptions.OperationalError) (2003, "Can't connect to MySQL server on '127.0.0.1' (111)") (Background on this error at: http://sqlalche.me/e/e3q8)
+35.21.120.202 - - [17/Jul/2018 21:21:56] "GET / HTTP/1.1" 500 -
+[2018-07-17 21:21:57,454] ERROR in app: Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1610, in full_dispatch_request
+    rv = self.preprocess_request()
+  File "/usr/local/lib/python2.7/site-packages/flask/app.py", line 1831, in preprocess_request
+    rv = func()
+  File "/usr/lib/python2.7/dist-packages/flask_login.py", line 299, in _load_user
+    return self._load_from_cookie(request.cookies[cookie_name])
+  File "/usr/lib/python2.7/dist-packages/flask_login.py", line 339, in _load_from_cookie
+    self.reload_user()
+  File "/usr/lib/python2.7/dist-packages/flask_login.py", line 281, in reload_user
+    user = self.user_callback(user_id)
+  File "/var/www/html/octad/octad_web_portal/app.py", line 21, in load_user
+    return User.query.filter_by(id=int(user_id)).first()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2778, in first
+    ret = list(self[0:1])
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2570, in __getitem__
+    return list(res)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2878, in __iter__
+    return self._execute_and_instances(context)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2899, in _execute_and_instances
+    close_with_result=True)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2908, in _get_bind_args
+    **kw
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/query.py", line 2890, in _connection_from_session
+    conn = self.session.connection(**kw)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 1035, in connection
+    execution_options=execution_options)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 1040, in _connection_for_bind
+    engine, execution_options)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/orm/session.py", line 409, in _connection_for_bind
+    conn = bind.contextual_connect()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 2123, in contextual_connect
+    self._wrap_pool_connect(self.pool.connect, None),
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 2162, in _wrap_pool_connect
+    e, dialect, self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 1476, in _handle_dbapi_exception_noconnection
+    exc_info
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/compat.py", line 203, in raise_from_cause
+    reraise(type(exception), exception, tb=exc_tb, cause=cause)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/base.py", line 2158, in _wrap_pool_connect
+    return fn()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 403, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 784, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 532, in checkout
+    rec = pool._do_get()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 1189, in _do_get
+    self._dec_overflow()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/util/langhelpers.py", line 66, in __exit__
+    compat.reraise(exc_type, exc_value, exc_tb)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 1186, in _do_get
+    return self._create_connection()
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 350, in _create_connection
+    return _ConnectionRecord(self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 477, in __init__
+    self.__connect(first_connect_check=True)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/pool.py", line 667, in __connect
+    connection = pool._invoke_creator(self)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/strategies.py", line 106, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "/usr/local/lib/python2.7/site-packages/sqlalchemy/engine/default.py", line 410, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "/usr/lib64/python2.7/dist-packages/MySQLdb/__init__.py", line 81, in Connect
+    return Connection(*args, **kwargs)
+  File "/usr/lib64/python2.7/dist-packages/MySQLdb/connections.py", line 193, in __init__
+    super(Connection, self).__init__(*args, **kwargs2)
+OperationalError: (_mysql_exceptions.OperationalError) (2003, "Can't connect to MySQL server on '127.0.0.1' (111)") (Background on this error at: http://sqlalche.me/e/e3q8)
+35.21.120.202 - - [17/Jul/2018 21:21:57] "GET /favicon.ico HTTP/1.1" 500 -
+35.21.120.202 - - [17/Jul/2018 21:27:09] "GET / HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/plugins/steps/jquery.steps.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/font-awesome/css/font-awesome.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/jquery-ui.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/sumoselect.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/animate.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/style.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/plugins/iCheck/custom.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/plugins/select2/select2.min.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/plugins/chosen/bootstrap-chosen.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/plugins/nouslider/jquery.nouislider.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/plugins/switchery/switchery.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/cstm-style.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/jquery.dataTables.min.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/css/sweetalert.css HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:10] "GET /static/js/jquery-3.1.1.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:11] "GET /static/js/bootstrap.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:11] "GET /static/js/jquery-ui.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/jquery.sumoselect.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/inspinia.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/font-awesome/fonts/fontawesome-webfont.woff2?v=4.3.0 HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plugins/pace/pace.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plugins/metisMenu/jquery.metisMenu.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plugins/slimscroll/jquery.slimscroll.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plugins/chosen/chosen.jquery.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plugins/staps/jquery.steps.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plugins/validate/jquery.validate.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plugins/iCheck/icheck.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/cstmJS.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/jquery.blockUI.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/jquery.dataTables.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/dataTables.select.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:12] "GET /static/js/plotly-latest.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:15] "GET /static/img/ajax-loader.gif HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:15] "GET /static/js/plugins/sweetalert/sweetalert.min.js HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:15] "GET /diseases HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:15] "GET /static/data_files/tsne_3d.csv HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:17] "GET /static/img/optraIcon.png HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:27:17] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+35.21.120.202 - - [17/Jul/2018 21:27:17] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+35.21.120.202 - - [17/Jul/2018 21:28:04] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:28:04] "POST /sample/api HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:28:05] "GET /static/img/details_open.png HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:28:05] "POST /sample/api HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:28:21] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:28:21] "POST /sample/api HTTP/1.1" 200 -
+35.21.120.202 - - [17/Jul/2018 21:28:22] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:35] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:36] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:36] "GET /static/font-awesome/css/font-awesome.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:36] "GET /static/css/jquery-ui.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:36] "GET /static/css/plugins/steps/jquery.steps.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:36] "GET /static/css/sumoselect.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:36] "GET /static/css/animate.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:36] "GET /static/css/style.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/plugins/iCheck/custom.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/plugins/select2/select2.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/plugins/chosen/bootstrap-chosen.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/plugins/nouslider/jquery.nouislider.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/plugins/switchery/switchery.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/cstm-style.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/jquery.dataTables.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/css/sweetalert.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/js/cstmJS.js HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:37] "GET /static/img/ajax-loader.gif HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:38] "GET /static/font-awesome/fonts/fontawesome-webfont.woff2?v=4.3.0 HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:38] "GET /diseases HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 01:17:38] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+68.84.178.179 - - [18/Jul/2018 01:17:38] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+ * Running on http://0.0.0.0:5002/ (Press CTRL+C to quit)
+68.84.178.179 - - [18/Jul/2018 20:59:40] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:40] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:40] "GET /static/css/jquery-ui.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:40] "GET /static/font-awesome/css/font-awesome.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:40] "GET /static/css/plugins/steps/jquery.steps.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:40] "GET /static/css/sumoselect.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:40] "GET /static/css/animate.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/style.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/plugins/iCheck/custom.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/plugins/select2/select2.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/plugins/chosen/bootstrap-chosen.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/plugins/nouslider/jquery.nouislider.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/plugins/switchery/switchery.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/cstm-style.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/sweetalert.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/css/jquery.dataTables.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/jquery-3.1.1.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/bootstrap.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/jquery-ui.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/jquery.sumoselect.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/inspinia.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/plugins/pace/pace.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/plugins/metisMenu/jquery.metisMenu.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/font-awesome/fonts/fontawesome-webfont.woff2?v=4.3.0 HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:41] "GET /static/js/plugins/slimscroll/jquery.slimscroll.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/plugins/staps/jquery.steps.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/plugins/chosen/chosen.jquery.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/plugins/validate/jquery.validate.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/plugins/iCheck/icheck.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/cstmJS.js HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/jquery.blockUI.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/jquery.dataTables.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/dataTables.select.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/plotly-latest.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/js/plugins/sweetalert/sweetalert.min.js HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/img/ajax-loader.gif HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /diseases HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/data_files/tsne_3d.csv HTTP/1.1" 304 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+68.84.178.179 - - [18/Jul/2018 20:59:42] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+68.84.178.179 - - [18/Jul/2018 20:59:50] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:51] "GET /diseases HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:51] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+68.84.178.179 - - [18/Jul/2018 20:59:51] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+68.84.178.179 - - [18/Jul/2018 20:59:57] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:57] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:58] "GET /static/img/details_open.png HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 20:59:58] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 21:00:39] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 21:00:40] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 21:00:43] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [18/Jul/2018 21:00:57] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:48] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:48] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/jquery-ui.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/font-awesome/css/font-awesome.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/sumoselect.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/plugins/steps/jquery.steps.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/animate.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/style.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/plugins/iCheck/custom.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/plugins/select2/select2.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/plugins/nouslider/jquery.nouislider.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/plugins/chosen/bootstrap-chosen.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/plugins/switchery/switchery.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/cstm-style.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/jquery.dataTables.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/css/sweetalert.css HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:49] "GET /static/js/jquery-3.1.1.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:50] "GET /static/img/ajax-loader.gif HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:50] "GET /static/font-awesome/fonts/fontawesome-webfont.woff2?v=4.3.0 HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:50] "GET /static/js/bootstrap.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:50] "GET /static/js/jquery-ui.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/jquery.sumoselect.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/inspinia.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plugins/pace/pace.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plugins/metisMenu/jquery.metisMenu.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plugins/slimscroll/jquery.slimscroll.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plugins/chosen/chosen.jquery.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plugins/staps/jquery.steps.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plugins/validate/jquery.validate.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plugins/iCheck/icheck.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/cstmJS.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/jquery.blockUI.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/jquery.dataTables.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/dataTables.select.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:51] "GET /static/js/plotly-latest.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:54] "GET /static/js/plugins/sweetalert/sweetalert.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:55] "GET /diseases HTTP/1.1" 200 -
+68.84.178.179 - - [19/Jul/2018 01:25:55] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+68.84.178.179 - - [19/Jul/2018 01:25:55] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+68.84.178.179 - - [19/Jul/2018 01:28:34] "GET /static/css/img/ui-icons_777777_256x240.png HTTP/1.1" 404 -
+68.84.178.179 - - [19/Jul/2018 01:28:36] "GET /static/css/img/ui-icons_555555_256x240.png HTTP/1.1" 404 -
+68.84.178.179 - - [19/Jul/2018 01:28:37] "GET /static/css/img/ui-icons_ffffff_256x240.png HTTP/1.1" 404 -
+ * Running on http://0.0.0.0:5002/ (Press CTRL+C to quit)
+68.84.178.179 - - [21/Jul/2018 11:43:26] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/jquery-ui.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/plugins/steps/jquery.steps.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/font-awesome/css/font-awesome.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/sumoselect.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/animate.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/style.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/plugins/iCheck/custom.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/plugins/select2/select2.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/plugins/chosen/bootstrap-chosen.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/plugins/nouslider/jquery.nouislider.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/plugins/switchery/switchery.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/cstm-style.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/sweetalert.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/css/jquery.dataTables.min.css HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:27] "GET /static/js/jquery-3.1.1.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:28] "GET /static/js/bootstrap.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:28] "GET /static/js/jquery-ui.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/jquery.sumoselect.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/inspinia.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/font-awesome/fonts/fontawesome-webfont.woff2?v=4.3.0 HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plugins/pace/pace.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plugins/metisMenu/jquery.metisMenu.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plugins/slimscroll/jquery.slimscroll.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plugins/chosen/chosen.jquery.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plugins/staps/jquery.steps.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plugins/validate/jquery.validate.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plugins/iCheck/icheck.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/cstmJS.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/jquery.blockUI.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/jquery.dataTables.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/dataTables.select.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:29] "GET /static/js/plotly-latest.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:32] "GET /static/js/plugins/sweetalert/sweetalert.min.js HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:32] "GET /static/img/ajax-loader.gif HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:32] "GET /diseases HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:43:32] "GET /static/data_files/tsne_3d.csv HTTP/1.1" 304 -
+68.84.178.179 - - [21/Jul/2018 11:43:33] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+68.84.178.179 - - [21/Jul/2018 11:43:33] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+68.84.178.179 - - [21/Jul/2018 11:53:16] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:53:17] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:53:17] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:53:17] "GET /static/img/details_open.png HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:53:27] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:53:27] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 11:53:29] "POST /sample/api HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 12:11:29] "GET /static/css/img/ui-icons_777777_256x240.png HTTP/1.1" 404 -
+68.84.178.179 - - [21/Jul/2018 13:15:32] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:15:40] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:32:57] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:33:01] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:47:43] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:47:58] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:49:48] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:49:59] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:50:46] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:50:47] "GET /diseases HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 13:50:47] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+68.84.178.179 - - [21/Jul/2018 13:50:47] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+68.84.178.179 - - [21/Jul/2018 14:01:21] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 14:01:25] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 14:01:28] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 14:09:16] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 14:10:12] "GET / HTTP/1.1" 200 -
+68.84.178.179 - - [21/Jul/2018 14:19:29] "GET / HTTP/1.1" 200 -
+ * Running on http://0.0.0.0:5002/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 235-370-782
+35.21.120.202 - - [24/Jul/2018 15:45:33] "GET /login HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:06] "GET / HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/jquery-ui.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/plugins/steps/jquery.steps.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/font-awesome/css/font-awesome.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/sumoselect.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /robots.txt HTTP/1.1" 404 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/animate.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/style.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/plugins/iCheck/custom.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/plugins/select2/select2.min.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/plugins/chosen/bootstrap-chosen.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/plugins/nouslider/jquery.nouislider.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/plugins/switchery/switchery.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/cstm-style.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/jquery.dataTables.min.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/css/sweetalert.css HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/js/jquery-3.1.1.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/js/bootstrap.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:07] "GET /static/js/jquery-ui.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/jquery.sumoselect.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/inspinia.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plugins/pace/pace.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plugins/metisMenu/jquery.metisMenu.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plugins/slimscroll/jquery.slimscroll.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/font-awesome/fonts/fontawesome-webfont.woff2?v=4.3.0 HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plugins/chosen/chosen.jquery.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plugins/staps/jquery.steps.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plugins/validate/jquery.validate.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plugins/iCheck/icheck.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/cstmJS.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/jquery.blockUI.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/jquery.dataTables.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/dataTables.select.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:08] "GET /static/js/plotly-latest.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:10] "GET /static/js/plugins/sweetalert/sweetalert.min.js HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:10] "GET /static/img/ajax-loader.gif HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:10] "GET /diseases HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:10] "GET /static/data_files/tsne_3d.csv HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:12] "GET /static/img/optraIcon.png HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:12] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+35.21.31.154 - - [24/Jul/2018 15:47:12] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+35.21.120.202 - - [24/Jul/2018 15:47:30] "GET / HTTP/1.1" 200 -
+35.21.120.202 - - [24/Jul/2018 15:47:31] "GET /diseases HTTP/1.1" 200 -
+35.21.120.202 - - [24/Jul/2018 15:47:31] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+35.21.120.202 - - [24/Jul/2018 15:47:31] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+35.21.31.154 - - [24/Jul/2018 15:47:33] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:33] "POST /sample/api HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:47:34] "GET /static/img/details_open.png HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:29] "GET / HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:30] "GET /diseases HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:31] "GET /static/img/optraIcon.png HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:31] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+35.21.31.154 - - [24/Jul/2018 15:48:31] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+35.21.31.154 - - [24/Jul/2018 15:48:37] "GET / HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:38] "GET /diseases HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:38] "GET /static/img/sort_asc.png HTTP/1.1" 404 -
+35.21.31.154 - - [24/Jul/2018 15:48:38] "GET /static/img/sort_both.png HTTP/1.1" 404 -
+35.21.31.154 - - [24/Jul/2018 15:48:51] "POST /get_casefeature_by_disease HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:51] "POST /sample/api HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:48:52] "POST /sample/api HTTP/1.1" 200 -
+Loading required package: robustbase
+Loading required package: methods
+Scalable Robust Estimators with High Breakdown Point (version 1.4-4)
+
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+35.21.31.154 - - [24/Jul/2018 15:49:18] "POST /job/case/brain%20lower%20grade%20glioma HTTP/1.1" 200 -
+35.21.31.154 - - [24/Jul/2018 15:49:18] "POST /sample/control/api HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:31] "GET /output/156 HTTP/1.1" 302 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /login?next=%2Foutput%2F156 HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/css/bootstrap.min.css HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/font-awesome/css/font-awesome.css HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/css/animate.css HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/css/style.css HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/css/base.css HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/img/logo.png HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/js/jquery-3.1.1.js HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/js/inspinia.js HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/js/plugins/validate/jquery.validate.min.js HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:32] "GET /static/js/bootstrap.min.js HTTP/1.1" 200 -
+35.21.41.5 - - [24/Jul/2018 15:49:33] "GET /favicon.ico HTTP/1.1" 404 -
+Loading required package: robustbase
+Loading required package: methods
+Scalable Robust Estimators with High Breakdown Point (version 1.4-4)
+
+Read 523 items
+Read 69 items
+Loading required package: dplyr
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+Loading required package: RUVSeq
+Loading required package: Biobase
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from ‘package:dplyr’:
+
+    combine, intersect, setdiff, union
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, cbind, colMeans, colnames,
+    colSums, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, lengths, Map, mapply, match,
+    mget, order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rowMeans, rownames, rowSums, sapply, setdiff, sort,
+    table, tapply, union, unique, unsplit, which, which.max, which.min
+
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+
+Attaching package: ‘Biobase’
+
+The following object is masked from ‘package:dplyr’:
+
+    exprs
+
+The following object is masked from ‘package:robustbase’:
+
+    rowMedians
+
+Loading required package: EDASeq
+Loading required package: ShortRead
+Loading required package: BiocParallel
+Loading required package: Biostrings
+Loading required package: S4Vectors
+Loading required package: stats4
+
+Attaching package: ‘S4Vectors’
+
+The following objects are masked from ‘package:dplyr’:
+
+    first, rename
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+Loading required package: IRanges
+
+Attaching package: ‘IRanges’
+
+The following objects are masked from ‘package:dplyr’:
+
+    collapse, desc, slice
+
+Loading required package: XVector
+
+Attaching package: ‘Biostrings’
+
+The following object is masked from ‘package:base’:
+
+    strsplit
+
+Loading required package: Rsamtools
+Loading required package: GenomeInfoDb
+Loading required package: GenomicRanges
+Loading required package: GenomicAlignments
+Loading required package: SummarizedExperiment
+Loading required package: DelayedArray
+Loading required package: matrixStats
+
+Attaching package: ‘matrixStats’
+
+The following objects are masked from ‘package:Biobase’:
+
+    anyMissing, rowMedians
+
+The following object is masked from ‘package:dplyr’:
+
+    count
+
+The following objects are masked from ‘package:robustbase’:
+
+    colMedians, rowMedians
+
+
+Attaching package: ‘DelayedArray’
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
+
+The following object is masked from ‘package:Biostrings’:
+
+    type
+
+The following object is masked from ‘package:base’:
+
+    apply
+
+
+Attaching package: ‘GenomicAlignments’
+
+The following object is masked from ‘package:dplyr’:
+
+    last
+
+
+Attaching package: ‘ShortRead’
+
+The following object is masked from ‘package:dplyr’:
+
+    id
+
+Loading required package: edgeR
+Loading required package: limma
+
+Attaching package: ‘limma’
+
+The following object is masked from ‘package:BiocGenerics’:
+
+    plotMA
+
+Warning message:
+In rm(counts, set) : object 'set' not found
+
+Attaching package: ‘gplots’
+
+The following object is masked from ‘package:IRanges’:
+
+    space
+
+The following object is masked from ‘package:S4Vectors’:
+
+    space
+
+The following object is masked from ‘package:stats’:
+
+    lowess
+

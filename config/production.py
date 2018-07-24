@@ -6,7 +6,7 @@ APPLICATION_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))  
 
 BASE_URL = 'http://54.149.37.75:5002'
 
-DEBUG = False
+DEBUG = True #
 TESTING = False
 
 #SQLALCHEMY_DATABASE_URI = 'mysql://root:R00t@123@69.64.41.105/octad'
@@ -26,7 +26,7 @@ BLUEPRINTS = ['views.base.baseRoute', 'views.dashboard.dashboardRoute', 'views.p
 			  'views.custom_api.apiRoute']
 
 RSCRIPT_PATH = '/home/ec2-user/R-3.4.3/bin/Rscript'
-RREPO_PATH = '/var/www/html/octad/octad_portal'
+RREPO_PATH = '/var/www/html/octad/octad_portal/'
 RREPO_OUTPUT = APPLICATION_ROOT + '/static/data/'
 
 WTF_CSRF_ENABLED = False
