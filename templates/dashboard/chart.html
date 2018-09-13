@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Octad</title>
+		<link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon">
+		<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+
+		<link href="{{ url_for('static', filename='css/cstm-style.css') }}" rel="stylesheet">
+
+	</head>
+
+	<body>
+
+		<div class="row">
+			<div class="col-lg-4">
+				<div tabindex="-1" id="notebook" class="border-box-sizing">
+					<div class="" id="notebook-container">
+						<div class="output_subarea output_widget_view">
+							<iframe src="{{ xw }}"></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	    
+	</body>
+</html>
