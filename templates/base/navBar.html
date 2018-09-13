@@ -1,0 +1,54 @@
+<nav class="navbar-default navbar-static-side sideNav" role="navigation"><!-- bottomNav -->
+    <div class="sidebar-collapse">
+        <ul class="nav metismenu tooltip-demo" id="side-menu">
+            <li class="active" data-container="body">
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.dashboard') }}">
+                    <i class="fa fa-step-forward" aria-hidden="true"></i>
+                    <span class="nav-label">Steps - New Jobs</span>
+                </a>
+            </li>
+            <li data-container="body">
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.job_history') }}">
+                    <i class="fa fa-tasks" aria-hidden="true"></i>
+                    <span class="nav-label">Job History</span>
+                </a>
+            </li>
+            <li data-container="body">
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.dataset') }}">
+                    <i class="fa fa-database" aria-hidden="true"></i>
+                    <span class="nav-label">Dataset</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.code') }}">
+                    <i class="fa fa-code" aria-hidden="true"></i>
+                    <span class="nav-label">Code</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.tutorials') }}">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <span class="nav-label">Tutorials</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.faq') }}">
+                    <i class="fa fa-comments" aria-hidden="true"></i>
+                    <span class="nav-label">FAQ</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.news') }}">
+                    <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                    <span class="nav-label">News</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-click" data-info="{{ url_for('dashboard.about') }}">
+                    <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                    <span class="nav-label">About</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

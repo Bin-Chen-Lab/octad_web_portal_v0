@@ -1,0 +1,29 @@
+<div class="topNav">
+    <div class="row border-bottom m-n">
+        <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+            <h2 class="pull-left m-n m-t-sm m-l-sm"><b>OCTAD--Open Cancer Therapeutic Discovery Portal</b></h2>
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="m-r-sm">
+
+                    {% if g.user and not g.user.is_anonymous() and g.user.is_authenticated() %}
+                        <a data-toggle="dropdown" class="dropdown-toggle pull-right" href="#" style="padding:12px;" aria-expanded="true">
+                            <b><span id="username">{{ g.user.username }}</span></b> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu userDropDownMenu m-t-xs" style="right:30px;top:30px;left:inherit;">
+                            <li><a href="{{ url_for('profile.change_password') }}"><i class="fa fa-user" aria-hidden="true"></i> Change Password</a></li>
+                            <li><a class="modalMaterial-trigger" href="{{ url_for('profile.logout') }}">
+                                <i class="fa fa-power-off" aria-hidden="true"></i> Logout</a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <a href="{{ url_for('profile.login') }}">
+                            <i class="fa fa-sign-in"></i> Login
+                        </a>
+                    {% endif %}
+
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octad</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon">
+    {% include 'base/css_links.html' %}
+</head>
+
+<body class=""><!-- mini-navbar -->
+    <div id="wrapper">
+
+      {% include 'base/navBar.html' %}
+
+      <div class="navbar-header navToggleBtn">
+        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary m-n" href="#"><i class="fa fa-bars"></i> </a>
+      </div>
+
+      {% include 'base/header.html' %}
+
+      <div id="page-wrapper" class="gray-bg sideNavBody"><!-- btmNavBody -->
+        <div class="wrapper wrapper-content full-height">
+          <div class="row m-n">
+            <div class="col-lg-12" style="padding:0;">
+               <div class="ibox ">
+                  <div class="ibox-title">
+                      <h5>Code</h5>
+                  </div>
+                  <div class="ibox-content">
+The desktop version is available here (https://github.com/Bin-Chen-Lab/octad_desktop). The portal code will be available when the paper is published.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% include 'base/footer.html' %}
+      </div>
+      {% include 'base/js_links.html' %}
+
+    <script type="">
+      var jobsTable;
+      $(document).ready(function(){
+
+      });
+    </script>
+</body>
+</html>

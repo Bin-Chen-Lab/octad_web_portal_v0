@@ -1,0 +1,4 @@
+"","database","category","pval","qval","genes"
+"767","GO_Cellular_Component_2017","neuronal cell body (GO:0043025)",0.00378394953941442,0.232996806754673,"EPHA5,CALB1,HPN,KLHL1,L1CAM,BRINP3"
+"772","GO_Cellular_Component_2017","semaphorin receptor complex (GO:0002116)",0.00448070782220525,0.232996806754673,"NRP2,PLXNA4"
+"773","GO_Cellular_Component_2017","integral component of synaptic vesicle membrane (GO:0030285)",0.00448070782220525,0.232996806754673,"SYT4,TMEM163"
