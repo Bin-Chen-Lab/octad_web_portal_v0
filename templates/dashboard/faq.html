@@ -44,42 +44,69 @@
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="2"><li class="c1"><span class="c2">What does OCTAD do?</span></li></ol>
 <p class="c0"><span class="c2">The goal of OCTAD is to expedite cancer research for therapies. OCTAD allows users to select their cancer of interest and see which genes and pathways are affected due to the disease. With the LINCS database, we can explore further by predicting potential drugs that may be beneficial against that specific cancer (PMID:28699633). &nbsp;Further evaluation of the drug hits may require bench research for efficacy and/or toxicity testing.</span></p>
 <p class="c5"><span class="c2"></span></p>
+
+<!--3.) How do I use OCTAD?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="3"><li class="c1"><span class="c2">How do I use OCTAD?</span></li></ol>
 <p class="c0"><span class="c2">OCTAD is very easy to use. &nbsp;After picking your cancer and filtering down for desired features, you can either manually choose your control samples or use the given default choice that is most correlated to your cancer tissue type. Choose a method of differential expression in the Signature tab and filter down results with the adjusted P value and the number of fold change seen between the case and control samples. Under the Drugs tab, you can choose which database you want to evaluate the potential to reverse the disease signature expression. &nbsp;You can either compute disease signature earlier or submit the job directly. OCTAD will compute disease signature if it detects there is no signature computed. It takes about a few minutes to compute disease signature and &nbsp;about two minutes to run drug prediction. You have to log in to run drug prediction. When the job is complete, an email will be sent to your email box. A full summary report will be available to review and all data files can be downloaded after the job is complete. You can always go to the job page to manage your jobs and check job status.</span></p>
 <p class="c5"><span class="c2"></span></p>
 <p class="c6"><span class="c8">Databases</span></p>
+			
+<!--4.) What are the database sources in OCTAD?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="4"><li class="c1"><span class="c2">What are the database sources used in OCTAD?</span></li></ol>
 <p class="c0"><span class="c2">OCTAD uses patient samples from GTEx, TCGA, St. Jude Hospital, MET 500, and TARGET. &nbsp;Please see our Dataset tab for more information about each data source. &nbsp;Our database currently comprises a total of 19128 normal and tumor samples.</span></p><p class="c5"><span class="c2"></span></p>
+
+<!--5.) Will the databases be continually updated on OCTAD? Will more samples be added into the database later?-->			
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="5"><li class="c1"><span class="c2">Will the databases be continually updated on OCTAD? Will more samples be added into the database later on?</span></li></ol>
 <p class="c0"><span class="c2">Yes. In future version, we plan to include more patient samples. Please contact us if you have datasets you would like to add into OCTAD.</span></p>
-<p class="c5"><span class="c2"></span></p><ol class="c3 lst-kix_kpx1ud18x57t-0" start="6"><li class="c1"><span class="c2">How frequent do you update the database?</span></li></ol>
+<p class="c5"><span class="c2"></span></p>
+
+<!--6.) How frequent do you update the database?-->
+<ol class="c3 lst-kix_kpx1ud18x57t-0" start="6"><li class="c1"><span class="c2">How frequent do you update the database?</span></li></ol>
 <p class="c0"><span class="c2">Depends. We have covered the majority of cancers, we will update new large datasets when they are available.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--7.) Are there patterns among the naming samples of IDs?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="7"><li class="c1"><span class="c2">Are there patterns to the naming of sample IDs?</span></li></ol>
 <p class="c0"><span class="c2">Yes, there are a few patterns. Note that these are the original sample IDs from our sources which have their own naming system. &nbsp;For example, from the GTEx source, the samples are name as GTEX-XXXXX-YYYY-SM-ZZZZZ. XXXXX is the patient ID, YYYY is the code for the tissue, and ZZZZZ is the sample aliquot used for sequencing. &nbsp;Please refer to the dataset tab for more info and links to each data source.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--8.) Is there a way to differentiate between-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="8"><li class="c1"><span class="c2">Is there a way to differentiate live and postmortem samples?</span></li></ol>
 <p class="c0"><span class="c2">No, OCTAD does not list which biopsies are postmortem samples. &nbsp;However, the original data sources have that information. &nbsp;GTEx samples are postmortem samples, except some whole blood samples which were collected prior death. </span></p>
 <p class="c6 c7 c11"><span class="c2"></span></p>
 <p class="c6"><span class="c8">Sample Selection Tabs</span></p>
+
+<!--9.) When is the sample size too low to be considered?-->			
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="9"><li class="c1"><span class="c2">When is the sample size considered too low? What would you consider as the minimum sample number?</span></li></ol>
 <p class="c0"><span class="c2">There is no absolute threshold. If the sample size is low, you may not be able to get signature genes that warrant a good prediction. &nbsp;</span></p>
 <p class="c5"><span class="c2"></span></p>
+
+<!--10.) After filtering the database for samples, my sample size n is less than 5, what should I do?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="10"><li class="c1"><span class="c2">After filtering the database for samples, my sample size n is less than 5, what should I do?</span></li></ol>
 <p class="c0"><span class="c2">If you could not get enough signature genes (&gt; 100), you may need to change your hypothesis.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--11.) Adding additional mutation features like EGFR, IDH1, ect will give out a NA box. What does the choice NA...-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="11"><li class="c1"><span class="c2">Adding the mutation features like EGFR, IDH1, etc will give out a NA box. What does the choice NA mean within a feature? Does unchecking the box for a mutation excludes for that mutation? Is picking NA equivalent to not picking that feature at all?</span></li></ol>
 <p class="c0"><span class="c2">Checking the NA box will include samples with unknown status for that mutation and is equivalent to not selecting that feature. &nbsp;Unchecking the NA will exclude those samples. We are still working on this function.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--12.)How to I interpret the Cancer plot?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="12"><li class="c1"><span class="c2">How do I interpret the cancer plot? What are the X and Y axes?</span></li></ol>
 <p class="c0"><span class="c2">This t-SNE plot is to show similarity between samples. &nbsp;The closer the points are, the more similar they are in mRNA expression. </span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--13.) If the distance between points on the t-SNE plot shows similarity, why...-->	
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="13"><li class="c1"><span class="c2">If the distance between points on the t-SNE plot shows similarity, why do I have a few points relatively far from the main island, even though they are same type of tissue?</span></li></ol>
 <p class="c0"><span class="c2">Those points are either outliers or perhaps the samples are mislabeled in the data source. You can remove that sample from your sample set if you want.</span></p>
 <p class="c0 c7"><span class="c2"></span></p>
+
+<!--14.) I have my own control samples. How do I use my own dataset?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="14"><li class="c1"><span class="c2">&nbsp;I have my own control samples. How do I use my own dataset?</span></li></ol>
 <p class="c0"><span class="c2">Currently, we DO NOT support users to upload their own data. Please expect this function in next version.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--15.) Can I compare two samples that are not the cancer-normal pairing?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="15"><li class="c1"><span class="c2">Can I compare two sample types that are not the cancer-normal pairing? Ie. How would I explore the different expression between two cancers, like colon cancer and rectum cancer? How do I compare adjacent tissue with normal tissue?</span></li></ol>
 <p class="c0"><span class="c2">You should be able to manually select other samples as control.</span></p>
 <p class="c5"><span class="c2"></span></p>
