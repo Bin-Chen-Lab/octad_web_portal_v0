@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>CSRF Protection Error</title>
+    </head>
+    <body>
+        <div class="block prose">
+
+          <p>
+            There was an error verifying your CSRF token. Your request could not be
+            processed. We apologize for the inconvenience!
+          </p>
+
+          <p>
+            The most likely cause of this error is that your browser is set up
+              <strong>not to accept cookies</strong> from us. Change the browser setting and click <a href="{{ url_for('profile.login') }}">here</a> for login
+          </p>
+
+        </div>
+    </body>
+</html>
