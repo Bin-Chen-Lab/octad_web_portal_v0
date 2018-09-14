@@ -27,7 +27,8 @@
             <div class="col-lg-12" style="padding:0;">
               <div class="ibox ">
                 <div class="ibox-title">
-<!--TEXT BEGIN-->
+			
+<!--TEXT BEGIN FOR FAQ SECTION-->
 <!--Title of FAQ page-->
 <p class="c6"><span class="c10">Octad Portal FAQs- v180801</span></p>
 <p class="c6 c7"><span class="c10"></span></p>
@@ -37,6 +38,8 @@
 
 <!--1.) What does the acronym octad stand for?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0 start" start="1"><li class="c1"><span class="c2">What does the acronym OCTAD stands for?</span></li></ol>
+
+<!--Open Cancer Therapuetic Discovery-->			
 <p class="c0"><span class="c4">O</span><span>pen </span><span class="c4">C</span><span>ancer </span><span class="c4">T</span><span>her</span><span class="c4">a</span><span>peutic </span><span class="c4">D</span><span class="c2">iscovery</span></p>
 <p class="c0 c7"><span class="c2"></span></p>
 
@@ -49,6 +52,8 @@
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="3"><li class="c1"><span class="c2">How do I use OCTAD?</span></li></ol>
 <p class="c0"><span class="c2">OCTAD is very easy to use. &nbsp;After picking your cancer and filtering down for desired features, you can either manually choose your control samples or use the given default choice that is most correlated to your cancer tissue type. Choose a method of differential expression in the Signature tab and filter down results with the adjusted P value and the number of fold change seen between the case and control samples. Under the Drugs tab, you can choose which database you want to evaluate the potential to reverse the disease signature expression. &nbsp;You can either compute disease signature earlier or submit the job directly. OCTAD will compute disease signature if it detects there is no signature computed. It takes about a few minutes to compute disease signature and &nbsp;about two minutes to run drug prediction. You have to log in to run drug prediction. When the job is complete, an email will be sent to your email box. A full summary report will be available to review and all data files can be downloaded after the job is complete. You can always go to the job page to manage your jobs and check job status.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--Databases-->
 <p class="c6"><span class="c8">Databases</span></p>
 			
 <!--4.) What are the database sources in OCTAD?-->
@@ -74,6 +79,8 @@
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="8"><li class="c1"><span class="c2">Is there a way to differentiate live and postmortem samples?</span></li></ol>
 <p class="c0"><span class="c2">No, OCTAD does not list which biopsies are postmortem samples. &nbsp;However, the original data sources have that information. &nbsp;GTEx samples are postmortem samples, except some whole blood samples which were collected prior death. </span></p>
 <p class="c6 c7 c11"><span class="c2"></span></p>
+			
+<!--Sample Selection Tools-->
 <p class="c6"><span class="c8">Sample Selection Tabs</span></p>
 
 <!--9.) When is the sample size too low to be considered?-->			
@@ -110,48 +117,79 @@
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="15"><li class="c1"><span class="c2">Can I compare two sample types that are not the cancer-normal pairing? Ie. How would I explore the different expression between two cancers, like colon cancer and rectum cancer? How do I compare adjacent tissue with normal tissue?</span></li></ol>
 <p class="c0"><span class="c2">You should be able to manually select other samples as control.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--16.) How do I manually choose my samples?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="16"><li class="c1"><span class="c2">How do I manually choose my samples?</span></li></ol>
 <p class="c0"><span class="c2">In the sample list, you can manually select samples by checking the ones you want and unchecking the ones you want to exclude in your set.</span></p>
+
+<!--17.) How do I select more than one sample for the control sample?-->			
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="17"><li class="c1"><span class="c2">How do I select more than one type of tissue for control samples?</span></li></ol>
 <p class="c0"><span class="c2">We are not supporting this in the web portal. Please try OCTAD desktop version which provides more flexibility to choose samples.</span></p>
 <p class="c6 c11"><span class="c2">&nbsp;</span></p>
+
+<!--Signature Tab-->
 <p class="c6"><span class="c8">Signature Tab</span></p>
+			
+<!--18.) What is the difference between EdgeR and Limma under DE(differential expression) method?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="18"><li class="c1"><span class="c2">What is the difference between edgeR and Limma under DE (differential expression) method?</span></li></ol>
 <p class="c0"><span class="c2">They used different methods to compute DE. Please refer to their publications.</span></p>
 <p class="c6 c7"><span class="c2"></span></p>
 <p class="c6"><span class="c8">Drugs Tab</span></p>
+
+<!--19.) What are the differences bewtween LINCS database L1000 and L1000 All?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="19"><li class="c1"><span class="c2">What are the differences between the LINCS databases L1000 and L1000 All?</span></li></ol>
 <p class="c0"><span class="c2">L1000 uses only 978 landmark genes in the prediction (other 22 genes are used as control). L1000 All include the imputed expression of the remaining transcriptome. By default, L1000 is used.</span></p>
 <p class="c0 c7"><span class="c2"></span></p>
+			
+<!--20.) What number should I put in for "max genes on one side"? What does it mean?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="20"><li class="c1"><span class="c2">What number should I input for &ldquo;max genes on One side&rdquo;? And what does it mean?</span></li></ol>
 <p class="c0"><span class="c2">Sometimes, we have to limit the number of disease signature to compute reversal correlation. Empirical analysis suggested 50 is good for L1000.</span></p>
 <p class="c6 c7"><span class="c2"></span></p>
 <p class="c6"><span class="c8">Results</span></p>
+
+<!--21.) How long does it take for OCTAD to send me the results?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="21"><li class="c1"><span class="c2">How long does it take for OCTAD to send me the results?</span></li></ol>
 <p class="c0"><span class="c2">Generally, it takes about 20-30mins to receive the email saying that your results are ready.</span></p>
 <p class="c6 c11 c7"><span class="c2"></span></p>
 <p class="c6"><span class="c8">Miscellaneous</span></p>
+		
+<!--Miscellaneous-->
+<!--22.) I am interested in being apart of your open project. Does your group accept any volunteers-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="22"><li class="c1"><span class="c2">I am interested in being part of your open project. Does your group accept any volunteers?</span></li></ol>
 <p class="c0"><span class="c2">Yes.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--23.) How do I support the efforts of OCTAD?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="23"><li class="c1"><span class="c2">How do I support the efforts of OCTAD?</span></li></ol>
 <p class="c0"><span>Please contact us via </span><span class="c13 c4">octad.contact@gmail.com.</span></p>
 <p class="c5"><span class="c4 c13"></span></p>
+			
+<!--24.) I have RNAseq data. Can I add tissue samples to your database?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="24"><li class="c1"><span class="c2">I have RNAseq data. Can I add tissue samples to your database?</span></li></ol>
 <p class="c0"><span class="c2">Yes, but we have to do it manually. </span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--25.) Can I have access to raw RNAseq data?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="25"><li class="c1"><span class="c2">Can I have access to the raw RNA sequence data?</span></li></ol>
 <p class="c0"><span class="c2">As our pipeline uses sources from other databases, we do not have the raw sequences.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--26.) What browsers does OCTAD support?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="26"><li class="c1"><span class="c2">What browsers does OCTAD support?</span></li></ol>
 <p class="c0"><span class="c2">We test in chrome. We does not support mobile.</span></p>
 <p class="c5"><span class="c2"></span></p>
+			
+<!--27.) Can I use the results and images in my paper? If yes, how do I properly cite the use of OCTAD-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="27"><li class="c1"><span class="c2">Can I use the results and images in my paper? If yes, how do I properly cite the use of OCTAD?</span></li></ol>
 <p class="c0"><span class="c2">Yes. The job id is the permanent id. </span></p>
 <p class="c0 c7"><span class="c2"></span></p>
+			
+<!--28.) What is the desktop version of OCTAD and where can I access that?-->
 <ol class="c3 lst-kix_kpx1ud18x57t-0" start="28"><li class="c1"><span class="c2">What is the desktop version of OCTAD and where can I access that?</span></li></ol>
 <p class="c6 c11"><span>It is R version. Both are based on the same backend, but the desktop version provides more flexibility, although it needs some programming skills. Check out the code in GitHub (</span><span class="c4 c12"><a class="c9" href="https://www.google.com/url?q=https://github.com/Bin-Chen-Lab/octad_desktop&amp;sa=D&amp;ust=1536359584269000">https://github.com/Bin-Chen-Lab/octad_desktop</a></span><span class="c2">). </span></p> 
-		</div>
+<!--END TEXT FOR FAQ SECTION-->			
+		
+		 </div>
                 <div class="ibox-content"></div>
               </div>
             </div>
