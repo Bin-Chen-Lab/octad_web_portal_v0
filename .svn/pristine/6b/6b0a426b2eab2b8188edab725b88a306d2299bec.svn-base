@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>OCTAD</title>
+    <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon"> -->
+
+	{% include 'base/css_links.html' %}
+	
+</head>
+
+<body>
+	<header class="indexHeader full-height" >
+		<div class="indexBlueBG">
+			<div class="indexHeading">
+				<h1>OCTAD</h1>
+				<!-- <h3>Chen Lab</h3>-->
+			</div>
+			<div class="cstm-login" style="color:#00AEEF;">
+				<div class="main-login">
+					<div style="text-align:center;margin-bottom:10px;">
+						<img style="width:50%;" src="{{ url_for('static', filename='img/logo.png') }}">
+					</div>
+
+					<form role="form" id="login" method="POST">
+						<p class="text-center">Login</p>
+						<div class="form-group">
+							<input name="username" id="username" value="" size="40" class="form-control" placeholder="Username" required type="email" >
+						</div>
+						<div class="form-group">
+							<input class="form-control" name="password" id="password" placeholder="Password" required type="password" >
+						</div>
+						<center>
+							{% with messages = get_flashed_messages(with_categories=true) %}
+							{% if messages %}
+								{% for category, message in messages %}
+									<div class="row">
+										<div class="col-md-4"></div>
+										{% if category == 'error' %}
+											<div class="alert alert-danger alert-dismissable" >
+												<button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+											    {{ message }}
+											</div>
+										{% else %}
+											<div class="alert alert-success alert-dismissable" >
+												<button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+												{{ message }}
+											</div>
+										{% endif %}
+										<div class="col-md-4"></div>
+									</div>
+								{% endfor %}
+							{% endif %}
+							{% endwith %}
+						</center>
+						<div class="row m-b-xs">
+							<div class="col-lg-6" style="width:260px;float:none;margin:0 auto;">
+								<input id="loginBtn" class="btn btn-primary loginBtn" style="margin:0 auto;" type="submit" value="LOGIN">
+								<a class="btn btn-primary loginBtn pull-right" href="{{ url_for('dashboard.dashboard') }}">Create Job</a>
+							</div>
+						</div>
+						<div class="m-b-xs m-t-xs text-center">
+							<a id="forgotPassBtn" href="{{ url_for('profile.forget_password') }}">Forget Password</a>
+						</div>
+					</form>
+
+
+					<p class="m-b-n-md pull-left"><small>Maintained by <a href="http://binchenlab.org/" target="_blank" style="color:#6cc04a;">Bin Chen Lab</a> @ Michigan State University V1.0</small></p>
+
+				</div>
+			</div>
+		</div>
+	</header>
+
+	{% include 'base/js_links.html' %}
+
+	<script type="">
+		$("#forgotPassBtn").click(function(){
+			$("#login").addClass("hide");
+			$("#forgotPassword").removeClass("hide");
+		});
+
+		$("#BackLoginBtn").click(function(){
+			$("#login").removeClass("hide");
+			$("#forgotPassword").addClass("hide");
+		});
+	</script>
+</body>
+</html>

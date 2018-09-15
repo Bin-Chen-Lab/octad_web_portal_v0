@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>UC San Francisco</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon">
+
+    {% include 'base/css_links.html' %}
+</head>
+    <body>
+        <header class="indexHeader full-height" >
+            <div class="indexBlueBG">
+                <div class="indexHeading">
+                    <h1>OCTAD</h1>
+                    <!-- <h3>Chen Lab</h3>-->
+                </div>
+                <div class="cstm-login" style="color:#00AEEF;">
+                    <div class="main-login">
+                        <div style="text-align:center;margin-bottom:10px;">
+                            <img style="width:50%;" src="{{ url_for('static', filename='img/logo.png') }}">
+                        </div>
+
+                        <form method="POST">
+                            <center>
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                {% if messages %}
+                                    {% for category, message in messages %}
+                                        <div class="row">
+                                            <div class="col-md-4"></div>
+                                            {% if category == 'error' %}
+                                                <div class="alert alert-danger alert-dismissable" >
+                                                    <button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                    {{ message }}
+                                                </div>
+                                            {% else %}
+                                                <div class="alert alert-success alert-dismissable" >
+                                                    <button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                                    {{ message }}
+                                                </div>
+                                            {% endif %}
+                                            <div class="col-md-4"></div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% endwith %}
+                            </center>
+                            <div class="row">
+                                <label id="old_pwd">Old Password</label>
+                                <input type="password" name="old_pwd" class="form-control">
+                            </div>
+                            <div class="row">
+                                <label id="new_pwd">New Password</label>
+                                <input type="password" name="new_pwd" class="form-control">
+                            </div>
+                            <div class="row">
+                                <label id="retype_pwd">Retype Password</label>
+                                <input type="password" name="retype_pwd" class="form-control">
+                            </div>
+
+                            <div class="row m-b-xs m-t-xs">
+                                <div class="col-lg-6" style="width:260px;float:none;margin:0 auto;">
+                                    <input type="button" onclick="window.history.back()" class="btn btn-primary loginBtn" value="Back">
+                                    <input type="submit" class="btn btn-primary loginBtn" value="Change Password">
+                                </div>
+                            </div>
+                        </form>
+
+                        <p class="m-b-n-md pull-left"><small><a href="http://www.optrahealth.com/iphronesis" target="_blank" style="color:#6cc04a;">iPhronesis<sup>TM</sup></a> &copy; 2018-2019</small></p>
+                        <small class="m-b-n-md pull-right" style="color:#19b3f1">V 0.6</small>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {% include 'base/js_links.html' %}
+    </body>
+</html>

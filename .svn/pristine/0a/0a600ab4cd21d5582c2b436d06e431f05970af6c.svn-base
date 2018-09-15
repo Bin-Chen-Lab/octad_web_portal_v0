@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Octad</title>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='img/optraIcon.png') }}" type="image/x-icon">
+
+	{% include 'base/css_links.html' %}
+
+
+	<style type="text/css">
+		.ui-autocomplete {
+			height: 200px;
+			overflow-y: scroll;
+			overflow-x: hidden;
+		}
+		table.dataTable tr th.select-checkbox.selected::after {
+		    content: "✔";
+		    margin-top: -11px;
+		    margin-left: -4px;
+		    text-align: center;
+		    text-shadow: rgb(176, 190, 217) 1px 1px, rgb(176, 190, 217) -1px -1px, rgb(176, 190, 217) 1px -1px, rgb(176, 190, 217) -1px 1px;
+		}
+		.blockMsg {
+			border: none !important;
+			background-color: rgba(249, 249, 249, 0.82) !important;
+			border-radius: 25px 25px;
+		}
+		.blockUI{
+			padding: 10px !important;
+		}
+	</style>
+</head>
+
+<body class=""><!-- mini-navbar -->
+    <div id="wrapper">
+    	{% include 'base/navBar.html' %}
+	    
+        <div class="navbar-header navToggleBtn">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary m-n" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+		
+        {% include 'base/header.html' %}
+
+		<div id="page-wrapper" class="gray-bg sideNavBody"><!-- btmNavBody -->
+			<div class="wrapper wrapper-content full-height">
+				<center>
+					{% with messages = get_flashed_messages(with_categories=true) %}
+					{% if messages %}
+						{% for category, message in messages %}
+							<div class="row">
+								<div class="col-md-4"></div>
+								{% if category == 'error' %}
+									<div class="alert alert-danger alert-dismissable" >
+										<button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										{{ message }}
+									</div>
+								{% else %}
+									<div class="alert alert-success alert-dismissable" >
+										<button type="button" style="text-align: center" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+										{{ message }}
+									</div>
+								{% endif %}
+								<div class="col-md-4"></div>
+							</div>
+						{% endfor %}
+					{% endif %}
+					{% endwith %}
+				</center>
+
+				<form id="form" action="#" method="post" class="wizard-big full-height filter-form" style="display: none;">
+					<!-- <img id="loaderIcon" src="/static/img/loading.gif" style="display: none;"> -->
+					{% if job %}
+						<input type="hidden" name="job_id" id="job_id" value="{{ job.id }}">
+					{% else %}
+						<input type="hidden" name="job_id" id="job_id">
+					{% endif %}
+					<h1>Case</h1>
+					<fieldset>
+						<div class="row m-b-xs">
+							<div id="caseFilterDiv" class="col-lg-7">
+								<div class="form-group">
+									<div class="row m-n">
+										<div class="col-lg-4 diseaseNameSelect" style="padding: 0 5px;">
+											<a class="casePlusAddFilter m-r-xs m-l-sm" style="margin-top: 8px;"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+											<label class="formFild" style="margin-top:10px; margin-left: 18px;" for="case_disease_name">Disease Name</label>
+										</div>
+										<div class="col-lg-8" style="padding-right:0px;">
+											{% if job %}
+												<input type="text" id="case_disease_name" name="case_disease_name" value="{{ job.jobs.0.disease_name }}" class="diseasecasefilter form-control formFild" style="height:25px" data-column-index="7" required >
+											{% else %}
+												<input type="text" id="case_disease_name" name="case_disease_name" value="" class="diseasecasefilter form-control formFild" style="height:25px" data-column-index="7" required >
+											{% endif %}
+
+										</div>
+									</div>
+									<div id="caseAddFilter"></div>
+
+									<div class="row">
+										<div  class="col-lg-12">
+											<a id="caserefbt" class="btn btn-blue m-t-xs pull-right" style="float: right; margin-left: 1%;"><i class=""></i> Reset</a>
+
+											<!-- <a id="casebt" class="btn btn-blue m-t-xs pull-right" style="float: right;"><i class="fa fa-filter"></i> Filter Samples</a> -->
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-5">
+								<div id="CaseChart"></div>
+								{% if job %}
+									<textarea class="form-control" style="display:none;" id="case_samples" name="case_samples">{{ job.jobs.0.case_sample_id }}</textarea>
+								{% else %}
+									<textarea class="form-control" style="display:none;" id="case_samples" name="case_samples"></textarea>
+                                {% endif %}
+								<input type="button" id="case_refresh" class="btn btn-blue pull-right m-t-xs" style="display:none;" value="Refresh Chart">
+							</div>
+
+						</div>
+
+						<div class="row" id="casesamplemaindiv">
+							<div class="col-lg-12">
+								<hr>
+								<h3 style="color:#000">Available/Selected Case Samples</h3>
+
+								<table id="caseSample" class="table table-striped table-bordered display nowrap select" style="width:100%">
+									<thead>
+										 <tr>
+											<th style="text-align: center;"></th>
+											<th>More Info</th>
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Age</th>
+											<th>Site</th>
+											<th>Gender</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>EGFR</th>
+											<th>IDH1</th>
+											<th>IDH2</th>
+											<th>TP53</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+					</fieldset>
+
+					<h1>Control</h1>
+					<fieldset>
+						<div class="row m-b-xs">
+							<div class="col-lg-7" style="padding: 0 5px;">
+								<div class="form-group">
+									<div class="row m-n" style="display: none;">
+										<a id="control_plus_static" class="controlPlusAddFilter m-r-xs m-l-sm" style="margin-top:5px"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+									</div>
+
+									<div id="controlAddFilter"></div>
+
+									<div class="row m-n">
+										<div id="bt" class="col-sm-12" style="padding-right:0px;">
+										<a id="controlrefbt" class="btn btn-blue m-l-xs" href="#" style="float:right;margin-left:1%;"><i class=""></i> Reset</a>
+											<!-- <a id="controlbt" class="btn btn-blue m-l-xs" href="#" style="float:right;"><i class="fa fa-filter"></i> Filter Samples</a> -->
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+							<div class="col-lg-5">
+							 	<div id="ControlChart"></div>
+								{% if job %}
+									<textarea class="form-control" style="display:none;" id="control_samples" name="control_samples">{{ job.jobs.0.ctrl_sample_id }}</textarea>
+								{% else %}
+									<textarea class="form-control" style="display:none;" id="control_samples" name="control_samples"></textarea>
+                                {% endif %}
+
+
+								<input type="button" id="control_refresh" class="btn btn-blue pull-right" style="display:none;" value="Refresh Chart">
+							</div>
+						</div>
+						
+						
+						<div class="row" id="controlSampleDiv">
+							<div class="col-lg-12">
+								<hr>
+								<h3 style="color:#000">Available/Selected Control Samples</h3>
+
+								<table id="controlSample" class="table table-striped table-bordered display nowrap" style="width:100%">
+									<thead>
+										 <tr>
+											<th style="text-align: center;"></th>
+											<th>More Info</th>
+											<th>Sample Id</th>
+											<th>Type</th>
+											<th>Age</th>
+											<th>Site</th>
+											<th>Gender</th>
+											<th>Metastatic Site</th>
+											<th>Cancer</th>
+											<th>EGFR</th>
+											<th>IDH1</th>
+											<th>IDH2</th>
+											<th>TP53</th>
+											<th>Tumor Grade</th>
+											<th>Tumor Stage</th>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+								
+							</div>
+						</div>
+						
+					</fieldset>
+				
+					<h1>Signature</h1>
+					<fieldset>
+						<div class="row">
+							<div class="form-group">
+								<div class="col-sm-3">
+									<select class="searchBoxSign" id="de_method" name="de_method">
+										{% if job and job.status >= 3 and job.jobs.0.de_method == 'edgeR' %}
+											<option value="edgeR" selected>edgeR</option>
+											<option value="limma">Limma</option>
+										{% elif job and job.status >= 3 and job.jobs.0.de_method == 'limma' %}
+											<option value="edgeR">edgeR</option>
+											<option value="limma" selected>Limma</option>
+										{% else %}
+											<option value="edgeR" selected>edgeR</option>
+											<option value="limma">Limma</option>
+										{% endif %}
+
+									</select>
+								</div>
+								<div class="col-sm-9">
+									<div class="form-group pull-left col-sm-4">
+										<label class="col-lg-6 control-label text-right m-t-xs">Adjusted P</label>
+	                                    <div class="col-lg-6">
+											{% if job and job.status >= 3 %}
+												<input type="text" id="dz_p_threshold" name="dz_p_threshold" Placeholder="0.001" value="{{ job.jobs.0.dz_p_threshold}}" class="form-control" style="height:30px;">
+											{% else %}
+	                                    		<input type="text" id="dz_p_threshold" name="dz_p_threshold" Placeholder="0.001" value="0.001" class="form-control" style="height:30px;">
+											{% endif %}
+                                    	</div>
+									</div>
+									<div class="form-group pull-left col-sm-4">
+										<label class="col-lg-6 control-label text-right m-t-xs">Fold Change</label>
+	                                    <div class="col-lg-6">
+											{% if job and job.status >= 3 %}
+	                                    		<input type="text" Placeholder="2" value="{{ job.jobs.0.dz_fc_threshold}}" id="dz_fc_threshold" name="dz_fc_threshold" class="form-control" style="height:30px;">
+											{% else %}
+	                                    		<input type="text" Placeholder="2" value="2" id="dz_fc_threshold" name="dz_fc_threshold" class="form-control" style="height:30px;">
+											{% endif %}
+                                    	</div>
+									</div>
+									<div class="form-group pull-left col-sm-4">
+										<!-- <a class="btn btn-blue pull-right m-l-xs" href="#" disabled>Advanced</a> -->
+										<a class="btn btn-blue pull-right m-l-xs" id="job_compute">Compute</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						 <div id="Signature-loader" style="height : 330px;display : none;">
+                                    <img src="/static/img/ajax-loader.gif" style="margin: 15% 10% 10% 48%">
+                          </div>
+						<div id="SignatureDiv" style="display: none;">
+							<div class="row">
+								<div class="col-lg-12">
+									<iframe id="signatureImg" style="width:100%;height:740px;" src=""></iframe>
+								</div>
+							</div>
+							<div class="row" id="dz_enricher"></div>
+						</div>
+
+					</fieldset>
+
+
+					<h1>Drugs</h1>
+					<fieldset class="form-p-3">
+						<div class="drugContainer">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="i-checks pull-left m-t-xs">
+										<label>
+											<input type="radio" name="database" value="lincs_db" checked="checked">
+											<i></i> LINCS database
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<select class="searchBoxDrugs" name="account">
+											<option value="0">Select Database</option>
+											<option value="L1000" selected>L1000</option>
+											<option value="L10002">L1000 All</option>
+										</select>
+									</div>
+
+									<div class="col-sm-9">
+										<div class="i-checks pull-left m-t-xs">
+											<label>
+												<input type="checkbox" value="F" group="linc_flag" id="weight_cell_line" name="weight_cell_line">
+												<i></i> Weight Cell Line
+											</label>
+										</div>
+										<div class="i-checks pull-left m-t-xs m-l-sm">
+											<label>
+												<input type="checkbox" value="F" group="linc_flag" id="keep_lineage" name="keep_lineage">
+												<i></i> Keep Same Lineage
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group">
+									<div class="col-sm-3">
+										<input type="text" value="input" class="form-control" style="visibility:hidden;">
+									</div>
+
+									<div class="col-sm-9">
+										<div class="i-checks pull-left m-t-xs">
+											<label>
+												<input type="checkbox" value="F" group="linc_flag" id="drugAvailable" name="drugAvailable">
+												<i></i> Drug Clincal Available
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row m-t-xs">
+								<div class="form-group">
+									<label class="col-lg-3 control-label text-right m-t-sm">Max Genes on One Side</label>
+									<div class="col-lg-9">
+										<input type="text" value = 50 Placeholder="50" id="lincs_max_genes" name="lincs_max_genes" class="form-control" style="width:100px;">
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--up
+						<div class="drugContainer">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="i-checks pull-left m-t-xs">
+										<label>
+											<input type="radio" name="database" value="cmap_db">
+											<i></i> CMap Database
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="form-group">
+									<label class="col-lg-3 control-label text-right m-t-sm">Max Genes on One Side</label>
+									<div class="col-lg-9">
+										<input type="text" Placeholder="150" id="cmap_max_genes" name="cmap_max_genes" class="form-control" style="width:100px;">
+									</div>
+								</div>
+							</div>
+						</div>
+
+						-->
+					</fieldset>
+				</form>
+					<!-- <a class="btn btn-primary m-l-xs saveBtn" href="#" style="float:right;">Save</a> -->
+
+					<!--  save Popup  -->
+					<div class="modal inmodal" id="saveInfo" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                        	<div class="modal-content">
+                                <div class="modal-header">
+                                	<h3 class="pull-left">Save Job</h3>
+                                    <button type="button" class="close pull-right" data-dismiss="modal">
+                                    	<span aria-hidden="true">&times;</span>
+                                    	<span class="sr-only">Close</span>
+                                   	</button>
+                                </div>
+								<form id="saveJob" action="{{ url_for('dashboard.save_job') }}" method="POST">
+									<div class="modal-body">
+										<div class="form-group">
+											<label>Job Name</label>
+											{% if job %}
+											<input type="text" name="jobName" placeholder="Job Name" value="{{ job.name }}" class="form-control" required>
+											{% else %}
+											<input type="text" name="jobName" placeholder="Job Name" class="form-control" required>
+											{% endif %}
+										</div>
+										<div class="form-group">
+											<label>Description</label>
+											{% if job %}
+											<textarea name="description" placeholder="Description" class="form-control">{{ job.description }}</textarea>
+											{% else %}
+											<textarea name="description" placeholder="Description" class="form-control"></textarea>
+											{% endif %}
+										</div>
+										{% if not g.user %}
+										<div class="form-group">
+											<label>Email id</label>
+											<input type="email" name="email" placeholder="Enter your email" class="form-control" required>
+										</div>
+										<div class="form-group">
+											<label>Password</label>
+											<input type="password" name="password" placeholder="password" class="form-control" required>
+										</div>
+										{% endif %}
+										<input type="hidden" id="finishInfo" name="finishInfo" value="false">
+										<input type="hidden" id="next_url" name="next_url" value="false">
+									</div>
+									<div class="modal-footer">
+										<button id="savenproceed" type="button" class="btn btn-primary">Save & Proceed</button>
+										<button type="button" class="btn btn-white" id="cancelJob">Don't Save</button>
+										<button type="button" class="btn btn-white" data-dismiss="modal">Cancel</button>
+									</div>
+								</form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  save Popup  -->
+
+					<!--  Summary Popup  -->
+					<div class="modal inmodal" id="summaryInfo" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog">
+                        	<div class="modal-content">
+                                <div class="modal-header">
+                                	<h3 class="pull-left">Job Summary</h3>
+                                    <button type="button" class="close pull-right" data-dismiss="modal">
+                                    	<span aria-hidden="true">&times;</span>
+                                    	<span class="sr-only">Close</span>
+                                   	</button>
+                                </div>
+                                <div class="modal-body p-xs">
+                                	<div class="row m-n">
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Case</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-up"></i>
+														</a>
+													</div>
+												</div>
+			                            		<div id="caseFilterContainer" class="ibox-content">
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox border-bottom m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Control</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-down"></i>
+														</a>
+													</div>
+												</div>
+			                         			<div id="controlFilterContainer" class="ibox-content" style="display:none;">
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox border-bottom m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Signature</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-down"></i>
+														</a>
+													</div>
+												</div>
+			                            	<div id="signatureFilterContainer" class="ibox-content" style="display:none;">
+
+												</div>
+											</div>
+										</div>
+
+										<div class="col-lg-12" style="padding:0;">
+											<div class="ibox border-bottom m-b-sm">
+												<div class="ibox-title p-xs" style="min-height:auto;">
+													<h5>Drugs</h5>
+													<div class="ibox-tools">
+														<a class="collapse-link">
+															<i class="fa fa-chevron-down"></i>
+														</a>
+													</div>
+												</div>
+			                            	<div id="drugsFilterContainer" class="ibox-content" style="display:none;">
+
+												</div>
+											</div>
+										</div>
+
+									</div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  save Popup  -->
+
+
+			</div>
+        </div>
+
+        {% include 'base/footer.html' %}
+
+    </div>
+
+    {% include 'base/js_links.html' %}
+
+
+    <script type="text/javascript">
+		var flag = 0;
+		var site = '';
+		var cnrow_count = 0;
+		var caseTable;
+		var controlTable;
+		var case_tp53 = new Array();
+		var case_gender = new Array();
+		var case_idh1 = new Array();
+		var case_tissue_types = new Array();
+		var case_egfr = new Array();
+		var case_sites = new Array();
+		var case_grades = new Array();
+		var case_metastatics = new Array();
+		var case_idh2 = new Array();
+		var case_stages = new Array();
+		var features_data = {};
+
+		var contol_tp53 = new Array();
+		var contol_gender = new Array();
+		var contol_idh1 = new Array();
+		var contol_tissue_types = new Array();
+		var contol_egfr = new Array();
+		var contol_sites = new Array();
+		var contol_grades = new Array();
+		var contol_metastatics = new Array();
+		var contol_idh2 = new Array();
+		var contol_stages = new Array();
+		var contol_age = new Array();
+		var control_features_data = {};
+
+		var case_plot = function(){
+			$('#ControlChart').html('<img src="/static/img/ajax-loader.gif" />');
+			var case_str = ''
+			{% if job and job.jobs.0.case_sample_id %}
+				case_str = "{{ job.jobs.0.case_sample_id }}"
+			{% else %}
+				if ($('#caseSample').DataTable()){
+					case_ids = $("#caseSample").DataTable().rows('.selected').data();
+					$.each(case_ids, function() {
+						case_str = case_str + this[2] + ','
+					});
+				}
+			{% endif %}
+			$("#case_samples").val(case_str);
+			case_data = {"cases": case_str};
+			$.ajax({
+				dataType: "json",
+				type: "POST",
+				url: "{{ url_for('api.case_plot') }}",
+				data: JSON.stringify(case_data),
+				async: true,
+				success: function(data){
+					$('#ControlChart').html('');
+					Plotly.newPlot('CaseChart', data.graph_data, data.layout);
+					$("#case_refresh").show()
+				}
+			});
+			$.unblockUI();
+
+		};
+
+		var control_plot = function(){
+
+			var case_str = ''
+			{% if job and job.jobs.0.case_sample_id %}
+				case_str = "{{ job.jobs.0.case_sample_id }}"
+			{% else %}
+				if ($('#caseSample').DataTable()){
+					case_ids = $("#caseSample").DataTable().rows('.selected').data();
+					$.each(case_ids, function() {
+						case_str = case_str + this[2] + ','
+					});
+				}
+			{% endif %}
+			$("#case_samples").val(case_str);
+			var control_str = ''
+			{% if job and job.jobs.0.ctrl_sample_id %}
+				control_str = "{{ job.jobs.0.ctrl_sample_id }}"
+			{% else %}
+				if ($('#controlSample').DataTable()){
+					control_ids = $("#controlSample").DataTable().rows('.selected').data();
+					$.each(control_ids, function() {
+						control_str = control_str + this[2] + ','
+					});
+				}
+			{% endif %}
+			$("#control_samples").val(control_str);
+			control_data = {"cases": case_str, "controls": control_str};
+			$.ajax({
+				dataType: "json",
+				type: "POST",
+				url: "{{ url_for('api.control_plot') }}",
+				data: JSON.stringify(control_data),
+				async: true,
+				success: function(data){
+					Plotly.newPlot('ControlChart', data.graph_data, data.layout);
+					$("#control_refresh").show()
+				}
+			});
+			$.unblockUI();
+		};
+
+		// Checkbox change function
+
+		function caseFilter(){
+			caseTable = $('#caseSample').DataTable();
+			jsonObj = {}; // key as column number and value as list of OR values
+			$('.casefilter').each(function(){
+				if(this.value.trim() == ""){}
+				else{
+					if ($(this).data('columnIndex') == 2 ){
+						if(this.checked){
+							if(jsonObj.hasOwnProperty("3")){
+								jsonObj["3"].push(this.value)
+							}
+							else{
+								jsonObj = {"3": new Array(this.value)}
+							}
+						}
+					} else if ($(this).data('columnIndex') == 4){
+						caseTable.columns(5).search(this.value);
+					} else if ($(this).data('columnIndex') == 5){
+						if(this.checked){
+							caseTable.columns(6).search("^"+this.value+"$", true);
+						}
+					} else if ($(this).data('columnIndex') == 6){
+						caseTable.columns(7).search(this.value);
+					} else if ($(this).data('columnIndex') == 7){
+						caseTable.columns(8).search(this.value);
+					} else if ($(this).data('columnIndex') == 8){
+						if (this.checked){
+							caseTable.columns(9).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 9){
+						if (this.checked){
+							caseTable.columns(10).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 10){
+						if (this.checked){
+							caseTable.columns(11).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 11){
+						if (this.checked){
+							caseTable.columns(12).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 12){
+						caseTable.columns(13).search(this.value);
+					} else if ($(this).data('columnIndex') == 13){
+						caseTable.columns(14).search(this.value);
+					}
+				}
+			});
+
+			$.each(jsonObj, function(key,value) {
+				search_data = value.join("|");
+				var i = parseInt(key);
+				caseTable.columns(i).search(search_data, true);
+			});
+
+			caseTable.rows('.selected').deselect();
+			caseTable.draw();
+			var rows = $("#caseSample").dataTable().$('tr', {"filter":"applied"});
+			caseTable.rows(rows).select();
+			case_plot();
+		}
+
+
+		function controlFilter(){
+			controlTable = $('#controlSample').DataTable();
+			jsonObj = {}; // key as column number and value as list of OR values
+			$('.controlfilter').each(function(){
+				if(this.value.trim() == ""){}
+				else{
+					if ($(this).data('columnIndex') == 2 ){
+						if(this.checked){
+							if(jsonObj.hasOwnProperty("3")){
+								jsonObj["3"].push(this.value)
+							}
+							else{
+								jsonObj = {"3": new Array(this.value)}
+							}
+						}
+					} else if ($(this).data('columnIndex') == 4){
+						controlTable.columns(5).search(this.value);
+					} else if ($(this).data('columnIndex') == 5){
+						if(this.checked){
+							controlTable.columns(6).search("^"+this.value+"$", true);
+						}
+
+					} else if ($(this).data('columnIndex') == 6){
+						controlTable.columns(7).search(this.value);
+					} else if ($(this).data('columnIndex') == 8){
+						if (this.checked){
+							controlTable.columns(9).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 9){
+						if (this.checked){
+							controlTable.columns(10).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 10){
+						if (this.checked){
+							controlTable.columns(11).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 11){
+						if (this.checked){
+							controlTable.columns(12).search(this.value);
+						}
+					} else if ($(this).data('columnIndex') == 12){
+						controlTable.columns(13).search(this.value);
+					} else if ($(this).data('columnIndex') == 13){
+						controlTable.columns(14).search(this.value);
+					}
+				 }
+			});
+
+			$.each(jsonObj, function(key,value) {
+				search_data = value.join("|");
+				var i = parseInt(key);
+				controlTable.columns(i).search(search_data, true);
+			});
+
+			controlTable.rows('.selected').deselect();
+			controlTable.draw();
+			$.unblockUI();
+			var rows = $("#controlSample").dataTable().$('tr', {"filter":"applied"});
+			controlTable.rows(rows).select();
+			control_plot()
+		}
+
+
+
+
+		$(document).on('change','.casefilter',function(){
+
+			if(this.id == "case_disease_name" || $(this).val() =="Select Grade" || $(this).val() =="Select Metastatics" || $(this).val() =="Select Site"){
+
+			} else {
+				caseFilter();
+			}
+		});
+
+
+
+
+		$(document).ready(function(){
+
+			$("#form").show()
+
+			$('#savenproceed').on('click', function() {
+				var jobData = $("#form").serializeArray();
+				var formData = $("#saveJob").serializeArray();
+				var allData = formData.concat(jobData)
+				var formUrl = $("#saveJob")[0].action;
+				job_id = $("#job_id")[0].value;
+				disease = $("#case_disease_name").val()
+				if (disease.length < 0){
+					swal("Please provide disease name then filter sample and select samples.");
+					return false;
+				} else{
+					$.post(formUrl, allData, function(result){
+						$("#saveInfo").modal('hide');
+						var next_url = result['next_url'];
+						var finishInfo = result['finishInfo'];
+						if (next_url && result['category'] == 'success'){
+							$("#job_id")[0].value = result['job_id'];
+							swal(result['message'])
+
+							if (next_url != 'false'){
+								location.href = next_url
+							}
+							if (finishInfo == 'true'){
+								location.href = "{{ url_for('dashboard.job_history') }}"
+							}
+						}
+						else{
+							swal(result['message']);
+						}
+					}, "json")
+				}
+
+			});
+
+			function caseTableLoad() {
+				$.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> ' });
+
+				$('#caseSample').DataTable({
+					"ajax": "{{ url_for('api.sampleApi1') }}",
+					"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+					"ordering" : false,
+					"searching" : true,
+					"columnDefs": [
+						{
+							'targets': 0,
+							'checkboxes': {
+							   'selectRow': true
+							},
+							'searchable': false,
+							'orderable': false,
+							'className': 'select-checkbox',
+						},
+						{
+							"className":"details-control",
+							"orderable":false,
+							"data":null,
+							"defaultContent": '',
+							"width": "10px",
+							targets : 1
+						},
+						{
+							"targets": [ 4 ],
+							"visible": false
+						},
+						{
+							"targets": [ 6 ],
+							"visible": false
+						},
+						{
+							"targets": [ 9 ],
+							"visible": false
+						},
+						{
+							"targets": [ 10 ],
+							"visible": false
+						},{
+							"targets": [ 11 ],
+							"visible": false
+						},
+						{
+							"targets": [ 12 ],
+							"visible": false
+						},
+						{
+							"targets": [ 13 ],
+							"visible": false
+						},
+						{
+							"targets": [ 14 ],
+							"visible": false
+						}
+					],
+					"select": {
+						"style": 'multi',
+						"selector": 'td:first-child'
+					},
+					"order": [[1, 'asc']]
+				});
+
+                $.unblockUI();
+                //$("#casebt").trigger('click'); // Comment this because on load disease is not selected.
+                //caseFilter();
+                //case_plot();
+
+                $.ajax({
+                    url: "/diseases",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                    	$("#case_disease_name").autocomplete({
+                            source: data,
+                            minLength: 3,
+                            select: function(event, ui){
+                            	$.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> ' });
+                                var disease = ui.item.value;
+                                if (disease.length>0){
+                                    if ($(this).data('columnIndex') == 7){
+                                        var caseTable = $('#caseSample').DataTable();
+                                        caseTable.rows('.selected').deselect();
+                                        caseTable.draw();
+                                        caseTable.columns(8).search(disease).draw();
+                                        var rows = $("#caseSample").dataTable().$('tr', {"filter":"applied"});
+                                        caseTable.rows(rows).select();
+                                    }
+                                    case_tp53 = []; case_gender =[]; case_idh1 = []; case_tissue_types = []; case_egfr =[]; case_sites = [];case_grades = []; case_metastatics =[]; case_idh2 = []; case_stages = [];
+                                    $.ajax({
+										url: "{{ url_for('api.get_casefeature_by_disease') }}",
+										type: "POST",
+										contentType: 'application/json',
+										data : JSON.stringify({"disease": disease }),
+										async: false
+									}).done(function (result) {
+										/*var data = jQuery.parseJSON(result)*/
+										features_data = jQuery.parseJSON(result)
+										case_tp53 = features_data.tp53;
+										case_gender = features_data.gender;
+										case_idh1 = features_data.idh1;
+										case_tissue_types = features_data.tissue_types;
+										case_egfr = features_data.egfr;
+										case_sites = features_data.sites;
+										case_grades = features_data.grades;
+										case_metastatics = features_data.metastatics;
+										case_idh2 = features_data.idh2;
+										case_stages = features_data.stages;
+										case_plot()
+									});
+                                }
+                            }
+                        });
+                        $.unblockUI();
+                    }
+                });
+
+			}
+
+			function loadControlTable(job_id, data){
+				var file_name = data;
+
+				$.ajax({
+					url: "{{ url_for('api.controlSampleApi1') }}",
+					type: "POST",
+					contentType: 'application/json',
+  					data : JSON.stringify({"file_name": file_name, "job_id": job_id}, null, '\t'),
+  					async : false
+				}).done(function (result) {
+					if(result.length > 0){
+						var obj = JSON.parse(result);
+						$('#controlSample').DataTable({
+							data: obj['samples'],
+							"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],
+							"ordering" : false,
+							"searching" : true,
+							"columnDefs": [
+								{
+								'targets': 0,
+								'checkboxes': {
+									   'selectRow': true
+									},
+									'searchable': false,
+									'orderable': false,
+									'className': 'select-checkbox',
+								},
+								{
+									"className":"details-control",
+									"orderable":false,
+									"data":null,
+									"defaultContent": '',
+									"width": "10px",
+									targets : 1
+								},
+								{
+									"targets": [ 4 ],
+									"visible": false
+								},
+								{
+									"targets": [ 6 ],
+									"visible": false
+								},
+								{
+									"targets": [ 9 ],
+									"visible": false
+								},
+								{
+									"targets": [ 10 ],
+									"visible": false
+								},{
+									"targets": [ 11 ],
+									"visible": false
+								},
+								{
+									"targets": [ 12 ],
+									"visible": false
+								},
+								{
+									"targets": [ 13 ],
+									"visible": false
+								},
+								{
+									"targets": [ 14 ],
+									"visible": false
+								}
+							],
+							"select": {
+								"style": 'multi',
+								"selector": 'td:first-child'
+							},
+							"order": [[1, 'asc']]
+						});
+
+						$.each(obj['samples'], function(i, item){
+							if ($.inArray(item[3], contol_tissue_types)<0){
+								contol_tissue_types.push(item[3])
+							}
+							if ($.inArray(item[5], contol_sites)<0){
+								contol_sites.push(item[5])
+							}
+							if ($.inArray(item[6], contol_gender)<0){
+								contol_gender.push(item[6])
+							}
+							if ($.inArray(item[7], contol_metastatics)<0){
+								contol_metastatics.push(item[7])
+							}
+							if ($.inArray(item[9], contol_egfr)<0){
+								contol_egfr.push(item[9])
+							}
+							if ($.inArray(item[10], contol_idh1)<0){
+								contol_idh1.push(item[10])
+							}
+							if ($.inArray(item[11], contol_idh2)<0){
+								contol_idh2.push(item[11])
+							}
+							if ($.inArray(item[12], contol_tp53)<0){
+								contol_tp53.push(item[12])
+							}
+							if ($.inArray(item[13], contol_grades)<0){
+								contol_grades.push(item[13])
+							}
+							if ($.inArray(item[14], contol_stages)<0){
+								contol_stages.push(item[14])
+							}
+						});
+						control_features_data = obj;
+						control_features_data.tp53 = contol_tp53;
+						control_features_data.gender = contol_gender;
+						control_features_data.idh1 = contol_idh1;
+						control_features_data.tissue_types = contol_tissue_types;
+						control_features_data.egfr = contol_egfr;
+						control_features_data.sites = contol_sites;
+						control_features_data.grades = contol_grades;
+						control_features_data.metastatics = contol_metastatics;
+						control_features_data.idh2 = contol_idh2;
+						control_features_data.stages = contol_stages;
+					}
+
+					var controlTable = $('#controlSample').DataTable();
+					var rows = $("#controlSample").dataTable().$('tr', {"filter":"applied"});
+					controlTable.rows(rows).select();
+
+					if (file_name != null && obj['site'] != ''){
+						if ($("#control_select_1").length<1){
+							$(".controlPlusAddFilter").trigger('click');
+
+							site = obj['site']
+							$("#control_select_1")[0].sumo.selectItem('Site')
+							$("#controlcolsm_1 select[name=control_site]")[0].sumo.selectItem(site);
+							$("#control_plus_static row").hide();
+						}
+					}
+				   control_plot();
+				});
+			}
+			var $stopChanging = false;
+			$("#form").steps({
+				bodyTag: "fieldset",
+				labels: {finish: "Submit"},
+				{% if job and (job.status == 0 or job.status == 1) %}
+					startIndex: 0,
+				{% elif job and (job.status == 2 or job.status == 3) %}
+					startIndex: 1,
+				{% elif job and job.status == 4%}
+					startIndex: 2,
+				{% elif job and job.status == 5%}
+					startIndex: 3,
+				{% else %}
+					startIndex: 0,
+				{% endif %}
+
+				onInit: function (event, currentIndex, newIndex){
+					caseForm();
+					controlForm();
+					caseTableLoad()
+					var saveA = $("<a>").attr("href","#").attr("id","saveBtn").text("Save");
+					saveA.on('click', function(){
+						job_id = $("#job_id")[0].value;
+						disease = $("#case_disease_name").val()
+						if (disease.length > 0){
+							$("#saveInfo").modal('show');
+						}
+						else{
+							swal("Please provide disease name then filter sample and select samples.");
+						}
+					});
+					var saveBtn = $("<li>").attr("aria-disabled",false).append(saveA);
+					$(document).find(".actions ul").prepend(saveBtn);
+
+					// summary Button
+					var summaryA = $("<a>").attr("href","#").attr("data-toggle","modal").attr("data-target","#summaryInfo").attr("id","summaryBtn").text("Summary");
+					var summaryBtn = $("<li>").attr("aria-disabled",false).append(summaryA);
+					$(document).find(".actions ul").prepend(summaryBtn)
+
+					$("#summaryBtn").click(function(){
+						var selectTags = $("select[name='feature']")
+						var controlselectTags = $("select[name='cfeature']")
+						$("#caseFilterContainer").html('');
+						$("#controlFilterContainer").html('');
+						$("#signatureFilterContainer").html('');
+						$("#drugsFilterContainer").html('');
+						 var str = '';
+						 var cstr = '';
+
+						 str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Disease Name</label><label class="col-lg-8"><b>'+$("#case_disease_name").val()+'</b></label></div>';
+
+						$.each(selectTags, function(index){
+							filterSelectVal = selectTags[index].value
+							id = selectTags[index].id
+							row_id = id.split('_')[2];
+
+
+						if(filterSelectVal == 'Tissue Type')
+						{
+						var ctype = [];
+						$.each($("input[name='case_type']:checked"), function(){
+										ctype.push($(this).val());
+								  });
+							str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+ctype.toString()+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'Site')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="case_site"]').val()+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'Gender')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('input[name=case_gender]:checked').val()+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'Metastatic Site')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="case_metastatic"]').val()+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'EGFR')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#EGFRcasecheck").is(':checked')+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'IDH1')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#IDH1casecheck").is(':checked')+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'IDH2')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#IDH2casecheck").is(':checked')+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'TP53')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#TP53casecheck").is(':checked')+'</b></label></div>';
+						}
+							else if(filterSelectVal == 'Age')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$("#caseAgeDisplay").val()+'</b></label></div>';
+						}
+
+						else if(filterSelectVal == 'Tumor Grade')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="case_tumor_grade"]').val()+'</b></label></div>';
+						}
+						else if(filterSelectVal == 'Tumor Stage')
+						{
+
+							  str = str + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="case_tumor_stage"]').val()+'</b></label></div>';
+						}
+						})
+						$("#caseFilterContainer").append(str);
+
+						$.each(controlselectTags, function(index){
+							cfilterSelectVal = controlselectTags[index].value
+							id = controlselectTags[index].id
+							row_id = id.split('_')[2];
+
+						if(cfilterSelectVal == 'Tissue Type')
+						{
+						 var ctype = [];
+						 $.each($("input[name='control_type']:checked"), function(){
+										ctype.push($(this).val());
+								 });
+								  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+ctype.toString()+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'Site')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="control_site"]').val()+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'Gender')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('input[name=control_gender]:checked').val()+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'Metastatic Site')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="control_metastatic"]').val()+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'EGFR')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#EGFRcontcheck").is(':checked')+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'IDH1')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#IDH1contcheck").is(':checked')+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'IDH2')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#IDH2contcheck").is(':checked')+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'TP53')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#TP53contcheck").is(':checked')+'</b></label></div>';
+						}
+							else if(cfilterSelectVal == 'Age')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$("#controlAgeDisplay").val()+'</b></label></div>';
+						}
+
+						else if(cfilterSelectVal == 'Tumor Grade')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+filterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="control_tumor_grade"]').val()+'</b></label></div>';
+						}
+						else if(cfilterSelectVal == 'Tumor Stage')
+						{
+
+							  cstr = cstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">'+cfilterSelectVal+'</label><label class="col-lg-8"><b>'+$('select[name="control_tumor_stage"]').val()+'</b></label></div>';
+						}
+						})
+						$("#controlFilterContainer").append(cstr);
+
+
+						var sigstr = '';
+						if($("#de_method").val() != "0")
+							sigstr = sigstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">DE method</label><label class="col-lg-8"><b>'+$("#de_method").val()+'</b></label></div>';
+
+						if($("#dz_p_threshold").val() != "")
+							sigstr = sigstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Adjusted P</label><label class="col-lg-8"><b>'+$("#dz_p_threshold").val()+'</b></label></div>';
+						if($("#dz_fc_threshold").val() != "")
+							sigstr = sigstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Fold Change</label><label class="col-lg-8"><b>'+$("#dz_fc_threshold").val()+'</b></label></div>';
+
+						$("#signatureFilterContainer").append(sigstr);
+
+						var sstr= '';
+						var dbselectde = $('input[name=database]:checked').val();
+						if(dbselectde == 'lincs_db')
+						{ 
+							if($('select[name="account"]').val() != "0")
+								sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Account</label><label class="col-lg-8"><b>'+$('select[name="account"]').val()+'</b></label></div>';
+
+							if($("input[name='weight_cell_line']").is(':checked'))
+								sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Weight Cell Line</label><label class="col-lg-8"><b>'+$("input[name='weight_cell_line']").is(':checked')+'</b></label></div>';
+
+							if($("input[name='keep_lineage']").is(':checked'))
+								sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Keep Same Lineage</label><label class="col-lg-8"><b>'+$("input[name='keep_lineage']").is(':checked')+'</b></label></div>';
+
+							if($("input[name='drugAvailable']").is(':checked'))
+								sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Drug Clincal Available</label><label class="col-lg-8"><b>'+$("input[name='drugAvailable']").is(':checked')+'</b></label></div>';
+
+							if($("#lincs_max_genes").val() != "")
+								sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Max Genes on One Side</label><label class="col-lg-8"><b>'+$("#lincs_max_genes").val()+'</b></label></div>';
+
+						}
+						else {
+							if($("#cmap_max_genes").val() != "")
+								sstr = sstr + '<div class="form-group row bordrBtm"><label class="col-lg-4 text-info">Max Genes on One Side</label><label class="col-lg-8"><b>'+$("#cmap_max_genes").val()+'</b></label></div>';
+						}
+						$("#drugsFilterContainer").append(sstr);
+					})
+
+					if (currentIndex >= 0 ){
+					}
+					if (currentIndex >= 1 ){
+					}
+					if (currentIndex >= 2 ){
+					}
+				},
+
+				onStepChanging: function (event, currentIndex, newIndex){
+					$stopChanging = false;
+					console.log(event, currentIndex, newIndex)
+					if ($stopChanging) {
+						return true;
+					} else {
+						if (newIndex == 0){
+							$("#saveBtn").show();
+						} else if (newIndex == 1){
+							$("#saveBtn").show();
+							disease_name = $("#case_disease_name")[0].value.trim();
+							job_id = $("#job_id")[0].value;
+							if (disease_name.length>0){
+							 	$.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> <span style="color:black;">Filtering control samples....</span>' });
+								var url = "{{ url_for('dashboard.job_case', disease='abc') }}"
+								url = url.replace('abc', disease_name);
+								$.ajax({
+									url: url,
+									type: "POST",
+									contentType: 'application/json',
+									data : JSON.stringify({"job_id": job_id }),
+									dataType:'json'
+									//async: false
+								}).done(function (data) {
+									$.unblockUI();
+									$("#job_id")[0].value = data.job_id;
+									if (data.file_name == "fail"){
+										$("#form").steps("previous");
+									}else{
+
+										$stopChanging = true;
+										loadControlTable(data.job_id, data.file_name)
+									}
+								}).fail(function (jqXHR, textStatus) {
+									 $.unblockUI();
+									$("#form").steps("previous");
+								});
+							} else{
+								if(disease_name.length==0)
+									swal("Please select disease name")
+								else if(job_id != undefined || job_id != '')
+									swal("Please select samples")
+								$("#form").steps("previous");
+								return false;
+							}
+						} else if (newIndex == 2){
+							$stopChanging = true;
+							$("#saveBtn").show();
+            			} else if (newIndex == 3){
+							$stopChanging = true;
+							$("#saveBtn").hide();
+            			}
+					}
+
+
+					var form = $(this);
+
+					// Clean up if user went backward before
+					if (currentIndex < newIndex){
+						// To remove error styles
+						$(".body:eq(" + newIndex + ") label.error", form).remove();
+						$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
+					}
+
+					// Disable validation on fields that are disabled or hidden.
+					form.validate().settings.ignore = ":disabled,:hidden";
+					// Start validation; Prevent going forward if false
+					return form.valid();
+				},
+				onContentLoaded: function (event, currentIndex) {
+					$stopChanging = false;
+			   	},
+				onFinishing: function (event, currentIndex){
+					//Not checking any form validation directly calling onFinished event
+					$('#saveInfo').modal('show');
+					$('#finishInfo').val('true');
+					//return true;
+				},
+				
+				onFinished: function (event, currentIndex){
+					//var form = $(this);
+					// Submit form input
+					//form.submit();
+				}
+			}).validate({
+				errorPlacement: function (error, element){
+					element.before(error);
+				},
+				rules: {
+					confirm: {
+						equalTo: "#password"
+					}
+				}
+			});
+			var case_count = 1;
+			function caseForm(){
+
+
+				$(document).on('click','.casePlusAddFilter',function(){
+
+					if($("#case_disease_name").val().trim() == "" || $("#case_disease_name").val() == null){
+						swal("Please select disease name")
+						}
+					else {
+						$.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> ' });
+						if ($('#caseAddFilter').is(':empty')){
+							var row_id = 0;
+						}
+						else{
+							var row_id = this.id.split('_')[2];
+						}
+						this.disabled = true
+						row_id = parseInt(row_id) + 1;
+
+						var data = '<div id="crow_'+row_id+'" class="row m-n"><div class="form-group">'+
+							'<div class="col-lg-4 ui-widget" style="padding-left:5px;">'+
+								'<a href="#" id="caseplus_row_'+row_id+'" class="casePlusAddFilter m-l-xs m-r-xs m-t-xs" style="margin-top:5px !important;">'+
+									'<i class="fa fa-plus-square" aria-hidden="true"></i>'+
+								'</a>'+
+								'<a href="#" id="caseminus_row_'+row_id+'" class="caseMinusRemoveFilter m-l-xs m-r-xs m-t-xs" style="margin-top:5px !important;">'+
+									'<i class="fa fa-minus-square" aria-hidden="true"></i>'+
+								'</a>'+
+								'<select id="case_select_'+row_id+'" class="search-box pull-right" name="feature" style="height:28px;float:left;">' +
+									'<option>Select feature</option>';
+							{% for k, v in features.iteritems() %}
+								var str = "{{ v }}"
+								if(str == 'Tissue Type')
+									{
+									if(features_data.tissue_types.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'Site' )
+									{
+									if(features_data.sites.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'Gender' )
+									{
+									if(features_data.gender.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'Metastatic Site' )
+									{
+									if(features_data.metastatics.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'EGFR' )
+									{
+									if(features_data.egfr.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'IDH1')
+									{
+									if(features_data.idh1.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'IDH2')
+									{
+									if(features_data.idh2.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'TP53' )
+									{
+									if(features_data.tp53.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'Age')
+									data = data+'<option value="'+str+'">'+str+'</option>';
+
+								if(str == 'Tumor Grade')
+									{
+									if(features_data.grades.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+
+								if(str == 'Tumor Stage' )
+									{
+									if(features_data.stages.length > 0)
+										data = data+'<option value="'+str+'">'+str+'</option>';
+									else
+										data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+									}
+							{% endfor %}
+
+							data = data +'</select>'+
+								'</div>'+
+								'<div id="casecolsm_'+row_id+'" class="col-lg-8" style="padding-right:0;"></div>'+
+							'</div>';
+						$("#caseAddFilter").append(data);
+						$('.search-box').SumoSelect({search: true, searchText:'Enter here.' });
+					}
+					$.unblockUI();
+				});
+
+				$(document).on('click','.caseMinusRemoveFilter',function(){
+					row_id = this.id.split('_')[2];
+					div_obj = $(this).parents('div#crow_'+row_id+'.row')
+					if (div_obj.length>0){
+						div_obj.remove();
+						if (row_id == 1){
+							prev_obj = $(".diseaseNameSelect").children(".casePlusAddFilter");
+						}
+						else{
+							prev_obj = $("div#crow_"+(row_id-1)+".row .casePlusAddFilter");
+						}
+						prev_obj[0].disabled = false;
+					}
+				});
+
+
+
+				$(document).on('change', '.search-box', function(){
+					//console.log(this.value + "change input" + this.id);
+					feature_val = this.value;
+					if(feature_val == 'Select feature'){}
+					else
+					{
+						render(this.id,feature_val);
+					}
+				});
+
+				function render(idd,feature_val){
+					//console.log(this.value + "change input" + this.id);
+					row_id=idd.split('_')[2];
+
+					$("#casecolsm_" + row_id).html("");
+					data = '';
+					if (feature_val == "Tissue Type" || feature_val == 1){
+						for(var i=0;i<case_tissue_types.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox"  name="case_type" group="caseType" value="'+ case_tissue_types[i] +'"  class="casefilter" data-column-index="2">'+
+									'<i></i>'+ case_tissue_types[i] +
+								'</label>'+
+							'</div>';
+						}
+					}else if (feature_val == "Site" || feature_val == 2){
+	
+						data = '<select class="casefilter search-box" placeholder="Select Site" name="case_site" data-column-index="4">'+
+						'<option>Select Site</option>'; // select2_demo_3
+							  /* '<option>Select Site</option>';*/
+							   {% for s in sites %}
+							   		var str = '{{s}}'
+							   		var index = case_sites.indexOf(str);
+							   		if(index != -1)
+							   			data = data + '<option value="{{ s }}">{{s}}</option>';
+							   		else
+							   			data = data + '<option value="{{ s }}" disabled>{{s}}</option>';
+								{% endfor %}
+							  data = data + '</select>';
+
+					}else if (feature_val == "Gender" || feature_val == 3){
+
+						for(var i=0;i<case_gender.length;i++)
+						{
+
+							data = data + '<div class="i-checks pull-left m-r-sm">'+
+								'<label>'+
+									'<input type="radio" group="case_gender" name="case_gender" value="'+case_gender[i]+'"  style="display:inline;margin-right:7px;" class="casefilter" data-column-index="5">'+
+									case_gender[i]+
+								'</label>'+
+							'</div>';
+						}
+					}else if (feature_val == "Metastatic Site" || feature_val == 4){
+						data = '<select class="casefilter search-box" placeholder="Select Metastatics" name="case_metastatic" data-column-index="6">'+
+						'<option>Select Metastatics</option>'// select2_demo_3
+							   /*'<option>Select Metastatics</option>';*/
+  								{% for m in metastatics %}
+							   		var str = '{{m}}'
+							   		var index = case_metastatics.indexOf(str);
+							   		if(index != -1)
+							   			data = data + '<option value="{{ m }}">{{m}}</option>';
+							   		else
+							   			data = data + '<option value="{{ m }}" disabled>{{m}}</option>';
+								{% endfor %}
+							  data = data + '</select>';
+
+					}else if (feature_val == "EGFR" || feature_val == 5){
+						console.log(case_egfr)
+						for(var i=0;i<case_egfr.length;i++)
+						{
+
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox"  name="case_EGFR" group="caseEGFR" value="'+case_egfr[i]+'"  class="casefilter" data-column-index="8">'+
+									'<i></i> '+case_egfr[i]+
+								'</label>'+
+							'</div>';
+
+						}
+	
+					}else if (feature_val == "IDH1" || feature_val == 6){
+				
+						for(var i=0;i<case_idh1.length;i++){
+
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox"  name="case_IDH1" group="caseIDH1" value="'+case_idh1[i]+'"  class="casefilter" checked="" data-column-index="9">'+
+									'<i></i> '+ case_idh1[i]+
+								'</label>'+
+							'</div>';
+						}
+
+					}else if (feature_val == "IDH2" || feature_val == 7){
+						for(var i=0;i<case_idh2.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox"  name="case_IDH2" group="caseIDH2" value="'+case_idh2[i]+'"  class="casefilter"  data-column-index="10">'+
+									'<i></i> '+case_idh2[i]+
+								'</label>'+
+							'</div>';
+						}
+	
+					}else if (feature_val == "TP53" || feature_val == 8){
+						for(var i=0;i<case_tp53.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox" name="case_TP53" group="caseTP53" value="'+case_tp53[i]+'" class="casefilter"   data-column-index="11">'+
+									'<i></i> '+case_tp53[i]+
+								'</label>'+
+							'</div>';
+						}
+					}else if (feature_val == "Age" || feature_val == 9){
+						data = 	'<input type="text" id="caseAgeDisplay" name="case_age" class="casefilter ageDisplayInput m-t-xs" readonly>'+
+								'<div id="caseAgeSlider" class="ageSliderDiv m-t-sm" data-column-index="14"></div>'
+						// age slider code --------------
+						$( function() {
+							{% if not job or not job.jobs.0.case_age_in_year %}
+								$( "#caseAgeSlider" ).slider({
+									range: true,
+									min: 1,
+									max: 100,
+									values: [ 20, 60 ],
+									slide: function( event, ui ) {
+										$("#caseAgeDisplay").val(
+											ui.values[ 0 ] + " - " +
+											ui.values[ 1 ]
+										);
+									},
+								change: function( event, ui ) {
+									 $.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div>' });
+									 caseFilter();}
+								});
+
+								$("#caseAgeDisplay").val(
+									$("#caseAgeSlider").slider("values",0) + " - " +
+									$("#caseAgeSlider").slider("values",1)
+								);
+							{% endif %}
+						});
+					// age slider code --------------
+
+					}else if (feature_val == "Tumor Grade" || feature_val == 10){
+						data = '<select class="casefilter search-box" placeholder="Select Grade" name="case_tumor_grade" data-column-index="12">'+
+							'<option>Select Grade</option>';
+						   	{% for g in grades %}
+								var str = '{{g}}'
+								var index = case_grades.indexOf(str);
+								if(index != -1)
+									data = data + '<option value="{{ g }}">{{g}}</option>';
+								else
+									data = data + '<option value="{{ g }}" disabled>{{g}}</option>';
+							{% endfor %}
+						data = data + '</select>';
+						
+					}else if (feature_val == "Tumor Stage" || feature_val == 11){
+						data = '<select placeholder="Select Stage" class="search-box" multiple="multiple"  name= "case_tumor_stage" tabindex="4" data-column-index="13">' ;
+							{% for st in stages %}
+								var str = '{{st}}'
+								var index = case_stages.indexOf(str);
+								if(index != -1)
+									data = data + '<option value="{{ st }}">{{st}}</option>';
+								else
+									data = data + '<option value="{{ st }}" disabled>{{st}}</option>';
+							{% endfor %}
+						data = data + '</select>';
+					}
+					$("#casecolsm_" + row_id).append(data);
+				   	$(".search-box").SumoSelect({search: true, searchText: 'Enter here.'});
+				   	$("input[type='radio']").checkboxradio();
+					$("fieldset[type='radio']").controlgroup();
+				}
+
+	};//FINISH CASE JS===================================================================================================
+
+
+			//CONTROL JS===================================================================================================
+
+			function controlForm(){
+
+				$(document).on('click','.controlPlusAddFilter',function(){
+					$.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> ' });
+					if ($('#controlAddFilter').is(':empty')){
+						var row_id = 0;
+					}
+					else{
+						var row_id = this.id.split('_')[2];
+					}
+					this.disabled = true
+					row_id = parseInt(row_id) + 1;
+
+					var data = '<div id="cnrow_'+row_id+'" class="row m-n"><div class="form-group">'+
+						'<div class="col-lg-4 ui-widget" style="padding-left:5px;">';
+
+						data = data + '<a href="#" id="controlplus_row_'+row_id+'" class="controlPlusAddFilter m-l-xs m-r-xs m-t-xs" style="margin-top:5px !important;">'+
+							'<i class="fa fa-plus-square" aria-hidden="true"></i>'+
+						'</a>'+
+						'<a href="#" id="controlminus_row_'+row_id+'" class="controlMinusRemoveFilter m-l-xs m-r-xs m-t-xs" style="margin-top:5px !important;">'+
+							'<i class="fa fa-minus-square" aria-hidden="true"></i>'+
+						'</a>';
+						data = data + '<select id="control_select_'+row_id+'" class="controlfeature search-boxControl pull-right" name="cfeature" style="height:28px;float:left;">' +
+							'<option>Select feature</option>';
+					{% for k, v in features.iteritems() %}
+						var str = "{{ v }}"
+						if(str == 'Tissue Type')
+							{
+							if(control_features_data.tissue_types.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'Site' )
+							{
+							if(control_features_data.sites.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'Gender' )
+							{
+							if(control_features_data.gender.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'Metastatic Site' )
+							{
+							if(control_features_data.metastatics.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'EGFR' )
+							{
+							if(control_features_data.egfr.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'IDH1')
+							{
+							if(control_features_data.idh1.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'IDH2')
+							{
+							if(control_features_data.idh2.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'TP53' )
+							{
+							if(control_features_data.tp53.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'Age')
+							data = data+'<option value="'+str+'">'+str+'</option>';
+
+						if(str == 'Tumor Grade')
+							{
+							if(control_features_data.grades.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+
+						if(str == 'Tumor Stage' )
+							{
+							if(control_features_data.stages.length > 0)
+								data = data+'<option value="'+str+'">'+str+'</option>';
+							else
+								data = data+'<option value="'+str+'" disabled>'+str+'</option>';
+							}
+					{% endfor %}
+
+					data = data +'</select>'+
+						'</div>'+
+						'<div id="controlcolsm_'+row_id+'" class="col-lg-8" style="padding-right:0;"></div>'+
+					'</div>';
+					$("#controlAddFilter").append(data);
+					$('.search-boxControl').SumoSelect({search: true, searchText:'Enter here.' });
+
+					$.unblockUI();
+
+				});
+
+
+				$(document).on('click','.controlMinusRemoveFilter',function(){
+					row_id = this.id.split('_')[2];
+					div_obj = $(this).parents('div#cnrow_'+row_id+'.row')
+					if (div_obj.length>0){
+						div_obj.remove();
+						prev_obj = $("div#cnrow_"+(row_id-1)+".row .controlPlusAddFilter");
+						prev_obj[0].disabled = false;
+					}
+					controlFilter()
+				});
+
+
+				$(document).on('change', '.search-boxControl', function(){
+					//console.log(this.value + "change input New" + this.id);
+					feature_val = this.value;
+					if(feature_val == 'Select feature'){}
+					else
+					{
+						rendernew(this.id,feature_val);
+						//controlFilter();
+					}
+
+				});
+
+
+				function rendernew(iddnew,feature_val){
+
+					row_id = iddnew.split('_')[2];
+
+					$("#controlcolsm_" + row_id).html("");
+					data = '';
+					if (feature_val == "Tissue Type" || feature_val == 1){
+
+						for(var i=0;i<contol_tissue_types.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox"  name="control_type" group="controlType" value="'+ contol_tissue_types[i] +'"  class="controlfilter" data-column-index="2">'+
+									'<i></i>'+ contol_tissue_types[i] +
+								'</label>'+
+							'</div>';
+						}
+					}else if (feature_val == "Site" || feature_val == 2){
+						data = '<select  placeholder="Select Site" class="controlfilter search-boxControl" name="control_site" data-column-index="4">'+ // select2_demo_3
+							'<option>Select Site</option>';
+							{% for s in sites %}
+								var str = '{{s}}'
+								if(str == site)
+									data = data + '<option value="{{ s }}">{{s}}</option>';
+								else
+									data = data + '<option value="{{ s }}" disabled>{{s}}</option>';
+							{% endfor %}
+						data = data + '</select>';
+							 
+					}else if (feature_val == "Gender" || feature_val == 3){
+						for(var i=0;i<contol_gender.length;i++){
+							data = data + '<div class="i-checks pull-left m-r-sm">'+
+								'<label>'+
+									'<input type="radio" name="control_gender" value="'+contol_gender[i]+'" style="display:inline;margin-right:7px;"  class="controlfilter" data-column-index="5">'+
+									contol_gender[i]+
+								'</label>'+
+								'</div>';
+						}
+					}else if (feature_val == "Metastatic Site" || feature_val == 4){
+						data = '<select placeholder="Select Metastatics" class="controlfilter search-boxControl" name="control_metastatic" data-column-index="6">'+
+							'<option>Select Metastatics</option>';
+							{% for m in metastatics %}
+								var str = '{{m}}'
+								var index = contol_metastatics.indexOf(str);
+								if(index != -1)
+									data = data + '<option value="{{ m }}">{{m}}</option>';
+								else
+									data = data + '<option value="{{ m }}" disabled>{{m}}</option>';
+							{% endfor %}
+						data = data + '</select>';
+					}else if (feature_val == "EGFR" || feature_val == 5){
+						for(var i=0;i<contol_egfr.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox" id="EGFRcontcheck" name="control_EGFR" group="controlEGFR" value="'+contol_egfr[i]+'"  class="controlfilter js-switch" data-column-index="8">'+
+									'<i></i> '+contol_egfr[i]+
+									'</label>'+
+								'</div>';
+						}
+					}else if (feature_val == "IDH1" || feature_val == 6){
+						for(var i=0;i<contol_idh1.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox" id="IDH1contcheck" name="control_IDH1" group="controlIDH1" value="'+contol_idh1[i]+'" class="controlfilter js-switch" data-column-index="9">'+
+									'<i></i> '+contol_idh1[i]+
+								'</label>'+
+							'</div>';
+						}
+					}else if (feature_val == "IDH2" || feature_val == 7){
+						for(var i=0;i<contol_idh2.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox" id="IDH2contcheck" name="control_IDH2" group="controlIDH2" value="'+contol_idh2[i]+'"  class="controlfilter js-switch" data-column-index="10">'+
+									'<i></i> '+contol_idh2[i]+
+								'</label>'+
+							'</div>';
+						}
+					}else if (feature_val == "TP53" || feature_val == 8){
+						for(var i=0;i<contol_tp53.length;i++){
+							data = data+'<div class="i-checks pull-left">'+
+								'<label class="m-r-sm">'+
+									'<input type="checkbox" id="TP53contcheck" name="control_TP53" group="controlTP53" value="'+contol_tp53[i]+'" class="controlfilter js-switch" data-column-index="11">'+
+										'<i></i> '+contol_tp53[i]+
+									'</label>'+
+								'</div>';
+							}
+					}else if (feature_val == "Age" || feature_val == 9){
+						data = 	'<input type="text" id="controlAgeDisplay" name="control_age" class="controlfilter ageDisplayInput m-t-xs" readonly>'+
+							'<div id="controlAgeSlider" class="ageSliderDiv m-t-sm" data-column-index="14"></div>'
+					}else if (feature_val == "Tumor Grade" || feature_val == 10){
+						data = '<select placeholder="Select Grade"  class="controlfilter search-boxControl" name="control_tumor_grade" data-column-index="12">'+ // select2_demo_3
+						   	'<option>Select Grade</option>';
+							{% for g in grades %}
+								var str = '{{g}}'
+								var index = contol_grades.indexOf(str);
+								if(index != -1)
+									data = data + '<option value="{{ g }}">{{g}}</option>';
+								else
+									data = data + '<option value="{{ g }}" disabled>{{g}}</option>';
+							{% endfor %}
+						data = data + '</select>';
+					}else if (feature_val == "Tumor Stage" || feature_val == 11){
+						data = '<select placeholder="Select Stage" class="search-boxControl" name="control_tumor_stage" multiple="multiple"  tabindex="4" data-column-index="13">' ;
+							{% for st in stages %}
+								var str = '{{st}}'
+								var index = contol_stages.indexOf(str);
+								if(index != -1)
+									data = data + '<option value="{{ st }}">{{st}}</option>';
+								else
+									data = data + '<option value="{{ st }}" disabled>{{st}}</option>';
+							{% endfor %}
+						data = data + '</select>';
+					}
+					$("#controlcolsm_" + row_id).append(data);
+					$(".search-boxControl").SumoSelect({search: true, searchText: 'Enter here.'});
+					$("input[type='radio']").checkboxradio();
+					$("fieldset[type='radio']").controlgroup();
+					$(".controlfilter").on('change',function(){
+						if($(this).val() =="Select Grade" || $(this).val() =="Select Metastatics" || $(this).val() =="Select Site"){
+
+						}else {
+							controlFilter();
+							}
+						});
+
+					// age slider code --------------
+
+					{% if not job or not job.jobs.0.ctrl_age_in_year %}
+						$( "#controlAgeSlider" ).slider({
+							range: true,
+							min: 1,
+							max: 100,
+							values: [ 20, 60 ],
+							slide: function( event, ui ) {
+								$("#controlAgeDisplay").val(
+									ui.values[ 0 ] + " - " +
+									ui.values[ 1 ]
+								);
+							}
+						});
+
+						$("#controlAgeDisplay").val(
+							$("#controlAgeSlider").slider("values",0) + " - " +
+							$("#controlAgeSlider").slider("values",1)
+						);
+					{% endif %}
+					// age slider code --------------
+
+				};
+
+			}//FINISH CONTROL JS===================================================================================================
+
+            // Add event listener for opening and closing details
+            $('#caseSample tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var caseTable = $('#caseSample').DataTable();
+                var row = caseTable.row( tr );
+
+                if(row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }else {
+                    // Open this row
+                    row.child( format2(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            });
+
+
+            	var casecount = 0;
+
+            // ---- Add Child Row Table -------------------------------
+			
+            // Add event listener for opening and closing details
+            $('#controlSample tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row1 = controlTable.row( tr );
+
+                if(row1.child.isShown()) {
+                    // This row is already open - close it
+                    row1.child.hide();
+                    tr.removeClass('shown');
+                }else {
+                    // Open this row
+                    row1.child( format2(row1.data()) ).show();
+                    tr.addClass('shown');
+                }
+            });
+
+            $(".searchBoxSign").SumoSelect({search: true, searchText: 'Enter here.'});
+			$(".searchBoxDrugs").SumoSelect({search: true, searchText: 'Enter here.'});
+
+            $("#saveJob").validate();
+
+			// FILTER Samples for case and control===================================================
+
+			$("#caserefbt").on('click', function(){
+				//e.preventDefault();
+				$.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> ' });
+
+				var divids = $("div[id^='crow_']");
+
+				divids.each(function(element) {
+					this.remove()
+				});
+			})
+
+			$("#controlrefbt").on('click', function(){
+				//e.preventDefault();
+				var divids = $("div[id^='cnrow_']");
+				if(divids.length > 0)
+				{
+					for(var i =2;i<=divids.length;i++)
+					{
+							$("#cnrow_"+i).remove();
+					}
+				}
+				site = site.split("-")[0].replace(' ', '')
+				$("#controlcolsm_1 select[name=control_site]")[0].sumo.selectItem(site);
+				//$("#controlbt").trigger('click');
+				controlFilter();
+			})
+
+			//==================================================================================================================================================================================
+
+
+
+			$( "#caseSample_filter.dataTables_filter input" ).on( 'keyup change',function() {
+			   //clear column search values
+				caseTable.columns().search('');
+			   //clear input values
+			   $('.casefilter').val('');
+			   $('.select-info').css('display','none');
+			});
+
+
+			$("#case_refresh").on('click', function(){
+				case_plot()
+			});
+
+			$("#control_refresh").on('click', function(){
+				control_plot()
+			});
+
+
+
+
+
+
+			$("#job_compute").on('click', function(){
+
+
+				// call visualization of chart
+				var de_method = $("#de_method").val();
+				var dz_fc_threshold = $('#dz_fc_threshold').val();
+				var dz_p_threshold = $('#dz_p_threshold').val();
+				if(de_method == "0"){
+					swal("Please select DE-method")
+				} else {
+					swal({
+				    	title: "",
+						text: "This might take couple of minutes and screen will be freezed down until the processing completes. Do you wish to continue ?",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: '#DD6B55',
+						confirmButtonText: 'Yes, I am sure!',
+						cancelButtonText: "No, cancel it!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+					}, function(isConfirm) {
+						if (isConfirm) {
+						   $(".sweet-alert").css("display", "none");
+						   $(".sweet-overlay").css("display", "none");
+						   $("#SignatureDiv").hide();
+							//$("#Signature-loader").show();
+							if (de_method.length>0){
+								 $.blockUI({ message: '<div class="full-width"><img src="/static/img/ajax-loader.gif" /></div> <span style="color:black;">Computing disease signature, it might take couple of minutes..</span> ' });
+								var computeurl = "/job/compute";
+								var job_id = $("#job_id")[0].value;
+								var case_str = '';
+								var rows = $("#caseSample").dataTable().$('tr', {"filter":"applied", "selected": true});
+								case_ids = $('#caseSample').DataTable().rows(rows).data();
+								if (case_ids.length>0){
+									case_str = ''
+									for (var i=0; i < case_ids.length ;i++){
+										case_str = case_str + case_ids[i][2] + ','
+									}
+								}
+								var control_str = '';
+								var rows = $("#controlSample").dataTable().$('tr', {"filter":"applied", "selected": true});
+								control_ids = $('#controlSample').DataTable().rows(rows).data();
+								if (control_ids.length>0){
+									control_str = ''
+									for (var i=0; i < control_ids.length ;i++){
+										control_str = control_str + control_ids[i][2] + ','
+									}
+								}
+								$.ajax({
+									url: computeurl,
+									type: "POST",
+									contentType: 'application/json',
+									data : JSON.stringify({"de_method": de_method, "dz_fc_threshold": dz_fc_threshold,
+									"dz_p_threshold": dz_p_threshold, "job_id": job_id, "case_str": case_str,
+									"control_str": control_str}, null, '\t'),
+									dataType:'json'
+								}).done(function (data) {
+									 $.unblockUI();
+									if (data == "fail"){
+										//$("#Signature-loader").hide();
+										swal("Please try again")
+									}else{
+										$stopChanging = true;
+										$("#SignatureDiv").show();
+										//$("#Signature-loader").hide();
+										$("#signatureImg").attr('src', data['signature'])
+										enricher_data = data['enricher'];
+										if (enricher_data.length){
+											innerdata = ''
+											for (var i = 0;i<enricher_data.length; i++){
+												innerdata = innerdata + '<div class="col-lg-4"><iframe height="360px" src="'+ enricher_data[i] +'"></iframe></div>'
+											}
+											$("#dz_enricher").html(innerdata)
+										}
+									}
+								}).fail(function (jqXHR, textStatus) {
+								//	 $.unblockUI();
+									$("#Signature-loader").hide();
+									swal("Please try again")
+								});
+							}
+							else{
+								$("#Signature-loader").hide();
+								swal("Please try again")
+							}
+						} else {
+							$(".sweet-alert").css("display", "none");
+							$(".sweet-overlay").css("display", "none");
+						}
+					});
+				}
+			});
+
+		}); // End Document ready
+
+		 
+
+
+		// ---- Add Child Row Table -------------------------------
+
+		function format2 ( d ) {
+			return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+				'<tr>'+
+					'<td style="font-weight:bold">Gender:</td>'+
+					'<td>'+d[6]+'</td>'+
+					'<td style="font-weight:bold">Age:</td>'+
+					'<td>'+d[4]+'</td>'+
+					'<td style="font-weight:bold">EGFR:</td>'+
+					'<td>'+d[9]+'</td>'+
+					'<td style="font-weight:bold">TP53:</td>'+
+					'<td>'+d[10]+'</td>'+
+				'</tr>'+
+				'<tr>'+
+					'<td style="font-weight:bold">IDH1:</td>'+
+					'<td>'+d[11]+'</td>'+
+					'<td style="font-weight:bold">IDH2:</td>'+
+					'<td >'+d[12]+'</td>'+
+					'<td style="font-weight:bold">Tumor Grade:</td>'+
+					'<td>'+d[13]+'</td>'+
+					'<td style="font-weight:bold">Tumor Stage:</td>'+
+					'<td >'+d[14]+'</td>'+
+				'</tr>'+
+			'</table>';
+		}
+
+
+
+
+	</script>
+    
+
+
+</body>
+</html>
