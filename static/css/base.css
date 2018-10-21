@@ -96,11 +96,33 @@ input {
     margin:0px;
 }
 
+.fancyheader {
+    background-color: NAVY;
+    border-radius: 5%;
+    padding: 5px;
+    color: WHITE;
+    font-weight: bold;
+}
+
+.underline {
+	text-decoration: underline;
+}
+
+.boldheader {
+    /*text-decoration: underline;*/
+    font-weight: bold;
+}
 
 
+.indent {
+    padding-left: 1.8em;
+}
 
+table {
+    border-collapse: collapse;
+}
 
-
-
-
-
+table td,tr{
+	border: 1px solid black;
+	padding: 1px;	
+}
