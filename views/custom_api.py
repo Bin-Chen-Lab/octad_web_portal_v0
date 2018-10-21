@@ -402,7 +402,7 @@ def drug_hit(job_id):
 			csv_df = df[["pert_iname", "clinical_phase", "moa", "target", "sRGES"]]
 			csv_df1 = csv_df.replace(np.nan, '', regex=True)
 			drug_hits_csv_data = csv_df1.values.tolist()
-	return json.dumps({"data": drug_hits_csv_data})
+	return json.dumps({"data": drug_hits_csv_data}, encoding='latin1')
 
 
 @apiRoute.route('/output/dz_predict/<job_id>', methods=['GET'])
